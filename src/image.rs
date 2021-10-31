@@ -1,4 +1,6 @@
-pub struct Image<const H: usize, const W: usize, PixelType = Px<u8>>
+// use image_lib::Primitive;
+
+pub struct Image<const H: usize, const W: usize, PixelType = Px>
 where
     [u8; H * W]: Sized,
 {
@@ -8,18 +10,27 @@ where
 }
 
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
-pub struct Px<T = u8> {
-    pub r: T,
-    pub g: T,
-    pub b: T,
+pub struct Px {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
 }
 
 pub struct Pt(pub usize, pub usize);
 
+pub trait ToColorArray<T> {
+    fn to_a(&self) -> [u8; 3];
+}
+
+impl<T> ToColorArray<T> for Px {
+    fn to_a(&self) -> [u8; 3] {
+        [self.r, self.g, self.b]
+    }
+}
 impl<const H: usize, const W: usize, PixelType> Image<H, W, PixelType>
 where
     [u8; H * W]: Sized,
-    PixelType: PartialEq + Copy + Default,
+    PixelType: ToColorArray<PixelType> + PartialEq + Copy + Default,
 {
     pub fn new() -> Image<H, W> {
         Image {
@@ -30,12 +41,13 @@ where
     }
 
     pub fn render(&self, filename: &str) {
-        let mut imgbuf = image::ImageBuffer::new(self.width as u32, self.height as u32);
+        let mut imgbuf = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
 
         for (x, y, pixel) in imgbuf.enumerate_pixels_mut() {
-            let r = (0.3 * x as f32) as u8;
-            let g = (0.3 * y as f32) as u8;
-            *pixel = image::Rgb([r, g, 0]);
+            // let [r, g, b] = self.get(Pt(x as usize, y as usize)).to_a();
+            // let p: [u8; 3] = image_lib::Rgb([r, g, b]);
+            // *pixel = p; //image_lib::Rgb([r, g, b]);
+            *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a());
         }
         imgbuf.save(filename).unwrap();
     }
