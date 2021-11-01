@@ -1,7 +1,9 @@
 #![allow(incomplete_features)]
 #![feature(generic_const_exprs)]
+#![feature(destructuring_assignment)]
 
 mod image;
+mod line;
 
 use crate::image::*;
 
