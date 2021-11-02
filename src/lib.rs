@@ -5,7 +5,7 @@
 mod image;
 mod line;
 
-use crate::image::*;
+use image::*;
 
 pub fn make_image(filename: &str) {
     let mut i = Image::<500, 500>::new();

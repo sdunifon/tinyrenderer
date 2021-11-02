@@ -82,6 +82,21 @@ where
     pub fn set(&mut self, pt: Pt, p: PixelType) {
         self.data[Self::xy2a(pt.0, pt.1)] = p;
     }
+
+    // pub fn draw( drawer:( img ) -> () ){
+    //     drawer(self);
+    // }
+
+    pub fn draw(&self, d: &dyn Drawable<H, W, PixelType>) {
+        d.draw(self)
+    }
+}
+
+pub trait Drawable<const H: usize, const W: usize, PixelType>
+where
+    [u8; H * W]: Sized,
+{
+    fn draw(&self, image: &Image<H, W, PixelType>);
 }
 
 #[cfg(test)]
