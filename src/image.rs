@@ -1,12 +1,12 @@
 // use image_lib::Primitive;
 
-pub struct Image<const H: usize, const W: usize, PixelType = Px>
+pub struct Image<const H: usize, const W: usize>
 where
     [u8; H * W]: Sized,
 {
     height: usize,
     width: usize,
-    data: [PixelType; H * W], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
+    data: [Px; H * W], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
@@ -19,11 +19,11 @@ pub struct Px {
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
 pub struct Pt(pub usize, pub usize);
 
-pub trait ToColorArray<T> {
+pub trait ToColorArray {
     fn to_a(&self) -> [u8; 3];
 }
 
-impl<T> ToColorArray<T> for Px {
+impl ToColorArray for Px {
     fn to_a(&self) -> [u8; 3] {
         [self.r, self.g, self.b]
     }
@@ -43,10 +43,9 @@ const WHITE: Px = Px {
 };
 const BLACK: Px = Px { r: 0, g: 0, b: 0 };
 
-impl<const H: usize, const W: usize, PixelType> Image<H, W, PixelType>
+impl<const H: usize, const W: usize> Image<H, W>
 where
     [u8; H * W]: Sized,
-    PixelType: ToColorArray<PixelType> + PartialEq + Copy + Default,
 {
     pub fn new() -> Image<H, W> {
         Image {
@@ -74,12 +73,12 @@ where
     }
 
     #[inline]
-    pub fn get(&self, pt: Pt) -> PixelType {
+    pub fn get(&self, pt: Pt) -> Px {
         self.data[Self::xy2a(pt.0, pt.1)]
     }
 
     #[inline]
-    pub fn set(&mut self, pt: Pt, p: PixelType) {
+    pub fn set(&mut self, pt: Pt, p: Px) {
         self.data[Self::xy2a(pt.0, pt.1)] = p;
     }
 
@@ -87,16 +86,16 @@ where
     //     drawer(self);
     // }
 
-    pub fn draw(&self, d: &dyn Drawable<H, W, PixelType>) {
+    pub fn draw(&mut self, d: &dyn Drawable<H, W>) {
         d.draw(self)
     }
 }
 
-pub trait Drawable<const H: usize, const W: usize, PixelType>
+pub trait Drawable<const H: usize, const W: usize>
 where
     [u8; H * W]: Sized,
 {
-    fn draw(&self, image: &Image<H, W, PixelType>);
+    fn draw(&self, image: &mut Image<H, W>);
 }
 
 #[cfg(test)]

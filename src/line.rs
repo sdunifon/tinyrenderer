@@ -9,11 +9,11 @@ struct Line {
 
 impl Line {}
 
-impl<const H: usize, const W: usize, PixelType> Drawable<H, W, PixelType> for Line
+impl<const H: usize, const W: usize> Drawable<H, W> for Line
 where
     [u8; H * W]: Sized,
 {
-    fn draw(&self, canvas: &Image<H, W, PixelType>)
+    fn draw(&self, canvas: &mut Image<H, W>)
     where
         [u8; H * W]: Sized,
     {
