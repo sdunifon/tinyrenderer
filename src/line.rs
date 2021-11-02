@@ -13,10 +13,7 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Line
 where
     [u8; H * W]: Sized,
 {
-    fn draw(&self, canvas: &mut Image<H, W>)
-    where
-        [u8; H * W]: Sized,
-    {
+    fn draw(&self, canvas: &mut Image<H, W>) {
         let (Pt(mut x0, mut y0), Pt(mut x1, mut y1)) = (self.p1, self.p2);
 
         let mut steep = false;
@@ -33,66 +30,27 @@ where
             mem::swap(&mut y0, &mut y1);
         }
 
+        let dx: i64 = x1 as i64 - x0 as i64;
+        let dy: i64 = y1 as i64 - y0 as i64;
+        let mut derror: f64 = (dy as f64 / dx as f64).abs();
+        let mut error: f64 = 0.0;
+        let mut y: i64 = y0 as i64;
+
         for x in x0..=x1 {
-            let t: f64 = (x as f64 - x0 as f64) / (x1 as f64 - x0 as f64);
-            let y = y0 as f64 * (1.0 - t) + y1 as f64 * t;
             if steep {
-                canvas.set(Pt(y as usize, x as usize), Px { r: 255, g: 0, b: 0 })
-            //if transposed (steep==true) de-transpose
+                canvas.set(Pt(y as usize, x as usize), WHITE);
             } else {
-                canvas.set(Pt(x as usize, y as usize), Px { r: 255, g: 0, b: 0 })
+                canvas.set(Pt(x as usize, y as usize), WHITE);
+            }
+
+            error += derror;
+            if error > 0.5 {
+                y = if y1 > y0 { 1 } else { -1 };
+                error -= 1.;
             }
         }
     }
 }
-// void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) {
-//     bool steep = false;
-//     if (std::abs(x0-x1)<std::abs(y0-y1)) {
-//         std::swap(x0, y0);
-//         std::swap(x1, y1);
-//         steep = true;
-//     }
-//     if (x0>x1) {
-//         std::swap(x0, x1);
-//         std::swap(y0, y1);
-//     }
-//     int dx = x1-x0;
-//     int dy = y1-y0;
-//     int derror2 = std::abs(dy)*2;
-//     int error2 = 0;
-//     int y = y0;
-//     for (int x=x0; x<=x1; x++) {
-//         if (steep) {
-//             image.set(y, x, color);
-//         } else {
-//             image.set(x, y, color);
-//         }
-//         error2 += derror2;
-//         if (error2 > dx) {
-//             y += (y1>y0?1:-1);
-//             error2 -= dx*2;
-//         }
-//     }
-// }
-// 'bool steep = false;
-//     if (std::abs(x0-x1)<std::abs(y0-y1)) { // if the line is steep, we transpose the image
-//         std::swap(x0, y0);
-//         std::swap(x1, y1);
-//         steep = true;
-//     }
-//     if (x0>x1) { // make it left−to−right
-//         std::swap(x0, x1);
-//         std::swap(y0, y1);
-//     }
-//     for (int x=x0; x<=x1; x++) {
-//         float t = (x-x0)/(float)(x1-x0);
-//         int y = y0*(1.-t) + y1*t;
-//         if (steep) {
-//             image.set(y, x, color); // if transposed, de−transpose
-//         } else {
-//             image.set(x, y, color);
-//         }
-//     }
 
 #[cfg(test)]
 mod tests {

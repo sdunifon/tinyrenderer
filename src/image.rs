@@ -29,19 +29,19 @@ impl ToColorArray for Px {
     }
 }
 
-const RED: Px = Px { r: 255, g: 0, b: 0 };
-const GREEN: Px = Px { r: 0, g: 255, b: 0 };
-const BLUE: Px = Px {
+pub const RED: Px = Px { r: 255, g: 0, b: 0 };
+pub const GREEN: Px = Px { r: 0, g: 255, b: 0 };
+pub const BLUE: Px = Px {
     r: 255,
     g: 0,
     b: 255,
 };
-const WHITE: Px = Px {
+pub const WHITE: Px = Px {
     r: 255,
     g: 255,
     b: 255,
 };
-const BLACK: Px = Px { r: 0, g: 0, b: 0 };
+pub const BLACK: Px = Px { r: 0, g: 0, b: 0 };
 
 impl<const H: usize, const W: usize> Image<H, W>
 where
