@@ -38,9 +38,9 @@ where
 
         for x in x0..=x1 {
             if steep {
-                canvas.set(Pt(y as usize, x as usize), WHITE);
+                canvas.set(Pt(y as usize, x as usize), self.color);
             } else {
-                canvas.set(Pt(x as usize, y as usize), WHITE);
+                canvas.set(Pt(x as usize, y as usize), self.color);
             }
 
             error += derror;
@@ -73,9 +73,9 @@ where
 
         for x in x0..=x1 {
             if steep {
-                canvas.set(Pt(y as usize, x as usize), WHITE);
+                canvas.set(Pt(y as usize, x as usize), self.color);
             } else {
-                canvas.set(Pt(x as usize, y as usize), WHITE);
+                canvas.set(Pt(x as usize, y as usize), self.color);
             }
             error2 += derror2;
             if error2 > dx {
@@ -101,6 +101,32 @@ mod tests {
             };
             let mut i = Image::<250, 250>::new();
             i.draw(&l);
+            i.render(filename);
+        })
+    }
+
+    #[test]
+    fn multiple_line_draw_test() {
+        assert_file_creation("multiple_line_draw_test.tga", |filename: &str| {
+            let l0 = Line {
+                p1: Pt(10, 10),
+                p2: Pt(20, 20),
+                color: Px { r: 255, g: 0, b: 0 },
+            };
+            let l1 = Line {
+                p1: Pt(5, 5),
+                p2: Pt(70, 7),
+                color: Px { r: 0, g: 255, b: 0 },
+            };
+            let l2 = Line {
+                p1: Pt(20, 20),
+                p2: Pt(150, 2),
+                color: Px { r: 0, g: 0, b: 255 },
+            };
+            let mut i = Image::<250, 250>::new();
+            i.draw(&l0);
+            i.draw(&l1);
+            i.draw(&l2);
             i.render(filename);
         })
     }
