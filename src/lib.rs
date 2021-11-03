@@ -4,6 +4,7 @@
 
 mod image;
 mod line;
+mod model_file;
 
 mod test_helper;
 
