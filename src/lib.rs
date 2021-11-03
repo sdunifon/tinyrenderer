@@ -5,6 +5,8 @@
 mod image;
 mod line;
 
+mod test_helper;
+
 use image::*;
 
 pub fn make_image(filename: &str) {

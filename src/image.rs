@@ -102,19 +102,16 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::test_helper::assert_file_creation;
     use std::fs;
     use std::path::Path;
 
     #[test]
     fn render_test() {
-        let filename = "test_render.tga";
-        let img = Image::<500, 500>::new();
-        if Path::new(filename).exists() {
-            fs::remove_file(filename).unwrap();
-        }
-        img.render(filename);
-        assert!(Path::new(filename).exists(), "rendered image not found");
-        fs::remove_file(filename).unwrap();
+        assert_file_creation("test_render.tga", |filename: &str| {
+            let img = Image::<500, 500>::new();
+            img.render(filename);
+        });
     }
 
     #[test]

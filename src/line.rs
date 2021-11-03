@@ -86,19 +86,22 @@ where
     }
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
 
+    use crate::test_helper::assert_file_creation;
+
     #[test]
     fn line_draw_test() {
-        let l = Line {
-            p1: Pt(10, 10),
-            p2: Pt(20, 20),
-            color: Px { r: 255, g: 0, b: 0 },
-        };
-        let mut i = Image::<250, 250>::new();
-        i.draw(&l);
-        i.render("line_draw_test.tga");
+        assert_file_creation("line_draw_test.tga", |filename: &str| {
+            let l = Line {
+                p1: Pt(10, 10),
+                p2: Pt(20, 20),
+                color: Px { r: 255, g: 0, b: 0 },
+            };
+            let mut i = Image::<250, 250>::new();
+            i.draw(&l);
+            i.render(filename);
+        })
     }
 }
