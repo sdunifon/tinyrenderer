@@ -1,6 +1,6 @@
 use super::image::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {
     pub x: f64,
     pub y: f64,

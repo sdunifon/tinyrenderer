@@ -3,13 +3,18 @@ use std::io::BufReader;
 use std::fs::File;
 use std::io::BufRead;
 
+use lazy_static::lazy_static;
+use regex::Regex;
+
 use super::vertex::Vertex;
+use super::vertex::Vertices;
+
 pub struct ModelFile<'a> {
     pub filename: &'a str,
 }
 
 impl<'a> ModelFile<'a> {
-    fn read_iter(&self, func: fn(&str)) {
+    fn read_iter<F: FnMut(&str)>(&self, mut func: F) {
         let file = File::open(self.filename).expect("file not found!");
         let reader = BufReader::new(file);
 
@@ -18,36 +23,24 @@ impl<'a> ModelFile<'a> {
         }
     }
 
-    pub fn usplay(&self) {
-        let mut split = "Mary had a little lamb".split(' ');
-        assert_eq!(split.as_str(), "Mary had a little lamb");
-        split.next();
-        println!("{:?}", split.as_str());
-        self.read_iter(|line| {
+    pub fn vertex_parse(&self) -> Vertices {
+        lazy_static! {
+            static ref VERTEX_RE: Regex = Regex::new("v$").unwrap();
+        };
+        let mut verticies: Vertices = vec![];
+        self.read_iter(|line: &str| {
             let mut line_split = line.split(' ');
-            if line_split.next().unwrap().chars().nth(0) == Some('v') {
+            if VERTEX_RE.is_match(line_split.next().unwrap()) {
+                println!("--{:?}", line);
                 let v = Vertex {
                     x: line_split.next().unwrap().parse().unwrap(),
                     y: line_split.next().unwrap().parse().unwrap(),
                     z: line_split.next().unwrap().parse().unwrap(),
                 };
-                println!("{:?}", v);
+                verticies.push(v.clone());
             }
-        })
-    }
-
-    pub fn display(&self) {
-        // self.read_iter(|line| {
-        //     let line_input:[&str;3] = line.split(' ').collect();
-        //     if line_input[0].chars().nth(0) == Some('v') {
-        //         let v = Vertex {
-        //             x: line_input[0].parse().unwrap(),
-        //             y: line_input[1].parse().unwrap(),
-        //             z: line_input[2].parse().unwrap(),
-        //         }
-        //     println!("{?:}", v);
-        //     }
-        // })
+        });
+        verticies
     }
 }
 
@@ -60,6 +53,30 @@ mod tests {
         let m = ModelFile {
             filename: "head.obj",
         };
-        m.usplay();
+        m.vertex_parse();
+    }
+
+    #[test]
+    fn vertex_parse_test() {
+        let m = ModelFile {
+            filename: "head.obj",
+        };
+        let vecs = m.vertex_parse();
+        assert_eq!(
+            vecs[0],
+            Vertex {
+                x: -0.000581696,
+                y: -0.734665,
+                z: -0.623267
+            }
+        );
+        assert_eq!(
+            vecs[17],
+            Vertex {
+                x: 0.66248,
+                y: -0.631463,
+                z: -0.244119
+            }
+        );
     }
 }

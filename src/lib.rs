@@ -3,6 +3,9 @@
 #![feature(destructuring_assignment)]
 #![feature(str_split_as_str)]
 
+#[macro_use]
+extern crate lazy_static;
+
 mod image;
 mod line;
 mod model_file;
