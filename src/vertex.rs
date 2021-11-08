@@ -2,15 +2,23 @@ use super::image::*;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {
-    pub x: f64,
-    pub y: f64,
-    pub z: f64,
+    pub x: u32,
+    pub y: u32,
+    pub z: u32,
 }
 
 // pub type Vertices<const N: usize> = [Vertex; N];
 pub type Vertices = Vec<Vertex>;
 
-impl Vertex {}
+impl Vertex {
+    pub fn new_resized(x: f64, y: f64, z: f64, height: usize, width: usize) -> Vertex {
+        Self {
+            x: ((x + 0.75) * (width as f64 / 2.0)) as u32,
+            y: ((y + 0.75) * (height as f64 / 2.0)) as u32,
+            z: z as u32,
+        }
+    }
+}
 
 impl<const H: usize, const W: usize> Drawable<H, W> for Vertex
 where

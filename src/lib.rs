@@ -21,16 +21,16 @@ pub fn make_image(filename: &str) {
     let mut i = Image::<500, 500>::new();
 
     i.draw(&Vertex {
-        x: 50.0,
-        y: 40.0,
-        z: 40.0,
+        x: 50,
+        y: 40,
+        z: 40,
     });
 
     let file = ModelFile {
         filename: "head.obj",
     };
 
-    let verticies = file.vertex_parse();
+    let verticies = file.vertex_parse(500, 500);
 
     for vertex in verticies {
         i.draw(&vertex)

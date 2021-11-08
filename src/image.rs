@@ -1,3 +1,5 @@
+use core::fmt;
+
 // use image_lib::Primitive;
 
 pub struct Image<const H: usize, const W: usize>
@@ -18,7 +20,11 @@ pub struct Px {
 
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
 pub struct Pt(pub usize, pub usize);
-
+impl fmt::Display for Pt {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Pt({},{})", self.0, self.1)
+    }
+}
 pub trait ToColorArray {
     fn to_a(&self) -> [u8; 3];
 }
@@ -43,6 +49,18 @@ pub const WHITE: Px = Px {
 };
 pub const BLACK: Px = Px { r: 0, g: 0, b: 0 };
 
+#[derive(Debug)]
+pub struct PointOutOfBoundsError(Pt, usize, usize, usize);
+impl fmt::Display for PointOutOfBoundsError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "Point: {}  -> index[{}] is outside the image bounds of {}x{}:  ",
+            self.0, self.1, self.2, self.3
+        )
+    }
+}
+
 impl<const H: usize, const W: usize> Image<H, W>
 where
     [u8; H * W]: Sized,
@@ -62,26 +80,48 @@ where
             // let [r, g, b] = self.get(Pt(x as usize, y as usize)).to_a();
             // let p: [u8; 3] = image_lib::Rgb([r, g, b]);
             // *pixel = p; //image_lib::Rgb([r, g, b]);
-            *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a());
+            // println!("--");
+            // let adjusted_x: usize = ((x) * (W as u32 / 2)).try_into().unwrap();
+            // let adjusted_y: usize = ((y) * (H as u32 / 2)).try_into().unwrap();
+            // dbg!((x, adjusted_x));
+            // dbg!((y, adjusted_y));
+            // let pt = self.point_in_bounds(Pt(adjusted_x, adjusted_y));
+            // match pt {
+            //     Ok(pt) => *pixel = image_lib::Rgb::<u8>(self.get(pt).to_a()),
+            //     Err(e) => println!("Render Error: {}", e),
+            // }
+            *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a())
         }
         imgbuf.save(filename).unwrap();
     }
 
     #[inline]
-    fn xy2a(x: usize, y: usize) -> usize {
+    fn xy2i(x: usize, y: usize) -> usize {
         y * W + x
     }
 
     #[inline]
+    fn pt2i(pt: Pt) -> usize {
+        pt.1 * W + pt.0
+    }
+
+    #[inline]
     pub fn get(&self, pt: Pt) -> Px {
-        self.data[Self::xy2a(pt.0, pt.1)]
+        self.data[Self::pt2i(pt)]
     }
 
     #[inline]
     pub fn set(&mut self, pt: Pt, p: Px) {
-        self.data[Self::xy2a(pt.0, pt.1)] = p;
+        self.data[Self::pt2i(pt)] = p;
     }
 
+    pub fn point_in_bounds(&self, pt: Pt) -> Result<Pt, PointOutOfBoundsError> {
+        // if pt.0 > W || pt.1 > H || Self::pt2i(pt) > self.data.len() {
+        if pt.0 > W || pt.1 > H {
+            return Err(PointOutOfBoundsError(pt, Self::pt2i(pt), H, W));
+        }
+        Ok(pt)
+    }
     // pub fn draw( drawer:( img ) -> () ){
     //     drawer(self);
     // }
@@ -116,7 +156,7 @@ mod tests {
 
     #[test]
     fn xy2a_test() {
-        assert_eq!(Image::<500, 500>::xy2a(25, 25), 12525)
+        assert_eq!(Image::<500, 500>::xy2i(25, 25), 12525)
     }
 
     #[test]
@@ -129,5 +169,9 @@ mod tests {
         assert_eq!(img.get(Pt(251, 250)), Px { r: 0, g: 0, b: 0 });
         img.set(Pt(250, 250), Px { r: 0, g: 1, b: 0 });
         assert_eq!(img.get(Pt(250, 250)), Px { r: 0, g: 1, b: 0 });
+    }
+    #[test]
+    fn index_conversion_test() {
+        assert_eq!(Image::xy2i(68, 345), Image::pt2i(Pt(68, 345)));
     }
 }

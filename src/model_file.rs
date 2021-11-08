@@ -23,7 +23,7 @@ impl<'a> ModelFile<'a> {
         }
     }
 
-    pub fn vertex_parse(&self) -> Vertices {
+    pub fn vertex_parse(&self, height: usize, width: usize) -> Vertices {
         lazy_static! {
             static ref VERTEX_RE: Regex = Regex::new("v$").unwrap();
         };
@@ -34,15 +34,22 @@ impl<'a> ModelFile<'a> {
         self.read_iter(|line: &str| {
             let mut line_split = line.split(' ');
             if VERTEX_RE.is_match(line_split.next().unwrap()) {
-                let v = Vertex {
-                    x: line_split.next().unwrap().parse::<f64>().unwrap() * mult + 200.0,
-                    y: line_split.next().unwrap().parse::<f64>().unwrap() * mult + 200.0,
-                    z: line_split.next().unwrap().parse::<f64>().unwrap() * mult,
-                };
+                // let v = Vertex {
+                //     x: line_split.next().unwrap().parse::<f64>().unwrap(),
+                //     y: line_split.next().unwrap().parse::<f64>().unwrap(),
+                //     z: line_split.next().unwrap().parse::<f64>().unwrap(),
+                // };
+                let v = Vertex::new_resized(
+                    line_split.next().unwrap().parse::<f64>().unwrap(),
+                    line_split.next().unwrap().parse::<f64>().unwrap(),
+                    line_split.next().unwrap().parse::<f64>().unwrap(),
+                    height,
+                    width,
+                );
                 verticies.push(v.clone());
             }
         });
-        println!("--{:?}", verticies);
+        // println!("--{:?}", verticies);
         verticies
     }
 }
