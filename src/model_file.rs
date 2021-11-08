@@ -28,7 +28,6 @@ impl<'a> ModelFile<'a> {
             static ref VERTEX_RE: Regex = Regex::new("v$").unwrap();
         };
 
-        let mult = 250.0;
         let mut verticies: Vertices = vec![];
 
         self.read_iter(|line: &str| {
@@ -52,6 +51,8 @@ impl<'a> ModelFile<'a> {
         // println!("--{:?}", verticies);
         verticies
     }
+
+    pub fn face_parse() {}
 }
 
 #[cfg(test)]

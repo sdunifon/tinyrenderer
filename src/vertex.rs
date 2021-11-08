@@ -7,7 +7,6 @@ pub struct Vertex {
     pub z: u32,
 }
 
-// pub type Vertices<const N: usize> = [Vertex; N];
 pub type Vertices = Vec<Vertex>;
 
 impl Vertex {
@@ -31,7 +30,7 @@ where
         )
     }
 
-    fn draw2(&self, canvas: &mut Image<H, W>) {
+    fn draw2(&self, _canvas: &mut Image<H, W>) {
         todo!()
     }
 }

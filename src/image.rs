@@ -1,7 +1,5 @@
 use core::fmt;
 
-// use image_lib::Primitive;
-
 pub struct Image<const H: usize, const W: usize>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
@@ -77,20 +75,7 @@ where
         let mut imgbuf = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
 
         for (x, y, pixel) in imgbuf.enumerate_pixels_mut() {
-            // let [r, g, b] = self.get(Pt(x as usize, y as usize)).to_a();
-            // let p: [u8; 3] = image_lib::Rgb([r, g, b]);
-            // *pixel = p; //image_lib::Rgb([r, g, b]);
-            // println!("--");
-            // let adjusted_x: usize = ((x) * (W as u32 / 2)).try_into().unwrap();
-            // let adjusted_y: usize = ((y) * (H as u32 / 2)).try_into().unwrap();
-            // dbg!((x, adjusted_x));
-            // dbg!((y, adjusted_y));
-            // let pt = self.point_in_bounds(Pt(adjusted_x, adjusted_y));
-            // match pt {
-            //     Ok(pt) => *pixel = image_lib::Rgb::<u8>(self.get(pt).to_a()),
-            //     Err(e) => println!("Render Error: {}", e),
-            // }
-            // dbg!(x, y);
+            let y = H - y as usize;
             *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a())
         }
         imgbuf.save(filename).unwrap();
@@ -186,7 +171,6 @@ mod tests {
     fn get_set_boundries_test() {
         // if we are able to get this test working we can remvoe all the + 1 to the image size for the
         // where boundry l and switch back from [u8; (H + 1) * (W + 1)]: Sized, to [u8,H * W]
-        let mut img = Image::<500, 500>::new();
         assert_eq!(Image::<500, 500>::pt2i(Pt(500, 500)), 250000)
     }
 }
