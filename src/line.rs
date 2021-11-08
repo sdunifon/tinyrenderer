@@ -11,7 +11,7 @@ impl Line {}
 
 impl<const H: usize, const W: usize> Drawable<H, W> for Line
 where
-    [u8; H * W]: Sized,
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, canvas: &mut Image<H, W>) {
         let (Pt(mut x0, mut y0), Pt(mut x1, mut y1)) = (self.p1, self.p2);

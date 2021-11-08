@@ -63,7 +63,7 @@ mod tests {
         let m = ModelFile {
             filename: "head.obj",
         };
-        m.vertex_parse();
+        m.vertex_parse(500, 500);
     }
 
     #[test]
@@ -71,21 +71,21 @@ mod tests {
         let m = ModelFile {
             filename: "head.obj",
         };
-        let vecs = m.vertex_parse();
+        let vecs = m.vertex_parse(500, 500);
         assert_eq!(
             vecs[0],
             Vertex {
-                x: -0.000581696,
-                y: -0.734665,
-                z: -0.623267
+                x: 249,
+                y: 66,
+                z: 0,
             }
         );
         assert_eq!(
             vecs[17],
             Vertex {
-                x: 0.66248,
-                y: -0.631463,
-                z: -0.244119
+                x: 415,
+                y: 92,
+                z: 0,
             }
         );
     }

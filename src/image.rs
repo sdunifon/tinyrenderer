@@ -4,11 +4,11 @@ use core::fmt;
 
 pub struct Image<const H: usize, const W: usize>
 where
-    [u8; H * W]: Sized,
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     height: usize,
     width: usize,
-    data: [Px; H * W], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
+    data: [Px; (H + 1) * (W + 1)], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
@@ -63,13 +63,13 @@ impl fmt::Display for PointOutOfBoundsError {
 
 impl<const H: usize, const W: usize> Image<H, W>
 where
-    [u8; H * W]: Sized,
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     pub fn new() -> Image<H, W> {
         Image {
             height: H,
             width: W,
-            data: [Px::default(); H * W],
+            data: [Px::default(); (H + 1) * (W + 1)],
         }
     }
 
@@ -90,6 +90,7 @@ where
             //     Ok(pt) => *pixel = image_lib::Rgb::<u8>(self.get(pt).to_a()),
             //     Err(e) => println!("Render Error: {}", e),
             // }
+            // dbg!(x, y);
             *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a())
         }
         imgbuf.save(filename).unwrap();
@@ -102,6 +103,7 @@ where
 
     #[inline]
     fn pt2i(pt: Pt) -> usize {
+        // dbg!(pt.1 * W + pt.0)
         pt.1 * W + pt.0
     }
 
@@ -112,6 +114,7 @@ where
 
     #[inline]
     pub fn set(&mut self, pt: Pt, p: Px) {
+        // dbg!(pt.0, pt.1, pt);
         self.data[Self::pt2i(pt)] = p;
     }
 
@@ -133,7 +136,7 @@ where
 
 pub trait Drawable<const H: usize, const W: usize>
 where
-    [u8; H * W]: Sized,
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, image: &mut Image<H, W>);
     fn draw2(&self, image: &mut Image<H, W>);
@@ -172,6 +175,18 @@ mod tests {
     }
     #[test]
     fn index_conversion_test() {
-        assert_eq!(Image::xy2i(68, 345), Image::pt2i(Pt(68, 345)));
+        assert_eq!(
+            Image::<500, 500>::xy2i(68, 345),
+            Image::<500, 500>::pt2i(Pt(68, 345))
+        );
+    }
+
+    #[test]
+    #[ignore]
+    fn get_set_boundries_test() {
+        // if we are able to get this test working we can remvoe all the + 1 to the image size for the
+        // where boundry l and switch back from [u8; (H + 1) * (W + 1)]: Sized, to [u8,H * W]
+        let mut img = Image::<500, 500>::new();
+        assert_eq!(Image::<500, 500>::pt2i(Pt(500, 500)), 250000)
     }
 }
