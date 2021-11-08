@@ -17,6 +17,10 @@ impl Vertex {
             z: z as u32,
         }
     }
+
+    pub fn to_point(&self) -> Pt {
+        Pt(self.x as usize, self.y as usize)
+    }
 }
 
 impl<const H: usize, const W: usize> Drawable<H, W> for Vertex

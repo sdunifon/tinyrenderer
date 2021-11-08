@@ -1,13 +1,21 @@
 use super::*;
 
 use std::mem;
-struct Line {
+pub struct Line {
     p1: Pt,
     p2: Pt,
     color: Px,
 }
 
-impl Line {}
+impl Line {
+    pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line {
+        Line {
+            p1: v1.to_point(),
+            p2: v2.to_point(),
+            color: WHITE,
+        }
+    }
+}
 
 impl<const H: usize, const W: usize> Drawable<H, W> for Line
 where

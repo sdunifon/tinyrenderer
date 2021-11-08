@@ -6,6 +6,7 @@
 #[macro_use]
 extern crate lazy_static;
 
+mod face;
 mod image;
 mod line;
 mod model_file;
@@ -13,7 +14,9 @@ mod vertex;
 
 mod test_helper;
 
+use face::Face;
 pub use image::*;
+use line::Line;
 use model_file::*;
 use vertex::Vertex;
 
@@ -31,10 +34,30 @@ pub fn make_image(filename: &str) {
     };
 
     let verticies = file.vertex_parse(500, 500);
+    let v1 = verticies[24].clone();
+    let v2 = verticies[25].clone();
+    let v3 = verticies[26].clone();
 
+    let v11 = verticies[124].clone();
+    let v12 = verticies[125].clone();
+    let v13 = verticies[126].clone();
     for vertex in verticies {
         i.draw(&vertex)
     }
+
+    // f 24/1/24 25/2/25 26/3/26
+
+    let l1 = Line::from_vertices(&v1, &v2);
+    let l2 = Line::from_vertices(&v1, &v3);
+    let l3 = Line::from_vertices(&v2, &v3);
+
+    i.draw(&l1);
+    i.draw(&l2);
+    i.draw(&l3);
+
+    let f = Face::new(v11, v12, v13);
+    i.draw(&f);
+
     i.render(filename);
 }
 
