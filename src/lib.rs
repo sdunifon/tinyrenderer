@@ -19,19 +19,23 @@ use vertex::Vertex;
 
 pub fn make_image(filename: &str) {
     let mut i = Image::<500, 500>::new();
-    i.set(Pt(50, 50), Px { r: 0, g: 255, b: 0 });
 
     i.draw(&Vertex {
         x: 50.0,
         y: 40.0,
         z: 40.0,
     });
-    i.render(filename);
-}
 
-pub fn display_model_file(filename: &str) {
-    let m = ModelFile { filename };
-    m.display();
+    let file = ModelFile {
+        filename: "head.obj",
+    };
+
+    let verticies = file.vertex_parse();
+
+    for vertex in verticies {
+        i.draw(&vertex)
+    }
+    i.render(filename);
 }
 
 #[cfg(test)]

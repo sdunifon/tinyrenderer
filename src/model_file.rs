@@ -27,19 +27,22 @@ impl<'a> ModelFile<'a> {
         lazy_static! {
             static ref VERTEX_RE: Regex = Regex::new("v$").unwrap();
         };
+
+        let mult = 250.0;
         let mut verticies: Vertices = vec![];
+
         self.read_iter(|line: &str| {
             let mut line_split = line.split(' ');
             if VERTEX_RE.is_match(line_split.next().unwrap()) {
-                println!("--{:?}", line);
                 let v = Vertex {
-                    x: line_split.next().unwrap().parse().unwrap(),
-                    y: line_split.next().unwrap().parse().unwrap(),
-                    z: line_split.next().unwrap().parse().unwrap(),
+                    x: line_split.next().unwrap().parse::<f64>().unwrap() * mult + 200.0,
+                    y: line_split.next().unwrap().parse::<f64>().unwrap() * mult + 200.0,
+                    z: line_split.next().unwrap().parse::<f64>().unwrap() * mult,
                 };
                 verticies.push(v.clone());
             }
         });
+        println!("--{:?}", verticies);
         verticies
     }
 }

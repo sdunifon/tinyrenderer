@@ -32,7 +32,7 @@ where
 
         let dx: i64 = x1 as i64 - x0 as i64;
         let dy: i64 = y1 as i64 - y0 as i64;
-        let mut derror: f64 = (dy as f64 / dx as f64).abs();
+        let derror: f64 = (dy as f64 / dx as f64).abs();
         let mut error: f64 = 0.0;
         let mut y: i64 = y0 as i64;
 
