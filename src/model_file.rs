@@ -42,7 +42,7 @@ impl<'a> ModelFile<'a> {
         verticies
     }
 
-    pub fn face_parse(&self, verticies: Vertices) -> Faces {
+    pub fn face_parse(&self, verticies: &Vertices) -> Faces {
         lazy_static! {
             static ref FACE_RE: Regex =
                 Regex::new(r"f (\d*)/\d*/\d* (\d*)/\d*/\d* (\d*)/\d*/\d*").unwrap();
@@ -110,7 +110,7 @@ mod tests {
         };
 
         let verts = m.vertex_parse(500, 500);
-        let faces = m.face_parse(verts);
+        let faces = m.face_parse(&verts);
         assert_eq!(faces.len(), 2492);
     }
 }

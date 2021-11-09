@@ -42,23 +42,27 @@ pub fn make_image(filename: &str) {
     let v11 = verticies[124].clone();
     let v12 = verticies[125].clone();
     let v13 = verticies[126].clone();
-    for vertex in verticies {
-        i.draw(&vertex)
+    for vertex in &verticies {
+        i.draw(vertex)
     }
 
     // f 24/1/24 25/2/25 26/3/26
 
-    let l1 = Line::from_vertices(&v1, &v2);
-    let l2 = Line::from_vertices(&v1, &v3);
-    let l3 = Line::from_vertices(&v2, &v3);
+    // let l1 = Line::from_vertices(&v1, &v2);
+    // let l2 = Line::from_vertices(&v1, &v3);
+    // let l3 = Line::from_vertices(&v2, &v3);
 
-    i.draw(&l1);
-    i.draw(&l2);
-    i.draw(&l3);
+    // i.draw(&l1);
+    // i.draw(&l2);
+    // i.draw(&l3);
 
-    let f = Face::new([v11, v12, v13]);
-    i.draw(&f);
+    // let f = Face::new([v11, v12, v13]);
+    // i.draw(&f);
 
+    let faces = file.face_parse(&verticies);
+    for face in &faces {
+        i.draw(face)
+    }
     i.render(filename);
 }
 
