@@ -94,9 +94,10 @@ where
     }
 }
 
+#[cfg(test)]
 mod tests {
-    use super::*;
 
+    use super::*;
     use crate::test_helper::assert_file_creation;
 
     #[test]

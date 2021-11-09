@@ -131,8 +131,6 @@ where
 mod tests {
     use super::*;
     use crate::test_helper::assert_file_creation;
-    use std::fs;
-    use std::path::Path;
 
     #[test]
     fn render_test() {

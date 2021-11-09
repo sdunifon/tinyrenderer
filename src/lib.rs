@@ -14,11 +14,12 @@ mod vertex;
 
 mod test_helper;
 
-use face::Face;
+use face::{Face, Faces};
 pub use image::*;
 use line::Line;
-use model_file::*;
-use vertex::Vertex;
+use model_file::ModelFile;
+use regex::Regex;
+use vertex::{Vertex, Vertices};
 
 pub fn make_image(filename: &str) {
     let mut i = Image::<500, 500>::new();
@@ -55,7 +56,7 @@ pub fn make_image(filename: &str) {
     i.draw(&l2);
     i.draw(&l3);
 
-    let f = Face::new(v11, v12, v13);
+    let f = Face::new([v11, v12, v13]);
     i.draw(&f);
 
     i.render(filename);

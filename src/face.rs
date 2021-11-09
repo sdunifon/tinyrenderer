@@ -3,11 +3,11 @@ pub struct Face {
     vertices: [Vertex; 3],
 }
 
+pub type Faces = Vec<Face>;
+
 impl Face {
-    pub fn new(v1: Vertex, v2: Vertex, v3: Vertex) -> Face {
-        Face {
-            vertices: [v1, v2, v3],
-        }
+    pub fn new(vertices: [Vertex; 3]) -> Face {
+        Face { vertices }
     }
     pub fn lines(&self) -> [Line; 3] {
         [

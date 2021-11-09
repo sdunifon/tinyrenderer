@@ -1,13 +1,8 @@
+use super::*;
 use std::io::BufReader;
 
 use std::fs::File;
 use std::io::BufRead;
-
-use lazy_static::lazy_static;
-use regex::Regex;
-
-use super::vertex::Vertex;
-use super::vertex::Vertices;
 
 pub struct ModelFile<'a> {
     pub filename: &'a str,
@@ -33,11 +28,6 @@ impl<'a> ModelFile<'a> {
         self.read_iter(|line: &str| {
             let mut line_split = line.split(' ');
             if VERTEX_RE.is_match(line_split.next().unwrap()) {
-                // let v = Vertex {
-                //     x: line_split.next().unwrap().parse::<f64>().unwrap(),
-                //     y: line_split.next().unwrap().parse::<f64>().unwrap(),
-                //     z: line_split.next().unwrap().parse::<f64>().unwrap(),
-                // };
                 let v = Vertex::new_resized(
                     line_split.next().unwrap().parse::<f64>().unwrap(),
                     line_split.next().unwrap().parse::<f64>().unwrap(),
@@ -52,7 +42,31 @@ impl<'a> ModelFile<'a> {
         verticies
     }
 
-    pub fn face_parse() {}
+    pub fn face_parse(&self, verticies: Vertices) -> Faces {
+        lazy_static! {
+            static ref FACE_RE: Regex =
+                Regex::new(r"f (\d*)/\d*/\d* (\d*)/\d*/\d* (\d*)/\d*/\d*").unwrap();
+        };
+
+        let mut faces: Faces = vec![];
+
+        self.read_iter(|line: &str| {
+            match FACE_RE.captures(line) {
+                Some(captures) => {
+                    // println!("{:?}", captures);
+
+                    let vertex_indices = [&captures[1], &captures[2], &captures[3]];
+                    let vertex_indices: [usize; 3] =
+                        vertex_indices.map(|vi_str| vi_str.parse().unwrap());
+                    let face = Face::new(vertex_indices.map(|vi| verticies[vi - 1]));
+                    faces.push(face);
+                }
+                None => (), //println!("couldnt capture{}", line), // faces.push(v.clone());
+            }
+        });
+
+        return faces;
+    }
 }
 
 #[cfg(test)]
@@ -66,7 +80,6 @@ mod tests {
         };
         m.vertex_parse(500, 500);
     }
-
     #[test]
     fn vertex_parse_test() {
         let m = ModelFile {
@@ -89,5 +102,15 @@ mod tests {
                 z: 0,
             }
         );
+    }
+    #[test]
+    fn face_parse_test() {
+        let m = ModelFile {
+            filename: "head.obj",
+        };
+
+        let verts = m.vertex_parse(500, 500);
+        let faces = m.face_parse(verts);
+        assert_eq!(faces.len(), 2492);
     }
 }
