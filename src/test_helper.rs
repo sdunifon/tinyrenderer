@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 // pub fn assert_file_creation(filename: &str, file_creation: &dyn Fn(&str)) {
-pub fn assert_file_creation<F: Fn(&str)>(filename: &str, f: F) {
+pub fn assert_file_creation<F: FnMut(&str)>(filename: &str, mut f: F) {
     if Path::new(filename).exists() {
         fs::remove_file(filename).unwrap();
     }
