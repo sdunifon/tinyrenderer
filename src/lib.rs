@@ -23,7 +23,8 @@ use regex::Regex;
 use vertex::{Vertex, Vertices};
 
 pub fn make_image(filename: &str) {
-    let mut i = Image::<500, 500>::new();
+    const IMAGE_SIZE: usize = 1000;
+    let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     i.draw(&Vertex {
         x: 50,
@@ -35,7 +36,7 @@ pub fn make_image(filename: &str) {
         filename: "head.obj",
     };
 
-    let verticies = file.vertex_parse(500, 500);
+    let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
 
     let faces = file.face_parse(&verticies);
     for face in &faces {
@@ -47,6 +48,7 @@ pub fn make_image(filename: &str) {
     i.render(filename);
 }
 
+// pub fn render(image: &mut Image, faces: &Faces, verticies: &Vertices) {}
 #[cfg(test)]
 mod tests {
     use crate::test_helper::assert_file_creation;
@@ -72,5 +74,29 @@ mod tests {
         assert_file_creation("test_render.tga", |filename: &str| {
             b.iter(|| make_image(filename));
         });
+    }
+
+    #[bench]
+    fn bench_render_only(b: &mut Bencher) {
+        const IMAGE_SIZE: usize = 1000;
+        let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+
+        let file = ModelFile {
+            filename: "head.obj",
+        };
+
+        let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
+
+        let faces = file.face_parse(&verticies);
+
+        b.iter(|| {
+            for face in &faces {
+                i.draw(face)
+            }
+        });
+
+        assert_file_creation("test_render.tga", |filename: &str| {
+            i.render(filename);
+        })
     }
 }
