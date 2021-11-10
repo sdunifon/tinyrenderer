@@ -13,12 +13,12 @@ mod line;
 mod model_file;
 mod vertex;
 
-mod test_helper;
+pub mod test_helper;
 
 use face::{Face, Faces};
 pub use image::*;
 use line::Line;
-use model_file::ModelFile;
+pub use model_file::ModelFile;
 use regex::Regex;
 use vertex::{Vertex, Vertices};
 
@@ -69,34 +69,34 @@ mod tests {
         assert!(Path::new(filename).exists(), "rendered image not found");
         fs::remove_file(filename).unwrap();
     }
-    #[bench]
-    fn bench_make_image(b: &mut Bencher) {
-        assert_file_creation("test_render.tga", |filename: &str| {
-            b.iter(|| make_image(filename));
-        });
-    }
+    // #[bench]
+    // fn bench_make_image(b: &mut Bencher) {
+    //     assert_file_creation("test_render.tga", |filename: &str| {
+    //         b.iter(|| make_image(filename));
+    //     });
+    // }
 
-    #[bench]
-    fn bench_render_only(b: &mut Bencher) {
-        const IMAGE_SIZE: usize = 1000;
-        let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+    // #[bench]
+    // fn bench_render_only(b: &mut Bencher) {
+    //     const IMAGE_SIZE: usize = 1000;
+    //     let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
-        let file = ModelFile {
-            filename: "head.obj",
-        };
+    //     let file = ModelFile {
+    //         filename: "head.obj",
+    //     };
 
-        let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
+    //     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
 
-        let faces = file.face_parse(&verticies);
+    //     let faces = file.face_parse(&verticies);
 
-        b.iter(|| {
-            for face in &faces {
-                i.draw(face)
-            }
-        });
+    //     b.iter(|| {
+    //         for face in &faces {
+    //             i.draw(face)
+    //         }
+    //     });
 
-        assert_file_creation("test_render.tga", |filename: &str| {
-            i.render(filename);
-        })
-    }
+    //     assert_file_creation("test_render.tga", |filename: &str| {
+    //         i.render(filename);
+    //     })
+    // }
 }
