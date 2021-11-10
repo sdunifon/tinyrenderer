@@ -1,8 +1,3 @@
-use tinyrenderer::*;
-
-// fn main() {
-//     make_image("render.tga");
-// }
 use show_image::{create_window, ImageInfo, ImageView};
 
 #[show_image::main]
