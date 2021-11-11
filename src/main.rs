@@ -8,12 +8,13 @@ use show_image::{create_window, ImageInfo, ImageView};
 #[show_image::main]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let image = make_image();
+    let image_buffer = image.render_to_buffer();
     image.render("render.tga");
     // let image = ImageView::new(ImageInfo::rgb8(1920, 1080), pixel_data);
 
     // // Create a window with default options and display the image.
-    // let window = create_window("image", Default::default())?;
-    // window.set_image("image-001", image)?;
+    let window = create_window("image", Default::default())?;
+    window.set_image("image-001", image_buffer)?;
 
     Ok(())
 }
