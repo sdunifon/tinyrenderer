@@ -70,15 +70,20 @@ where
             data: [Px::default(); (H + 1) * (W + 1)],
         }
     }
+    // image_lib::ImageBuffer<image_lib::Rgb::<u8>, Container>
+    pub fn render_to_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {
+        let mut image_buffer = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
 
-    pub fn render(&self, filename: &str) {
-        let mut imgbuf = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
-
-        for (x, y, pixel) in imgbuf.enumerate_pixels_mut() {
+        for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
             let y = H - y as usize;
             *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a())
         }
-        imgbuf.save(filename).unwrap();
+        image_buffer
+    }
+
+    pub fn render(&self, filename: &str) {
+        let image_buffer = self.render_to_buffer();
+        image_buffer.save(filename).unwrap();
     }
 
     #[inline]
