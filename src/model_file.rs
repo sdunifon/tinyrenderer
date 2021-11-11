@@ -42,13 +42,13 @@ impl<'a> ModelFile<'a> {
         verticies
     }
 
-    pub fn face_parse(&self, verticies: &Vertices) -> Faces {
+    pub fn face_parse(&self, verticies: &Vertices) -> Triangles {
         lazy_static! {
             static ref FACE_RE: Regex =
                 Regex::new(r"f (\d*)/\d*/\d* (\d*)/\d*/\d* (\d*)/\d*/\d*").unwrap();
         };
 
-        let mut faces: Faces = vec![];
+        let mut faces: Triangles = vec![];
 
         self.read_iter(|line: &str| {
             match FACE_RE.captures(line) {
@@ -58,7 +58,7 @@ impl<'a> ModelFile<'a> {
                     let vertex_indices = [&captures[1], &captures[2], &captures[3]];
                     let vertex_indices: [usize; 3] =
                         vertex_indices.map(|vi_str| vi_str.parse().unwrap());
-                    let face = Face::new(vertex_indices.map(|vi| verticies[vi - 1]));
+                    let face = Triangle::new(vertex_indices.map(|vi| verticies[vi - 1]));
                     faces.push(face);
                 }
                 None => (), //println!("couldnt capture{}", line), // faces.push(v.clone());

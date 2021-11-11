@@ -1,13 +1,13 @@
 use super::*;
-pub struct Face {
+pub struct Triangle {
     vertices: [Vertex; 3],
 }
 
-pub type Faces = Vec<Face>;
+pub type Triangles = Vec<Triangle>;
 
-impl Face {
-    pub fn new(vertices: [Vertex; 3]) -> Face {
-        Face { vertices }
+impl Triangle {
+    pub fn new(vertices: [Vertex; 3]) -> Triangle {
+        Triangle { vertices }
     }
     pub fn lines(&self) -> [Line; 3] {
         [
@@ -18,7 +18,7 @@ impl Face {
     }
 }
 
-impl<const H: usize, const W: usize> Drawable<H, W> for Face
+impl<const H: usize, const W: usize> Drawable<H, W> for Triangle
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {

@@ -7,19 +7,19 @@
 #[macro_use]
 extern crate lazy_static;
 
-mod face;
 mod image;
 mod line;
 mod model_file;
+mod triangle;
 mod vertex;
 
 mod test_helper;
 
-use face::{Face, Faces};
 pub use image::*;
 use line::Line;
 pub use model_file::ModelFile;
 use regex::Regex;
+use triangle::{Triangle, Triangles};
 use vertex::{Vertex, Vertices};
 
 const IMAGE_SIZE: usize = 500; //TOFIX: increasing this over 500 seems to overflow the stack
