@@ -34,7 +34,7 @@ where
         )
     }
 
-    fn draw2(&self, _canvas: &mut Image<H, W>) {
-        todo!()
-    }
+    // fn draw2(&self, _canvas: &mut Image<H, W>) {
+    //     todo!()
+    // }
 }

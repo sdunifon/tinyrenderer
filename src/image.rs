@@ -129,7 +129,7 @@ where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, image: &mut Image<H, W>);
-    fn draw2(&self, image: &mut Image<H, W>);
+    // fn draw2(&self, image: &mut Image<H, W>);
 }
 
 #[cfg(test)]

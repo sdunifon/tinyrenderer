@@ -28,7 +28,7 @@ where
         }
     }
 
-    fn draw2(&self, image: &mut Image<H, W>) {
-        todo!()
-    }
+    // fn draw2(&self, image: &mut Image<H, W>) {
+    //     todo!()
+    // }
 }

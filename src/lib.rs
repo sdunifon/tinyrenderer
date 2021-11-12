@@ -22,8 +22,9 @@ pub use model_file::ModelFile;
 use regex::Regex;
 use vertex::{Vertex, Vertices};
 
-pub fn make_image() -> Image<100, 100> {
-    const IMAGE_SIZE: usize = 100;
+const IMAGE_SIZE: usize = 500; //TOFIX: increasing this over 500 seems to overflow the stack
+
+pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     image.draw(&Vertex {

@@ -1625,9 +1625,9 @@ dependencies = [
 
 [[package]]
 name = "show-image"
-version = "0.9.4"
+version = "0.9.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95afc812599fc3f13834af5e95482f18644105038d9c62652f0c891dbd456569"
+checksum = "804fb87bc1c10c86dfc1f7f55a0f26dc37add7e6ff3019b012f1eab308d61a2c"
 dependencies = [
  "futures",
  "glam",
