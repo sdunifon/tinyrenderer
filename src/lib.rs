@@ -7,6 +7,7 @@
 #[macro_use]
 extern crate lazy_static;
 
+mod fillable;
 mod image;
 mod line;
 mod model_file;
@@ -15,6 +16,7 @@ mod vertex;
 
 mod test_helper;
 
+use fillable::Fillable;
 pub use image::*;
 use line::Line;
 pub use model_file::ModelFile;

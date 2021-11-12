@@ -32,3 +32,12 @@ where
     //     todo!()
     // }
 }
+
+impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
+where
+    [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
+{
+    fn vertices() -> [Vertex; 3] {
+        todo!()
+    }
+}
