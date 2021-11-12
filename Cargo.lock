@@ -1631,6 +1631,7 @@ checksum = "95afc812599fc3f13834af5e95482f18644105038d9c62652f0c891dbd456569"
 dependencies = [
  "futures",
  "glam",
+ "image",
  "rustc_version",
  "show-image-macros",
  "wgpu",

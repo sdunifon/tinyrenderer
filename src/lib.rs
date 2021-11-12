@@ -18,7 +18,7 @@ mod test_helper;
 use face::{Face, Faces};
 pub use image::*;
 use line::Line;
-use model_file::ModelFile;
+pub use model_file::ModelFile;
 use regex::Regex;
 use vertex::{Vertex, Vertices};
 
