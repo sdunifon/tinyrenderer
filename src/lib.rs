@@ -28,7 +28,7 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vertex::{Vertex, Vertices};
 
-const IMAGE_SIZE: usize = 250; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_SIZE: usize = 300; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
@@ -52,6 +52,9 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     for vertex in &verticies {
         image.draw(vertex)
     }
+    for triangle in &triangles {
+        triangle.fill(&mut image, random_color())
+    }
     image
 }
 
@@ -71,19 +74,15 @@ pub fn draw_triangle(
 pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let triangle = Triangle {
         vertices: [
+            Vertex { x: 50, y: 50, z: 0 },
+            Vertex {
+                x: 75,
+                y: 100,
+                z: 0,
+            },
             Vertex {
                 x: 100,
-                y: 100,
-                z: 0,
-            },
-            Vertex {
-                x: 150,
-                y: 200,
-                z: 0,
-            },
-            Vertex {
-                x: 200,
-                y: 100,
+                y: 50,
                 z: 0,
             },
         ],
@@ -109,24 +108,28 @@ mod tests {
         Triangle {
             vertices: [
                 Vertex {
+                    x: 50,
+                    y: 100,
+                    z: 0,
+                },
+                Vertex {
+                    x: 75,
+                    y: 100,
+                    z: 0,
+                },
+                Vertex {
                     x: 100,
-                    y: 100,
-                    z: 0,
-                },
-                Vertex {
-                    x: 150,
-                    y: 200,
-                    z: 0,
-                },
-                Vertex {
-                    x: 200,
-                    y: 100,
+                    y: 50,
                     z: 0,
                 },
             ],
         }
     }
 
+    #[test]
+    fn render_triangle_test() {
+        render_triangle();
+    }
     #[test]
     fn make_image_test() {
         let filename = "lib_test_render.tga";

@@ -15,19 +15,15 @@ fn fibonacci(n: u64) -> u64 {
 fn triangle() -> Triangle {
     Triangle {
         vertices: [
+            Vertex { x: 50, y: 50, z: 0 },
+            Vertex {
+                x: 75,
+                y: 100,
+                z: 0,
+            },
             Vertex {
                 x: 100,
-                y: 100,
-                z: 0,
-            },
-            Vertex {
-                x: 150,
-                y: 200,
-                z: 0,
-            },
-            Vertex {
-                x: 200,
-                y: 100,
+                y: 50,
                 z: 0,
             },
         ],
@@ -58,7 +54,7 @@ fn bench_render_only(b: &mut Bencher) {
 }
 
 fn bench_render_triangle(b: &mut Bencher) {
-    const IMAGE_SIZE: usize = 500;
+    const IMAGE_SIZE: usize = 250;
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     let triangle = triangle();

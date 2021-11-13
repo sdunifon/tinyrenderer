@@ -90,8 +90,8 @@ where
     #[inline]
     fn pt2i(pt: Pt) -> usize {
         // dbg!(pt.1 * W + pt.0)
-        // pt.1 * W + pt.0
-        Self::xy2i(pt.0, pt.1)
+        pt.1 * W + pt.0
+        // Self::xy2i(pt.0, pt.1)
     }
 
     #[inline]
@@ -102,6 +102,24 @@ where
     #[inline]
     pub fn set(&mut self, pt: Pt, p: Px) {
         // dbg!(pt.0, pt.1, pt);
+
+        if pt.1 > H {
+            println!("debug me");
+        }
+
+        debug_assert!(
+            pt.0 <= W,
+            "x is grearter than width: ! pt.0:{} < W:{}",
+            pt.0,
+            W
+        );
+        debug_assert!(
+            pt.1 <= H,
+            "y is grearter than height ! pt.1:{} < H:{}",
+            pt.1,
+            H
+        );
+        // dbg!(pt);
         self.data[Self::pt2i(pt)] = p;
     }
 

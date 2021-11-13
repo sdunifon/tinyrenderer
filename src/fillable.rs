@@ -8,7 +8,6 @@ where
     fn vertices(&self) -> [Vertex; 3];
 
     fn fill(&self, image: &mut Image<H, W>, px: Px) {
-        image.set(Pt(250, 250), Px { r: 0, g: 255, b: 0 });
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
@@ -23,6 +22,11 @@ where
             while y <= v1.y {
                 let segment_height = v1.y - v0.y + 1;
 
+                if total_height == 0 {
+                    // some triangles are all on the same y.. not sure what to do here.. just returning for now
+                    println!("flat triangle {:?}", self.vertices());
+                    return;
+                }
                 assert!(total_height != 0, "total height can not be 0");
                 let alpha: f64 = (y - v0.y) as f64 / total_height as f64;
                 let beta: f64 = (y - v0.y) as f64 / segment_height as f64;
@@ -40,7 +44,10 @@ where
                 {
                     let mut j: usize = a.x as usize;
                     while j <= b.x as usize {
-                        image.set(Pt(j, y as usize), WHITE);
+                        if j > 400 {
+                            println!("debug me");
+                        }
+                        image.set(Pt(j - 1, y as usize), WHITE);
                         j += 1;
                     }
                 }
