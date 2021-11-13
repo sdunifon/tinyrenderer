@@ -3,12 +3,13 @@
 #![feature(destructuring_assignment)]
 #![feature(str_split_as_str)]
 #![feature(test)]
-#![feature(trace_macros)]
+#![feature(generic_arg_infer)]
+// #![feature(trace_macros)]
 
 #[macro_use]
 extern crate lazy_static;
 
-mod fillable;
+pub mod fillable;
 mod image;
 mod line;
 mod model_file;
@@ -23,9 +24,9 @@ pub use image::*;
 use line::Line;
 pub use model_file::ModelFile;
 use regex::Regex;
-use triangle::{Triangle, Triangles};
+pub use triangle::{Triangle, Triangles};
 pub use utils::*;
-use vertex::*;
+pub use vertex::{Vertex, Vertices};
 
 const IMAGE_SIZE: usize = 250; //TOFIX: increasing this over 500 seems to overflow the stack
 
@@ -54,10 +55,21 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     image
 }
 
-pub fn draw_triangle() -> Result<Image<IMAGE_SIZE, IMAGE_SIZE>, Box<dyn std::error::Error>> {
+pub fn draw_triangle(
+    triangle: Triangle,
+    fill: bool,
+) -> Result<Image<IMAGE_SIZE, IMAGE_SIZE>, Box<dyn std::error::Error>> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
-    let t = Triangle {
+    image.draw(&triangle);
+    if fill {
+        triangle.fill(&mut image, BLUE);
+    }
+    Ok(image)
+}
+
+pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
+    let triangle = Triangle {
         vertices: [
             Vertex {
                 x: 100,
@@ -76,21 +88,44 @@ pub fn draw_triangle() -> Result<Image<IMAGE_SIZE, IMAGE_SIZE>, Box<dyn std::err
             },
         ],
     };
-    image.draw(&t);
-    t.fill(&mut image, BLUE);
-    Ok(image)
+
+    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+
+    image.draw(&triangle);
+    triangle.fill(&mut image, BLUE);
+    image
 }
 
 // pub fn render(image: &mut Image, faces: &Faces, verticies: &Vertices) {}
 #[cfg(test)]
 mod tests {
-    use crate::test_helper::assert_file_creation;
 
     use super::*;
     use std::fs;
     use std::path::Path;
     extern crate test;
-    use test::Bencher;
+
+    fn triangle() -> Triangle {
+        Triangle {
+            vertices: [
+                Vertex {
+                    x: 100,
+                    y: 100,
+                    z: 0,
+                },
+                Vertex {
+                    x: 150,
+                    y: 200,
+                    z: 0,
+                },
+                Vertex {
+                    x: 200,
+                    y: 100,
+                    z: 0,
+                },
+            ],
+        }
+    }
 
     #[test]
     fn make_image_test() {
@@ -105,7 +140,8 @@ mod tests {
 
     #[test]
     fn draw_triangle_test() {
-        assert!(draw_triangle().is_ok())
+        assert!(draw_triangle(triangle(), false).is_ok());
+        assert!(draw_triangle(triangle(), true).is_ok());
     }
     // #[bench]
     // fn bench_make_image(b: &mut Bencher) {

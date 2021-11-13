@@ -11,7 +11,6 @@ macro_rules! swap_vars {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
 
     #[test]
     fn swap_vars() {

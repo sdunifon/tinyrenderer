@@ -1,3 +1,4 @@
 /target
 *.tga
 *.png
+.DS_Store

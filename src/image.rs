@@ -90,7 +90,8 @@ where
     #[inline]
     fn pt2i(pt: Pt) -> usize {
         // dbg!(pt.1 * W + pt.0)
-        pt.1 * W + pt.0
+        // pt.1 * W + pt.0
+        Self::xy2i(pt.0, pt.1)
     }
 
     #[inline]

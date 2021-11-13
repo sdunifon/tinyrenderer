@@ -1,10 +1,4 @@
 use super::*;
-use std::mem;
-
-enum RenderStyle {
-    Wireframe,
-    Filled,
-}
 
 // [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
 pub trait Fillable<const H: usize, const W: usize>
