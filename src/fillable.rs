@@ -6,9 +6,10 @@ enum RenderStyle {
     Filled,
 }
 
+// [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
 pub trait Fillable<const H: usize, const W: usize>
 where
-    [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn vertices(&self) -> [Vertex; 3];
 

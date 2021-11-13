@@ -35,7 +35,7 @@ where
 
 impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
 where
-    [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn vertices(&self) -> [Vertex; 3] {
         self.vertices.map(|v| v)

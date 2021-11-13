@@ -76,7 +76,7 @@ pub fn draw_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
         ],
     };
     image.draw(&t);
-    t.fill::<IMAGE_SIZE, IMAGE_SIZE>(image, BLUE);
+    t.fill(&mut image, BLUE);
     image
 }
 
