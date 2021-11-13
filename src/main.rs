@@ -7,7 +7,7 @@ use show_image::{create_window, event, ImageInfo, ImageView};
 
 #[show_image::main]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let image = draw_triangle();
+    let image = draw_triangle().unwrap();
     let image_buffer = image.render_to_buffer();
     image.render("render.tga");
     // let image = ImageView::new(ImageInfo::rgb8(1920, 1080), pixel_data);

@@ -78,7 +78,7 @@ mod tests {
         let m = ModelFile {
             filename: "head.obj",
         };
-        m.vertex_parse(500, 500);
+        m.vertex_parse(250, 250);
     }
     #[test]
     fn vertex_parse_test() {

@@ -26,7 +26,7 @@ mod tests {
         let d = 2;
 
         swap_vars!(3 > 2, c, d);
-        assert_eq!(c, 1);
-        assert_eq!(d, 2);
+        assert_eq!(c, 2);
+        assert_eq!(d, 1);
     }
 }

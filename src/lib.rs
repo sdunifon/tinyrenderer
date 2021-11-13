@@ -27,7 +27,7 @@ use triangle::{Triangle, Triangles};
 pub use utils::*;
 use vertex::*;
 
-const IMAGE_SIZE: usize = 500; //TOFIX: increasing this over 500 seems to overflow the stack
+const IMAGE_SIZE: usize = 400; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
@@ -54,7 +54,7 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     image
 }
 
-pub fn draw_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
+pub fn draw_triangle() -> Result<Image<IMAGE_SIZE, IMAGE_SIZE>, Box<dyn std::error::Error>> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     let t = Triangle {
@@ -78,7 +78,7 @@ pub fn draw_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     };
     image.draw(&t);
     t.fill(&mut image, WHITE);
-    image
+    Ok(image)
 }
 
 // pub fn render(image: &mut Image, faces: &Faces, verticies: &Vertices) {}
@@ -102,34 +102,39 @@ mod tests {
         assert!(Path::new(filename).exists(), "rendered image not found");
         fs::remove_file(filename).unwrap();
     }
-    #[bench]
-    fn bench_make_image(b: &mut Bencher) {
-        assert_file_creation("test_render.tga", |filename: &str| {
-            b.iter(|| make_image().render(filename));
-        });
+
+    #[test]
+    fn draw_triangle_test() {
+        assert!(draw_triangle().is_ok())
     }
+    // #[bench]
+    // fn bench_make_image(b: &mut Bencher) {
+    //     assert_file_creation("test_render.tga", |filename: &str| {
+    //         b.iter(|| make_image().render(filename));
+    //     });
+    // }
 
-    #[bench]
-    fn bench_render_only(b: &mut Bencher) {
-        const IMAGE_SIZE: usize = 500;
-        let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+    // #[bench]
+    // fn bench_render_only(b: &mut Bencher) {
+    //     const IMAGE_SIZE: usize = 500;
+    //     let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
-        let file = ModelFile {
-            filename: "head.obj",
-        };
+    //     let file = ModelFile {
+    //         filename: "head.obj",
+    //     };
 
-        let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
+    //     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
 
-        let faces = file.face_parse(&verticies);
+    //     let faces = file.face_parse(&verticies);
 
-        b.iter(|| {
-            for face in &faces {
-                i.draw(face)
-            }
-            for vertex in &verticies {
-                i.draw(vertex)
-            }
-        });
-        i.render(file.filename);
-    }
+    //     b.iter(|| {
+    //         for face in &faces {
+    //             i.draw(face)
+    //         }
+    //         for vertex in &verticies {
+    //             i.draw(vertex)
+    //         }
+    //     });
+    //     i.render(file.filename);
+    // }
 }
