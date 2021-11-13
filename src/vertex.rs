@@ -45,7 +45,6 @@ impl ops::Add<Vertex> for Vertex {
     type Output = Vertex;
 
     fn add(self, rhs: Vertex) -> Self::Output {
-        println!("{:?}+{:?}", self, rhs);
         Vertex {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
@@ -57,8 +56,6 @@ impl ops::Sub<Vertex> for Vertex {
     type Output = Vertex;
 
     fn sub(self, rhs: Vertex) -> Self::Output {
-        dbg!(self);
-        dbg!(rhs);
         Vertex {
             x: self.x - rhs.x,
             y: self.y - rhs.y,

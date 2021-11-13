@@ -34,6 +34,10 @@ fn bench_render_only(b: &mut Bencher) {
     })
 }
 
+fn bench_render_triangle(b: &mut Bencher) {
+    b.iter(|| draw_triangle());
+}
+
 fn image_creation(b: &mut Bencher) {
     assert_file_creation("test_render.tga", |filename: &str| {
         b.iter(|| make_image().render(filename));
@@ -44,6 +48,7 @@ fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("fib 20", |b| b.iter(|| fibonacci(black_box(20))));
     c.bench_function("render_only", bench_render_only);
     c.bench_function("make_image", image_creation);
+    c.bench_function("draw triangle", bench_render_triangle);
 }
 
 criterion_group!(benches, criterion_benchmark);

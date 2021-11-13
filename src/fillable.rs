@@ -33,7 +33,7 @@ where
                 let alpha: f64 = (y - v0.y) as f64 / total_height as f64;
                 let beta: f64 = (y - v0.y) as f64 / segment_height as f64;
 
-                let a = dbg!(v0 + (v2 - v0) * alpha);
+                let a = v0 + (v2 - v0) * alpha;
                 let b = v0 + (v1 - v0) * beta;
                 //if a.x > b.x {
                 //    //double check this is working
@@ -46,7 +46,7 @@ where
                 {
                     let mut j: usize = a.x as usize;
                     while j <= b.x as usize {
-                        image.set(Pt(j, y as usize), px);
+                        image.set(Pt(j, y as usize), WHITE);
                         j += 1;
                     }
                 }
