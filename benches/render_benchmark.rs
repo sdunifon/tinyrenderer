@@ -36,7 +36,7 @@ fn bench_render_only(b: &mut Bencher) {
 
 fn image_creation(b: &mut Bencher) {
     assert_file_creation("test_render.tga", |filename: &str| {
-        b.iter(|| make_image(filename));
+        b.iter(|| make_image().render(filename));
     });
 }
 

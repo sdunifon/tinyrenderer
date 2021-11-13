@@ -1,3 +1,5 @@
+use std::ops;
+
 use super::image::*;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -37,4 +39,39 @@ where
     // fn draw2(&self, _canvas: &mut Image<H, W>) {
     //     todo!()
     // }
+}
+
+impl ops::Add<Vertex> for Vertex {
+    type Output = Vertex;
+
+    fn add(self, rhs: Vertex) -> Self::Output {
+        Vertex {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+impl ops::Sub<Vertex> for Vertex {
+    type Output = Vertex;
+
+    fn sub(self, rhs: Vertex) -> Self::Output {
+        Vertex {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl ops::Mul<f64> for Vertex {
+    type Output = Vertex;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        Vertex {
+            x: (self.x as f64 * rhs) as u32,
+            y: (self.y as f64 * rhs) as u32,
+            z: (self.z as f64 * rhs) as u32,
+        }
+    }
 }

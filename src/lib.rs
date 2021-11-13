@@ -12,9 +12,10 @@ mod image;
 mod line;
 mod model_file;
 mod triangle;
+pub mod utils;
 mod vertex;
 
-mod test_helper;
+pub mod test_helper;
 
 use fillable::Fillable;
 pub use image::*;
@@ -22,7 +23,8 @@ use line::Line;
 pub use model_file::ModelFile;
 use regex::Regex;
 use triangle::{Triangle, Triangles};
-use vertex::{Vertex, Vertices};
+pub use utils::*;
+use vertex::*;
 
 const IMAGE_SIZE: usize = 500; //TOFIX: increasing this over 500 seems to overflow the stack
 
@@ -68,20 +70,20 @@ mod tests {
         if Path::new(filename).exists() {
             fs::remove_file(filename).unwrap();
         }
-        make_image(filename);
+        make_image().render(filename);
         assert!(Path::new(filename).exists(), "rendered image not found");
         fs::remove_file(filename).unwrap();
     }
     #[bench]
     fn bench_make_image(b: &mut Bencher) {
         assert_file_creation("test_render.tga", |filename: &str| {
-            b.iter(|| make_image(filename));
+            b.iter(|| make_image().render(filename));
         });
     }
 
     #[bench]
     fn bench_render_only(b: &mut Bencher) {
-        const IMAGE_SIZE: usize = 1000;
+        const IMAGE_SIZE: usize = 500;
         let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
         let file = ModelFile {
