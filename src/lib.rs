@@ -3,6 +3,7 @@
 #![feature(destructuring_assignment)]
 #![feature(str_split_as_str)]
 #![feature(test)]
+#![feature(trace_macros)]
 
 #[macro_use]
 extern crate lazy_static;
@@ -76,7 +77,7 @@ pub fn draw_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
         ],
     };
     image.draw(&t);
-    t.fill(&mut image, BLUE);
+    t.fill(&mut image, WHITE);
     image
 }
 

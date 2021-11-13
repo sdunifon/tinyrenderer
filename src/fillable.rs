@@ -14,12 +14,13 @@ where
     fn vertices(&self) -> [Vertex; 3];
 
     fn fill(&self, image: &mut Image<H, W>, px: Px) {
+        image.set(Pt(250, 250), Px { r: 0, g: 255, b: 0 });
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
         // if v1.y>v2.y {std::swap(v1, t2)};
-        let vn = self.vertices();
-        let (v0, v1, v2): (Vertex, Vertex, Vertex) = (vn[0], vn[1], vn[2]);
+        let vn = self.sorted_verticies();
+        let (v0, v1, v2): (Vertex, Vertex, Vertex) = (vn.0, vn.1, vn.2);
         let total_height: u32 = v2.y - v0.y;
 
         {
@@ -28,10 +29,11 @@ where
             while y <= v1.y {
                 let segment_height = v1.y - v0.y + 1;
 
+                assert!(total_height != 0, "total height can not be 0");
                 let alpha: f64 = (y - v0.y) as f64 / total_height as f64;
                 let beta: f64 = (y - v0.y) as f64 / segment_height as f64;
 
-                let a = v0 + (v2 - v0) * alpha;
+                let a = dbg!(v0 + (v2 - v0) * alpha);
                 let b = v0 + (v1 - v0) * beta;
                 //if a.x > b.x {
                 //    //double check this is working
@@ -42,9 +44,10 @@ where
                 swap_vars!(a.x > b.x, a, b);
 
                 {
-                    let j: usize = a.x as usize;
+                    let mut j: usize = a.x as usize;
                     while j <= b.x as usize {
-                        image.set(Pt(j, y as usize), px)
+                        image.set(Pt(j, y as usize), px);
+                        j += 1;
                     }
                 }
                 y += 1;
@@ -78,9 +81,10 @@ where
                 swap_vars!(a.x > b.x, a, b);
 
                 {
-                    let j: usize = a.x as usize;
+                    let mut j: usize = a.x as usize;
                     while j <= b.x as usize {
-                        image.set(Pt(j, y as usize), px)
+                        image.set(Pt(j, y as usize), px);
+                        j += 1;
                     }
                 }
                 y += 1;
