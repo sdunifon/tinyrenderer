@@ -7,7 +7,7 @@ use tinyrenderer::*;
 #[show_image::main]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let image: Image<250, 250>;
-    if true {
+    if false {
         image = make_image();
     } else {
         image = render_triangle();

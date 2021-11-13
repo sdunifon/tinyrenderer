@@ -63,7 +63,7 @@ pub fn draw_triangle(
 
     image.draw(&triangle);
     if fill {
-        triangle.fill(&mut image, BLUE);
+        triangle.fill(&mut image, random_color());
     }
     Ok(image)
 }
@@ -92,7 +92,7 @@ pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     image.draw(&triangle);
-    triangle.fill(&mut image, BLUE);
+    triangle.fill(&mut image, random_color());
     image
 }
 

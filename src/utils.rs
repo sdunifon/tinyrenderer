@@ -1,6 +1,5 @@
-// var_swap
-
-//     let (a, b) = if false { (b, a) } else { (a, b) };
+use super::*;
+use rand::random;
 
 #[macro_export]
 macro_rules! swap_vars {
@@ -9,6 +8,23 @@ macro_rules! swap_vars {
     };
 }
 
+pub fn random_color() -> Px {
+    Px {
+        r: random(),
+        g: random(),
+        b: random(),
+    }
+}
+
+pub fn gray() -> Px {
+    let gray_value = random();
+
+    Px {
+        r: gray_value,
+        g: gray_value,
+        b: gray_value,
+    }
+}
 #[cfg(test)]
 mod tests {
 
