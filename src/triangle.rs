@@ -1,6 +1,6 @@
 use super::*;
 pub struct Triangle {
-    vertices: [Vertex; 3],
+    pub vertices: [Vertex; 3],
 }
 
 pub type Triangles = Vec<Triangle>;

@@ -43,13 +43,40 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
 
     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
 
-    let faces = file.face_parse(&verticies);
-    for face in &faces {
-        image.draw(face)
+    let triangles = file.face_parse(&verticies);
+    for triangle in &triangles {
+        image.draw(triangle)
     }
     for vertex in &verticies {
         image.draw(vertex)
     }
+    image
+}
+
+pub fn draw_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
+    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+
+    let t = Triangle {
+        vertices: [
+            Vertex {
+                x: 100,
+                y: 100,
+                z: 0,
+            },
+            Vertex {
+                x: 150,
+                y: 200,
+                z: 0,
+            },
+            Vertex {
+                x: 200,
+                y: 100,
+                z: 0,
+            },
+        ],
+    };
+    image.draw(&t);
+    t.fill::<IMAGE_SIZE, IMAGE_SIZE>(image, BLUE);
     image
 }
 

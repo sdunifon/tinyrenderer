@@ -1,4 +1,3 @@
-use tinyrenderer::utils::swap_vars;
 use tinyrenderer::*;
 
 fn main() {
