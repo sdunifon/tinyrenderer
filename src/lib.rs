@@ -77,7 +77,7 @@ pub fn draw_triangle() -> Result<Image<IMAGE_SIZE, IMAGE_SIZE>, Box<dyn std::err
         ],
     };
     image.draw(&t);
-    t.fill(&mut image, WHITE);
+    t.fill(&mut image, BLUE);
     Ok(image)
 }
 

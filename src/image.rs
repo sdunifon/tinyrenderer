@@ -35,11 +35,7 @@ impl ToColorArray for Px {
 
 pub const RED: Px = Px { r: 255, g: 0, b: 0 };
 pub const GREEN: Px = Px { r: 0, g: 255, b: 0 };
-pub const BLUE: Px = Px {
-    r: 255,
-    g: 0,
-    b: 255,
-};
+pub const BLUE: Px = Px { r: 0, g: 0, b: 255 };
 pub const WHITE: Px = Px {
     r: 255,
     g: 255,
