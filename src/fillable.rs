@@ -21,7 +21,7 @@ where
         // if v1.y>v2.y {std::swap(v1, t2)};
         let vn = self.sorted_verticies();
         let (v0, v1, v2): (Vertex, Vertex, Vertex) = (vn.0, vn.1, vn.2);
-        let total_height: u32 = v2.y - v0.y;
+        let total_height: i32 = v2.y - v0.y;
 
         {
             let mut y = v0.y;

@@ -4,9 +4,9 @@ use super::image::*;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {
-    pub x: u32,
-    pub y: u32,
-    pub z: u32,
+    pub x: i32,
+    pub y: i32,
+    pub z: i32,
 }
 
 pub type Vertices = Vec<Vertex>;
@@ -14,9 +14,9 @@ pub type Vertices = Vec<Vertex>;
 impl Vertex {
     pub fn new_resized(x: f64, y: f64, z: f64, height: usize, width: usize) -> Vertex {
         Self {
-            x: ((x + 1.0) * (width as f64 / 2.0)) as u32,
-            y: ((y + 1.0) * (height as f64 / 2.0)) as u32,
-            z: z as u32,
+            x: ((x + 1.0) * (width as f64 / 2.0)) as i32,
+            y: ((y + 1.0) * (height as f64 / 2.0)) as i32,
+            z: z as i32,
         }
     }
 
@@ -72,9 +72,9 @@ impl ops::Mul<f64> for Vertex {
 
     fn mul(self, rhs: f64) -> Self::Output {
         Vertex {
-            x: (self.x as f64 * rhs) as u32,
-            y: (self.y as f64 * rhs) as u32,
-            z: (self.z as f64 * rhs) as u32,
+            x: (self.x as f64 * rhs) as i32,
+            y: (self.y as f64 * rhs) as i32,
+            z: (self.z as f64 * rhs) as i32,
         }
     }
 }

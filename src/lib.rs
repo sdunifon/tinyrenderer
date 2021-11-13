@@ -27,7 +27,7 @@ use triangle::{Triangle, Triangles};
 pub use utils::*;
 use vertex::*;
 
-const IMAGE_SIZE: usize = 400; //TOFIX: increasing this over 500 seems to overflow the stack
+const IMAGE_SIZE: usize = 250; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
