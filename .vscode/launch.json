@@ -1,0 +1,120 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library 'tinyrenderer'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--lib",
+          "--package=tinyrenderer"
+        ],
+        "filter": {
+          "name": "tinyrenderer",
+          "kind": "lib"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'tinyrenderer'",
+      "cargo": {
+        "args": [
+          "build",
+          "--bin=tinyrenderer",
+          "--package=tinyrenderer"
+        ],
+        "filter": {
+          "name": "tinyrenderer",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'tinyrenderer'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--bin=tinyrenderer",
+          "--package=tinyrenderer"
+        ],
+        "filter": {
+          "name": "tinyrenderer",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug example 'syntax_playground'",
+      "cargo": {
+        "args": [
+          "build",
+          "--example=syntax_playground",
+          "--package=tinyrenderer"
+        ],
+        "filter": {
+          "name": "syntax_playground",
+          "kind": "example"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in example 'syntax_playground'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--example=syntax_playground",
+          "--package=tinyrenderer"
+        ],
+        "filter": {
+          "name": "syntax_playground",
+          "kind": "example"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug benchmark 'render_benchmark'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--bench=render_benchmark",
+          "--package=tinyrenderer"
+        ],
+        "filter": {
+          "name": "render_benchmark",
+          "kind": "bench"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
