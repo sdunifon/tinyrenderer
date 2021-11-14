@@ -1,6 +1,6 @@
 use super::*;
 pub struct Triangle {
-    pub vertices: [Vertex; 3],
+    vertices: [Vertex; 3],
 }
 
 pub type Triangles = Vec<Triangle>;
@@ -33,11 +33,14 @@ where
     // }
 }
 
-impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
+impl<const H: usize, const W: usize> Fillable<H, W> for Triangle where [u8; (H + 1) * (W + 1)]: Sized
+{}
+
+impl HasVerticies for Triangle {
     fn vertices(&self) -> [Vertex; 3] {
+        //TODO make vertex a borrow instead of copy
         self.vertices.map(|v| v)
     }
 }
+
+impl Boundable for Triangle {}

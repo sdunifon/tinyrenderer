@@ -1,12 +1,20 @@
 use super::*;
 
 // [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
-pub trait Fillable<const H: usize, const W: usize>
+pub trait Fillable<const H: usize, const W: usize>: HasVerticies
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn vertices(&self) -> [Vertex; 3];
-
+    //TODO --better fill technique --!!!! https://github.com/ssloy/tinyrenderer/wiki/Lesson-2:-Triangle-rasterization-and-back-face-culling
+    // triangle(vec2 points[3]) {
+    //     vec2 bbox[2] = find_bounding_box(points);
+    //     for (each pixel in the bounding box) {
+    //         if (inside(points, pixel)) {
+    //             put_pixel(pixel);
+    //         }
+    //     }
+    // }
+    //
     fn fill(&self, image: &mut Image<H, W>, px: Px) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
@@ -111,4 +119,9 @@ where
 
         (va[0], va[1], va[2])
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
 }

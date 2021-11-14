@@ -9,6 +9,7 @@
 #[macro_use]
 extern crate lazy_static;
 
+mod bounds;
 pub mod fillable;
 mod image;
 mod line;
@@ -19,6 +20,7 @@ mod vertex;
 
 pub mod test_helper;
 
+pub use bounds::{Boundable, BoundingBox};
 use fillable::Fillable;
 pub use image::*;
 use line::Line;
@@ -26,7 +28,7 @@ pub use model_file::ModelFile;
 use regex::Regex;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
-pub use vertex::{Vertex, Vertices};
+pub use vertex::{HasVerticies, Vertex, Vertices};
 
 pub const IMAGE_SIZE: usize = 300; //TOFIX: increasing this over 500 seems to overflow the stack
 
@@ -70,21 +72,19 @@ pub fn draw_triangle(
 }
 
 pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
-    let triangle = Triangle {
-        vertices: [
-            Vertex { x: 50, y: 50, z: 0 },
-            Vertex {
-                x: 75,
-                y: 100,
-                z: 0,
-            },
-            Vertex {
-                x: 100,
-                y: 50,
-                z: 0,
-            },
-        ],
-    };
+    let triangle = Triangle::new([
+        Vertex { x: 50, y: 50, z: 0 },
+        Vertex {
+            x: 75,
+            y: 100,
+            z: 0,
+        },
+        Vertex {
+            x: 100,
+            y: 50,
+            z: 0,
+        },
+    ]);
 
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
@@ -103,25 +103,23 @@ mod tests {
     extern crate test;
 
     fn triangle() -> Triangle {
-        Triangle {
-            vertices: [
-                Vertex {
-                    x: 50,
-                    y: 100,
-                    z: 0,
-                },
-                Vertex {
-                    x: 75,
-                    y: 100,
-                    z: 0,
-                },
-                Vertex {
-                    x: 100,
-                    y: 50,
-                    z: 0,
-                },
-            ],
-        }
+        Triangle::new([
+            Vertex {
+                x: 50,
+                y: 100,
+                z: 0,
+            },
+            Vertex {
+                x: 75,
+                y: 100,
+                z: 0,
+            },
+            Vertex {
+                x: 100,
+                y: 50,
+                z: 0,
+            },
+        ])
     }
 
     #[test]

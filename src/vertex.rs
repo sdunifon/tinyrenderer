@@ -10,6 +10,11 @@ pub struct Vertex {
 }
 
 pub type Vertices = Vec<Vertex>;
+// pub trait HasVerticies<const N: usize>
+pub trait HasVerticies {
+    // fn vertices(&self) -> [Vertex; N];
+    fn vertices(&self) -> [Vertex; 3];
+}
 
 impl Vertex {
     pub fn new_resized(x: f64, y: f64, z: f64, height: usize, width: usize) -> Vertex {
