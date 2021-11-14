@@ -109,13 +109,13 @@ where
 
         debug_assert!(
             pt.0 <= W,
-            "x is grearter than width: ! pt.0:{} < W:{}",
+            "x is grearter than width: ! pt.0: {} < W:{}",
             pt.0,
             W
         );
         debug_assert!(
             pt.1 <= H,
-            "y is grearter than height ! pt.1:{} < H:{}",
+            "y is grearter than height ! pt.1: {} < H:{}",
             pt.1,
             H
         );

@@ -4,13 +4,19 @@ use std::io::BufReader;
 use std::fs::File;
 use std::io::BufRead;
 
-pub struct ModelFile<'a> {
-    pub filename: &'a str,
+pub struct ModelFile {
+    filename: String,
 }
 
-impl<'a> ModelFile<'a> {
+impl ModelFile {
+    pub fn open(filename: &str) -> ModelFile {
+        ModelFile {
+            filename: filename.to_string(),
+        }
+    }
+
     fn read_iter<F: FnMut(&str)>(&self, mut func: F) {
-        let file = File::open(self.filename).expect("file not found!");
+        let file = File::open(&self.filename).expect("file not found!");
         let reader = BufReader::new(file);
 
         for line in reader.lines() {
@@ -75,16 +81,12 @@ mod tests {
 
     #[test]
     fn read_test() {
-        let m = ModelFile {
-            filename: "head.obj",
-        };
+        let m = ModelFile::open("head.obj");
         m.vertex_parse(250, 250);
     }
     #[test]
     fn vertex_parse_test() {
-        let m = ModelFile {
-            filename: "head.obj",
-        };
+        let m = ModelFile::open("head.obj");
         let vecs = m.vertex_parse(500, 500);
         assert_eq!(
             vecs[0],
@@ -105,9 +107,7 @@ mod tests {
     }
     #[test]
     fn face_parse_test() {
-        let m = ModelFile {
-            filename: "head.obj",
-        };
+        let m = ModelFile::open("head.obj");
 
         let verts = m.vertex_parse(500, 500);
         let faces = m.face_parse(&verts);
