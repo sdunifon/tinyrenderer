@@ -47,7 +47,7 @@ where
                         if j > 400 {
                             println!("debug me");
                         }
-                        image.set(Pt(j - 1, y as usize), WHITE);
+                        image.set(Pt(j - 1, y as usize), px);
                         j += 1;
                     }
                 }

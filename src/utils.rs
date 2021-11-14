@@ -16,7 +16,7 @@ pub fn random_color() -> Px {
     }
 }
 
-pub fn gray() -> Px {
+pub fn random_grayscale() -> Px {
     let gray_value = random();
 
     Px {
