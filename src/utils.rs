@@ -8,18 +8,18 @@ macro_rules! swap_vars {
     };
 }
 
-pub fn random_color() -> Px {
-    Px {
+pub fn random_color() -> Color {
+    Color {
         r: random(),
         g: random(),
         b: random(),
     }
 }
 
-pub fn random_grayscale() -> Px {
+pub fn random_grayscale() -> Color {
     let gray_value = random();
 
-    Px {
+    Color {
         r: gray_value,
         g: gray_value,
         b: gray_value,

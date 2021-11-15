@@ -1,3 +1,7 @@
+use na::{Vector2, Vector3};
+
+use crate::vertex::HasNormal;
+
 use super::*;
 pub struct Triangle {
     vertices: [Vertex; 3],
@@ -16,18 +20,21 @@ impl Triangle {
             Line::from_vertices(&self.vertices[1], &self.vertices[2]),
         ]
     }
+}
 
-    pub fn normal(&self) -> (f64, f64, f64) {
-        let v1 = self.vertices[0];
-        let v2 = self.vertices[1];
+impl HasNormal for Triangle {
+    fn normal(&self) -> Vector3<f64> {
+        let vector_array = self.vectors();
+        let v1 = dbg!(vector_array[0]);
+        let normal = v1.cross(dbg!(&vector_array[1]));
+        normal
     }
 }
-
-struct Vector {
-    x: f64,
-    y: f64,
-    z: f64,
-}
+// struct Vector {
+//     x: f64,
+//     y: f64,
+//     z: f64_u
+// }
 impl<const H: usize, const W: usize> Drawable<H, W> for Triangle
 where
     [u8; (H + 1) * (W + 1)]: Sized,
@@ -51,11 +58,28 @@ impl HasVerticies for Triangle {
         //TODO make vertex a borrow instead of copy
         self.vertices.map(|v| v)
     }
-
-    fn normal(&self) -> (f64, f64, f64) {
-        let v1 = self.vertices[0];
-        let v2 = self.vertices[1];
-    }
 }
 
 impl Boundable for Triangle {}
+
+#[cfg(test)]
+mod tests {
+    use na::vector;
+
+    use super::*;
+
+    fn triangles() -> Vec<Triangle> {
+        let m = ModelFile::open("head.obj");
+
+        let verts = m.vertex_parse(500, 500);
+        let triangles = m.face_parse(&verts);
+        triangles
+    }
+    #[test]
+    fn normal_test() {
+        let triangles = triangles();
+        Vector3::<f64>::new(6 as f64, 5 as f64, 4 as f64);
+        let a = vector!(2.0, 3.0, 4.0);
+        assert_eq!(triangles[300].normal(), a);
+    }
+}

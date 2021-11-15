@@ -1,9 +1,12 @@
 use std::ops;
 
+use na::Vector3;
+
 use super::image::*;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {
+    // note could have aditional data like color
     pub x: i32,
     pub y: i32,
     pub z: i32,
@@ -12,8 +15,19 @@ pub struct Vertex {
 pub type Vertices = Vec<Vertex>;
 // pub trait HasVerticies<const N: usize>
 pub trait HasVerticies {
-    // fn vertices(&self) -> [Vertex; N];
+    // fn veuprtices(&self) -> [Vertex; N];
     fn vertices(&self) -> [Vertex; 3];
+
+    fn vectors(&self) -> [Vector3<f64>; 3] {
+        let vectors = self
+            .vertices()
+            .map(|v| Vector3::<f64>::new(v.x as f64, v.y as f64, v.z as f64));
+        vectors
+    }
+}
+
+pub trait HasNormal: HasVerticies {
+    fn normal(&self) -> Vector3<f64>;
 }
 
 impl Vertex {
@@ -37,7 +51,7 @@ where
     fn draw(&self, canvas: &mut Image<H, W>) {
         canvas.set(
             Pt(self.x as usize, self.y as usize),
-            Px { r: 0, g: 0, b: 255 },
+            Color { r: 0, g: 0, b: 255 },
         )
     }
 

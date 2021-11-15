@@ -6,11 +6,11 @@ where
 {
     height: usize,
     width: usize,
-    data: [Px; (H + 1) * (W + 1)], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
+    data: [Color; (H + 1) * (W + 1)], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
-pub struct Px {
+pub struct Color {
     pub r: u8,
     pub g: u8,
     pub b: u8,
@@ -27,21 +27,21 @@ pub trait ToColorArray {
     fn to_a(&self) -> [u8; 3];
 }
 
-impl ToColorArray for Px {
+impl ToColorArray for Color {
     fn to_a(&self) -> [u8; 3] {
         [self.r, self.g, self.b]
     }
 }
 
-pub const RED: Px = Px { r: 255, g: 0, b: 0 };
-pub const GREEN: Px = Px { r: 0, g: 255, b: 0 };
-pub const BLUE: Px = Px { r: 0, g: 0, b: 255 };
-pub const WHITE: Px = Px {
+pub const RED: Color = Color { r: 255, g: 0, b: 0 };
+pub const GREEN: Color = Color { r: 0, g: 255, b: 0 };
+pub const BLUE: Color = Color { r: 0, g: 0, b: 255 };
+pub const WHITE: Color = Color {
     r: 255,
     g: 255,
     b: 255,
 };
-pub const BLACK: Px = Px { r: 0, g: 0, b: 0 };
+pub const BLACK: Color = Color { r: 0, g: 0, b: 0 };
 
 #[derive(Debug)]
 pub struct PointOutOfBoundsError(Pt, usize, usize, usize);
@@ -63,7 +63,7 @@ where
         Image {
             height: H,
             width: W,
-            data: [Px::default(); (H + 1) * (W + 1)],
+            data: [Color::default(); (H + 1) * (W + 1)],
         }
     }
     // image_lib::ImageBuffer<image_lib::Rgb::<u8>, Container>
@@ -95,12 +95,12 @@ where
     }
 
     #[inline]
-    pub fn get(&self, pt: Pt) -> Px {
+    pub fn get(&self, pt: Pt) -> Color {
         self.data[Self::pt2i(pt)]
     }
 
     #[inline]
-    pub fn set(&mut self, pt: Pt, p: Px) {
+    pub fn set(&mut self, pt: Pt, p: Color) {
         // dbg!(pt.0, pt.1, pt);
 
         if pt.1 > H {
@@ -169,12 +169,12 @@ mod tests {
     fn set_get_test() {
         let mut img = Image::<500, 500>::new();
 
-        assert_eq!(img.get(Pt(250, 250)), Px { r: 0, g: 0, b: 0 });
-        img.set(Pt(250, 250), Px { r: 0, g: 255, b: 0 });
-        assert_eq!(img.get(Pt(250, 250)), Px { r: 0, g: 255, b: 0 });
-        assert_eq!(img.get(Pt(251, 250)), Px { r: 0, g: 0, b: 0 });
-        img.set(Pt(250, 250), Px { r: 0, g: 1, b: 0 });
-        assert_eq!(img.get(Pt(250, 250)), Px { r: 0, g: 1, b: 0 });
+        assert_eq!(img.get(Pt(250, 250)), Color { r: 0, g: 0, b: 0 });
+        img.set(Pt(250, 250), Color { r: 0, g: 255, b: 0 });
+        assert_eq!(img.get(Pt(250, 250)), Color { r: 0, g: 255, b: 0 });
+        assert_eq!(img.get(Pt(251, 250)), Color { r: 0, g: 0, b: 0 });
+        img.set(Pt(250, 250), Color { r: 0, g: 1, b: 0 });
+        assert_eq!(img.get(Pt(250, 250)), Color { r: 0, g: 1, b: 0 });
     }
     #[test]
     fn index_conversion_test() {

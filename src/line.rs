@@ -4,7 +4,7 @@ use std::mem;
 pub struct Line {
     p1: Pt,
     p2: Pt,
-    color: Px,
+    color: Color,
 }
 
 impl Line {
@@ -107,7 +107,7 @@ mod tests {
             let l = Line {
                 p1: Pt(10, 10),
                 p2: Pt(20, 20),
-                color: Px { r: 255, g: 0, b: 0 },
+                color: Color { r: 255, g: 0, b: 0 },
             };
             let mut i = Image::<250, 250>::new();
             i.draw(&l);
@@ -121,17 +121,17 @@ mod tests {
             let l0 = Line {
                 p1: Pt(10, 10),
                 p2: Pt(20, 20),
-                color: Px { r: 255, g: 0, b: 0 },
+                color: Color { r: 255, g: 0, b: 0 },
             };
             let l1 = Line {
                 p1: Pt(5, 5),
                 p2: Pt(70, 7),
-                color: Px { r: 0, g: 255, b: 0 },
+                color: Color { r: 0, g: 255, b: 0 },
             };
             let l2 = Line {
                 p1: Pt(20, 20),
                 p2: Pt(150, 2),
-                color: Px { r: 0, g: 0, b: 255 },
+                color: Color { r: 0, g: 0, b: 255 },
             };
             let mut i = Image::<250, 250>::new();
             i.draw(&l0);

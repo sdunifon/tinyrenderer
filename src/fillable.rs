@@ -15,7 +15,7 @@ where
     //     }
     // }
     //
-    fn fill(&self, image: &mut Image<H, W>, px: Px) {
+    fn fill(&self, image: &mut Image<H, W>, color: Color) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
@@ -55,7 +55,7 @@ where
                         if j > 400 {
                             println!("debug me");
                         }
-                        image.set(Pt(j - 1, y as usize), px);
+                        image.set(Pt(j - 1, y as usize), color);
                         j += 1;
                     }
                 }
@@ -92,7 +92,7 @@ where
                 {
                     let mut j: usize = a.x as usize;
                     while j <= b.x as usize {
-                        image.set(Pt(j, y as usize), px);
+                        image.set(Pt(j, y as usize), color);
                         j += 1;
                     }
                 }
