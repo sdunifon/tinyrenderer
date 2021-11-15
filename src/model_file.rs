@@ -113,4 +113,12 @@ mod tests {
         let faces = m.face_parse(&verts);
         assert_eq!(faces.len(), 2492);
     }
+    #[test]
+    fn alternative_files_parse_test() {
+        for filename in ["airboat.obj", "cessna.obj"] {
+            let m = ModelFile::open(filename);
+            let verts = m.vertex_parse(500, 500);
+            let faces = m.face_parse(&verts);
+        }
+    }
 }
