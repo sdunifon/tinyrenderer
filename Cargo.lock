@@ -2341,6 +2341,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "web"
+version = "0.0.0"
+
+[[package]]
 name = "web-sys"
 version = "0.3.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"

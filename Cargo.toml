@@ -19,3 +19,8 @@ criterion = "0.3" #version 0.3.5 is conflicting websys versions with show-image 
 [[bench]]
 name = "render_benchmark"
 harness = false
+
+[workspace]
+members = [
+ "web"
+]
