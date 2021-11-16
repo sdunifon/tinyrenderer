@@ -31,11 +31,12 @@ pub trait HasNormal: HasVerticies {
 }
 
 impl Vertex {
-    pub fn new_resized(x: f64, y: f64, z: f64, height: usize, width: usize) -> Vertex {
+    pub fn new_resized(x: f64, y: f64, z: f64, height: f64, width: f64) -> Vertex {
+        let avg_resize = (height + width) / 2.0;
         Self {
-            x: ((x + 1.0) * (width as f64 / 2.0)) as i32,
-            y: ((y + 1.0) * (height as f64 / 2.0)) as i32,
-            z: z as i32,
+            x: ((x + 1.0) * (width / 2.0)).round() as i32,
+            y: ((y + 1.0) * (height / 2.0)).round() as i32,
+            z: ((z + 1.0) * (avg_resize / 2.0)).round() as i32, //not sure if that should be resized
         }
     }
 

@@ -25,8 +25,8 @@ impl Triangle {
 impl HasNormal for Triangle {
     fn normal(&self) -> Vector3<f64> {
         let vector_array = self.vectors();
-        let v1 = dbg!(vector_array[0]);
-        let normal = v1.cross(dbg!(&vector_array[1]));
+        let v1 = vector_array[0];
+        let normal = v1.cross(&vector_array[1]);
         normal
     }
 }

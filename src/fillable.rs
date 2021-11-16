@@ -52,9 +52,6 @@ where
                 {
                     let mut j: usize = a.x as usize;
                     while j <= b.x as usize {
-                        if j > 400 {
-                            println!("debug me");
-                        }
                         image.set(Pt(j - 1, y as usize), color);
                         j += 1;
                     }

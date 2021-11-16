@@ -38,8 +38,8 @@ impl ModelFile {
                     line_split.next().unwrap().parse::<f64>().unwrap(),
                     line_split.next().unwrap().parse::<f64>().unwrap(),
                     line_split.next().unwrap().parse::<f64>().unwrap(),
-                    height,
-                    width,
+                    height as f64,
+                    width as f64,
                 );
                 verticies.push(v.clone());
             }
@@ -91,17 +91,17 @@ mod tests {
         assert_eq!(
             vecs[0],
             Vertex {
-                x: 249,
+                x: 250,
                 y: 66,
-                z: 0,
+                z: 94,
             }
         );
         assert_eq!(
             vecs[17],
             Vertex {
-                x: 415,
+                x: 416,
                 y: 92,
-                z: 0,
+                z: 189,
             }
         );
     }
@@ -114,11 +114,14 @@ mod tests {
         assert_eq!(faces.len(), 2492);
     }
     #[test]
+    #[ignore]
     fn alternative_files_parse_test() {
-        for filename in ["airboat.obj", "cessna.obj"] {
+        for filename in ["airboat.obj", "cessna.o   bj"] {
             let m = ModelFile::open(filename);
             let verts = m.vertex_parse(500, 500);
-            let faces = m.face_parse(&verts);
+            assert!(verts.len() > 100);
+            let triangles = m.face_parse(&verts);
+            assert!(triangles.len() > 100);
         }
     }
 }
