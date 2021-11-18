@@ -2,7 +2,7 @@ use super::*;
 use na::Vector3;
 use nalgebra::*;
 
-fn angle_between_vectors<T>(v1: &Vector3<T>, v2: &Vector3<T>) -> f64
+pub fn angle_between_vectors<T>(v1: &Vector3<T>, v2: &Vector3<T>) -> f64
 where
     T: ComplexField<RealField = f64> + Into<f64>,
 {

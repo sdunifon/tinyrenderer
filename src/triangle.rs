@@ -37,8 +37,13 @@ impl HasNormal for Triangle {
 impl Brightness for Triangle {
     fn brightness(&self) -> u8 {
         let normal = self.normal();
-        let camera_direction = vector!(0, 0, 1);
-        128
+        let camera_direction = Vector3::<f64>::new(0.0, 0.0, 1.0);
+        let offset_angle = math::angle_between_vectors(&normal, &camera_direction).to_degrees();
+        if offset_angle >= 90.0 {
+            ((((offset_angle - 90.0) / 90.0) * 256.0) - 1.0) as u8
+        } else {
+            0
+        }
     }
 }
 
@@ -155,5 +160,59 @@ mod tests {
         // Vector3::<f64>::new(6 as f64, 5 as f64, 4 as f64);
         let a = vector!(92.0, -6.0, 130.0);
         assert_eq!(triangles[300].normal(), a);
+    }
+    #[test]
+    fn brightness_45_test() {
+        let t = Triangle {
+            vertices: [
+                Vertex { x: 0, y: 0, z: 0 },
+                Vertex { x: 0, y: 1, z: 1 }, //tilted out 45 degrees
+                Vertex { x: 2, y: 0, z: 0 },
+            ],
+        };
+        assert_eq!(t.brightness(), 127);
+    }
+
+    #[test]
+    fn brightness_45_in_test() {
+        let t = Triangle {
+            vertices: [
+                Vertex { x: 0, y: 0, z: 0 },
+                Vertex {
+                    x: 0,
+                    y: 10,
+                    z: -10,
+                }, //tilted in 45 degrees
+                Vertex { x: 20, y: 0, z: 0 },
+            ],
+        };
+        assert_eq!(t.brightness(), 127);
+    }
+
+    #[test]
+    fn brightness_0_test() {
+        let t = Triangle {
+            vertices: [
+                Vertex { x: 0, y: 0, z: 0 },
+                Vertex {
+                    x: 10,
+                    y: -1,
+                    z: 10,
+                },
+                Vertex { x: 20, y: 0, z: 0 },
+            ],
+        };
+        assert_eq!(t.brightness(), 0);
+    }
+
+    fn brightness_full_test() {
+        let t = Triangle {
+            vertices: [
+                Vertex { x: 0, y: 0, z: 0 },
+                Vertex { x: 0, y: 10, z: 0 },
+                Vertex { x: 2, y: 0, z: 0 }, //tilted out 45 degrees
+            ],
+        };
+        assert_eq!(t.brightness(), 1);
     }
 }
