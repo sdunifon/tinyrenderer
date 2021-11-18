@@ -17,23 +17,29 @@ mod image;
 mod line;
 mod math;
 mod model_file;
+mod rendering_traits;
 mod triangle;
 pub mod utils;
 mod vertex;
 
+pub mod color;
+
 pub mod test_helper;
 
 pub use bounds::{Boundable, BoundingBox};
+pub use color::*;
 use fillable::Fillable;
 pub use image::*;
 use line::Line;
 pub use model_file::ModelFile;
+use na::Vector3;
 use regex::Regex;
+use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vertex::{HasVerticies, Vertex, Vertices};
 
-pub const IMAGE_SIZE: usize = 300; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_SIZE: usize = 50; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
@@ -56,7 +62,7 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
         image.draw(vertex)
     }
     for triangle in &triangles {
-        triangle.fill(&mut image, random_color())
+        triangle.fill(&mut image)
     }
     image
 }
@@ -69,7 +75,7 @@ pub fn draw_triangle(
 
     image.draw(&triangle);
     if fill {
-        triangle.fill(&mut image, random_color());
+        triangle.fill(&mut image);
     }
     Ok(image)
 }
@@ -92,7 +98,7 @@ pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     image.draw(&triangle);
-    triangle.fill(&mut image, random_color());
+    triangle.fill(&mut image);
     image
 }
 

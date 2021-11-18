@@ -1,5 +1,5 @@
+use super::*;
 use core::fmt;
-
 pub struct Image<const H: usize, const W: usize>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
@@ -8,14 +8,6 @@ where
     width: usize,
     data: [Color; (H + 1) * (W + 1)], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
-
-#[derive(PartialEq, Debug, Default, Clone, Copy)]
-pub struct Color {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
-}
-
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
 pub struct Pt(pub usize, pub usize);
 impl fmt::Display for Pt {
@@ -23,25 +15,6 @@ impl fmt::Display for Pt {
         write!(f, "Pt({},{})", self.0, self.1)
     }
 }
-pub trait ToColorArray {
-    fn to_a(&self) -> [u8; 3];
-}
-
-impl ToColorArray for Color {
-    fn to_a(&self) -> [u8; 3] {
-        [self.r, self.g, self.b]
-    }
-}
-
-pub const RED: Color = Color { r: 255, g: 0, b: 0 };
-pub const GREEN: Color = Color { r: 0, g: 255, b: 0 };
-pub const BLUE: Color = Color { r: 0, g: 0, b: 255 };
-pub const WHITE: Color = Color {
-    r: 255,
-    g: 255,
-    b: 255,
-};
-pub const BLACK: Color = Color { r: 0, g: 0, b: 0 };
 
 #[derive(Debug)]
 pub struct PointOutOfBoundsError(Pt, usize, usize, usize);
@@ -72,7 +45,7 @@ where
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
             let y = H - y as usize;
-            *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_a())
+            *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_color_ary())
         }
         image_buffer
     }

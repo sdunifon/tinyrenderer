@@ -1,8 +1,6 @@
 use std::ops;
 
-use na::Vector3;
-
-use super::image::*;
+use super::*;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Vertex {

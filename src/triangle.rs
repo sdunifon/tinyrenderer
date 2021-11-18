@@ -30,6 +30,7 @@ impl HasNormal for Triangle {
         let v1 = vector_array[1] - vector_array[0];
         let v2 = vector_array[2] - vector_array[0];
         let normal = v1.cross(&v2);
+        let l = self.brightness();
         normal
     }
 }
@@ -47,9 +48,6 @@ impl Brightness for Triangle {
     }
 }
 
-trait Brightness {
-    fn brightness(&self) -> u8;
-}
 // struct Vector {
 //     x: f64,
 //     y: f64,
@@ -82,12 +80,22 @@ impl HasVerticies for Triangle {
 
 impl Boundable for Triangle {}
 
+impl Colorful for Triangle {
+    fn color(&self) -> Color {
+        let brightness: u8 = self.brightness();
+        let Color { r, g, b } = self.base_color();
+
+        Color {
+            r: r * brightness / 255,
+            g: g * brightness / 255,
+            b: b * brightness / 255,
+        }
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
     // use pretty_assertions::{assert_eq, assert_ne};
-
-    use super::*;
 
     fn triangles() -> Vec<Triangle> {
         let m = ModelFile::open("head.obj");

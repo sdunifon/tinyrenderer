@@ -1,7 +1,7 @@
 use super::*;
 
 // [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
-pub trait Fillable<const H: usize, const W: usize>: HasVerticies
+pub trait Fillable<const H: usize, const W: usize>: HasVerticies + Colorful
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
@@ -15,7 +15,7 @@ where
     //     }
     // }
     //
-    fn fill(&self, image: &mut Image<H, W>, color: Color) {
+    fn fill(&self, image: &mut Image<H, W>) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
@@ -23,6 +23,10 @@ where
         let vn = self.sorted_verticies();
         let (v0, v1, v2): (Vertex, Vertex, Vertex) = (vn.0, vn.1, vn.2);
         let total_height: i32 = v2.y - v0.y;
+
+        let color = self.color(); //TO FIX.. this is causing stack overflowj
+
+        //let color = random_color();
 
         {
             let mut y = v0.y;
