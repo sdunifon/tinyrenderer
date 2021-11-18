@@ -114,9 +114,9 @@ mod tests {
         assert_eq!(faces.len(), 2492);
     }
     #[test]
-    #[ignore]
+    #[ignore] //need to add alternative obj face reg experssion
     fn alternative_files_parse_test() {
-        for filename in ["airboat.obj", "cessna.o   bj"] {
+        for filename in ["airboat.obj", "cessna.obj"] {
             let m = ModelFile::open(filename);
             let verts = m.vertex_parse(500, 500);
             assert!(verts.len() > 100);
