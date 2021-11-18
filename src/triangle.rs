@@ -1,4 +1,6 @@
-use na::{Vector2, Vector3};
+use na::Vector3;
+
+use na::vector;
 
 use crate::vertex::HasNormal;
 
@@ -30,6 +32,18 @@ impl HasNormal for Triangle {
         let normal = v1.cross(&v2);
         normal
     }
+}
+
+impl Brightness for Triangle {
+    fn brightness(&self) -> u8 {
+        let normal = self.normal();
+        let camera_direction = vector!(0, 0, 1);
+        128
+    }
+}
+
+trait Brightness {
+    fn brightness(&self) -> u8;
 }
 // struct Vector {
 //     x: f64,
@@ -65,7 +79,7 @@ impl Boundable for Triangle {}
 
 #[cfg(test)]
 mod tests {
-    use na::vector;
+    use super::*;
     // use pretty_assertions::{assert_eq, assert_ne};
 
     use super::*;

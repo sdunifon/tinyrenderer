@@ -36,6 +36,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "all_asserts"
+version = "2.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4d9fe90d033dadfefa8011975ef73152e0425af1bab2b0edf0f004b2dd4ff633"
+
+[[package]]
 name = "andrew"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2172,6 +2178,7 @@ dependencies = [
 name = "tinyrenderer"
 version = "0.1.0"
 dependencies = [
+ "all_asserts",
  "criterion",
  "image",
  "lazy_static",

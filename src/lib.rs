@@ -15,6 +15,7 @@ mod bounds;
 pub mod fillable;
 mod image;
 mod line;
+mod math;
 mod model_file;
 mod triangle;
 pub mod utils;
