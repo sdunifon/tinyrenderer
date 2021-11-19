@@ -26,6 +26,10 @@ where
 
         let color = self.color(); //TO FIX.. this is causing stack overflowj
 
+        let black = Color { r: 0, g: 0, b: 0 };
+        if color == black {
+            return;
+        }
         //let color = random_color();
 
         {
