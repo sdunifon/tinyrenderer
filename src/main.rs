@@ -1,3 +1,5 @@
+use std::thread;
+
 // fn main() {
 //     make_image("render.tga");
 // }
@@ -6,6 +8,26 @@ use tinyrenderer::*;
 
 #[show_image::main]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    const NEED_LARGE_STACK: bool = false;
+    if NEED_LARGE_STACK {
+        image_render_on_large_stack_thread();
+    } else {
+        image_render()?;
+    }
+    Ok(())
+}
+
+fn image_render_on_large_stack_thread() {
+    let child = thread::Builder::new()
+        .stack_size(32 * 1024 * 1024 * 1000)
+        .spawn(move || {
+            image_render().unwrap();
+        })
+        .unwrap();
+    child.join().expect("child threaad failed");
+}
+
+fn image_render() -> Result<(), Box<dyn std::error::Error>> {
     let image: Image<IMAGE_SIZE, IMAGE_SIZE>;
     if true {
         image = make_image();

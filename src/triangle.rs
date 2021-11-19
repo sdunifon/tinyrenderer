@@ -30,7 +30,6 @@ impl HasNormal for Triangle {
         let v1 = vector_array[1] - vector_array[0];
         let v2 = vector_array[2] - vector_array[0];
         let normal = v1.cross(&v2);
-        let l = self.brightness();
         normal
     }
 }
@@ -86,9 +85,9 @@ impl Colorful for Triangle {
         let Color { r, g, b } = self.base_color();
 
         Color {
-            r: r * brightness / 255,
-            g: g * brightness / 255,
-            b: b * brightness / 255,
+            r: r * (brightness / 255),
+            g: g * (brightness / 255),
+            b: 128,
         }
     }
 }

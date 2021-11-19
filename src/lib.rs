@@ -26,6 +26,11 @@ pub mod color;
 
 pub mod test_helper;
 
+use std::{
+    mem,
+    thread::{self, Builder},
+};
+
 pub use bounds::{Boundable, BoundingBox};
 pub use color::*;
 use fillable::Fillable;
@@ -39,7 +44,7 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vertex::{HasVerticies, Vertex, Vertices};
 
-pub const IMAGE_SIZE: usize = 50; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_SIZE: usize = 300; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
@@ -102,6 +107,18 @@ pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     image
 }
 
+// fn large_stack_thread<'a>(f: &'a fn() -> ()) {
+//     let handler = thread::Builder::new()
+//         .stack_size(200 * 1024 * 1024)
+//         .spawn(|| {
+//             let y: [u64; 10000000] = [1; 10000000];
+//             println!("the arrays allocated {} bytes", mem::size_of_val(&y));
+//             f();
+//         })
+//         .expect("can't spawn thread");
+
+//     handler.join().expect("something's wrong with the thread");
+// }
 // pub fn render(image: &mut Image, faces: &Faces, verticies: &Vertices) {}
 #[cfg(test)]
 mod tests {
