@@ -29,7 +29,7 @@ impl HasNormal for Triangle {
         let vector_array = self.vectors();
         let v1 = vector_array[1] - vector_array[0];
         let v2 = vector_array[2] - vector_array[0];
-        let normal = v1.cross(&v2);
+        let normal = v2.cross(&v1);
         normal
     }
 }

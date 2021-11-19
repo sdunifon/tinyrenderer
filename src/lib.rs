@@ -44,7 +44,7 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vertex::{HasVerticies, Vertex, Vertices};
 
-pub const IMAGE_SIZE: usize = 300; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_SIZE: usize = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();

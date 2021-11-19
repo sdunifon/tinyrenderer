@@ -8,7 +8,7 @@ use tinyrenderer::*;
 
 #[show_image::main]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    const NEED_LARGE_STACK: bool = false;
+    const NEED_LARGE_STACK: bool = true;
     if NEED_LARGE_STACK {
         image_render_on_large_stack_thread();
     } else {
