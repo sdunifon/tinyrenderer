@@ -133,13 +133,13 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
             style![
                 St::Border => "1px solid black",
             ],
-            wheel_ev(Ev::Wheel, |event| {
-                let delta_y = event.delta_y();
-                (delta_y != 0.0).then(|| {
-                    event.prevent_default();
-                    Msg::Zoom(if delta_y < 0.0 { Zoom::In } else { Zoom::Out })
-                })
-            }),
+            // wheel_ev(Ev::Wheel, |event| {             //TODO: can't find wheel_en.. uncomment+fix
+            //     let delta_y = event.delta_y();
+            //     (delta_y != 0.0).then(|| {
+            //         event.prevent_default();
+            //         Msg::Zoom(if delta_y < 0.0 { Zoom::In } else { Zoom::Out })
+            //     })
+            // }),
         ],
         button!["Change color", ev(Ev::Click, |_| Msg::ChangeColor)],
     ]
