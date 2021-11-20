@@ -3,7 +3,6 @@
 //! [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawWindow)
 
 use seed::{prelude::*, *};
-use web_sys::HtmlCanvasElement;
 mod canvas_demo;
 
 // ------ ------
