@@ -17,8 +17,23 @@ nalgebra = "0.29.0"
 criterion = "0.3"           #version 0.3.5 is conflicting websys versions with show-image for some reason.. this sems to install 0.3.4 and work.. be on the lookout for an upgraded that works --spd
 pretty_assertions = "1.0.0"
 all_asserts = "2.3.0"
+cargo-make = "0.35.1"
 
 
 [[bench]]
 name = "render_benchmark"
 harness = false
+
+[workspace]
+members = [
+ "web"
+]
+
+
+[profile.release]
+lto = true
+opt-level = 'z'
+codegen-units = 1
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ['-Os']
