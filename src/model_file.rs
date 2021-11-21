@@ -60,7 +60,9 @@ impl ModelFile {
     pub fn face_parse(&self, verticies: &Vertices) -> Triangles {
         lazy_static! {
             static ref FACE_RE: Regex =
-                Regex::new(r"f (\d*)/\d*/\d* (\d*)/\d*/\d* (\d*)/\d*/\d*").unwrap();
+                //Regex::new(r"f (\d*)/\d*/\d* (\d*)/\d*/\d* (\d*)/\d*/\d*").unwrap();
+                //Regex::new(r"f (\d*)/?[^\s]* (\d*)/?[^\s]* (\d*)/?[^\s]*").unwrap();
+                Regex::new(r"f (\d*) (\d*) (\d*)").unwrap();
         };
 
         let mut triangles: Triangles = vec![];
@@ -68,7 +70,7 @@ impl ModelFile {
         self.read_iter(|line: &str| {
             match FACE_RE.captures(line) {
                 Some(captures) => {
-                    // println!("{:?}", captures);
+                    println!("{:?}", captures);
 
                     let vertex_indices = [&captures[1], &captures[2], &captures[3]];
                     let vertex_indices: [usize; 3] =

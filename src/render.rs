@@ -30,6 +30,10 @@ impl Render {
     pub fn load_file(&mut self, filepath: &str) {
         assert!(Path::new(filepath).exists(), "{} doesn't exist!", filepath);
         self.file = Some(ModelFile::open(filepath));
+        self.reload();
+    }
+
+    pub fn reload(&mut self) {
         self.file
             .as_mut()
             .unwrap()
