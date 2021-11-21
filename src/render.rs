@@ -44,6 +44,10 @@ impl Render {
             triangle.fill(&mut self.image)
         }
     }
+
+    pub fn image_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {
+        self.image.render_to_buffer()
+    }
     pub fn width(&self) -> usize {
         self.image.width
     }
