@@ -6,12 +6,16 @@ use std::io::BufRead;
 
 pub struct ModelFile {
     filename: String,
+    pub verticies: Vertices,
+    pub triangles: Triangles,
 }
 
 impl ModelFile {
     pub fn open(filename: &str) -> ModelFile {
         ModelFile {
             filename: filename.to_string(),
+            verticies: Vec::new(),
+            triangles: Vec::new(),
         }
     }
 
@@ -22,6 +26,11 @@ impl ModelFile {
         for line in reader.lines() {
             func(&line.unwrap());
         }
+    }
+
+    pub fn load(&mut self, height: usize, width: usize) {
+        self.verticies = self.vertex_parse(height, width);
+        self.triangles = self.face_parse(&self.verticies);
     }
 
     pub fn vertex_parse(&self, height: usize, width: usize) -> Vertices {

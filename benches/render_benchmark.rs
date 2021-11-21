@@ -34,9 +34,7 @@ fn bench_render_only(b: &mut Bencher) {
     const IMAGE_SIZE: usize = 1000;
     let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
-    let file = ModelFile {
-        filename: "head.obj",
-    };
+    let file = ModelFile::open("head.obj");
 
     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
 
@@ -60,7 +58,7 @@ fn bench_render_triangle(b: &mut Bencher) {
     let triangle = triangle();
     b.iter(|| {
         image.draw(&triangle);
-        triangle.fill(&mut image, BLUE);
+        triangle.fill(&mut image);
     });
 }
 
@@ -71,7 +69,7 @@ fn bench_render_filled_triangle(b: &mut Bencher) {
     let triangle = triangle();
     b.iter(|| {
         image.draw(&triangle);
-        triangle.fill(&mut image, BLUE)
+        triangle.fill(&mut image)
     });
 }
 

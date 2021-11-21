@@ -17,6 +17,7 @@ mod image;
 mod line;
 mod math;
 mod model_file;
+pub mod render;
 mod rendering_traits;
 mod triangle;
 pub mod utils;
@@ -34,16 +35,17 @@ use std::{
 pub use bounds::{Boundable, BoundingBox};
 pub use color::*;
 use fillable::Fillable;
-pub use image::*;
+use image::*;
 use line::Line;
 pub use model_file::ModelFile;
 use na::Vector3;
 use regex::Regex;
+pub use render::Render;
 use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
-pub use vertex::{HasVerticies, Vertex, Vertices};
 
+pub use vertex::{HasVerticies, Vertex, Vertices};
 pub const IMAGE_SIZE: usize = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {

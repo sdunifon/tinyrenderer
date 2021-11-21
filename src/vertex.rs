@@ -2,7 +2,7 @@ use std::ops;
 
 use super::*;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)] //TODO remove copy
 pub struct Vertex {
     // note could have aditional data like color
     pub x: i32,
@@ -17,10 +17,8 @@ pub trait HasVerticies {
     fn vertices(&self) -> [Vertex; 3];
 
     fn vectors(&self) -> [Vector3<f64>; 3] {
-        let vectors = self
-            .vertices()
-            .map(|v| Vector3::<f64>::new(v.x as f64, v.y as f64, v.z as f64));
-        vectors
+        self.vertices()
+            .map(|v| Vector3::<f64>::new(v.x as f64, v.y as f64, v.z as f64))
     }
 }
 
