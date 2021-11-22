@@ -99,9 +99,9 @@ mod tests {
     // use pretty_assertions::{assert_eq, assert_ne};
 
     fn triangles() -> Vec<Triangle> {
-        let m = ModelFile::open("head.obj");
+        let m = ModelFile::open("assets/head.obj");
 
-        let verts = m.vertex_parse(500, 500);
+        let verts = m.vertex_parse();
         let triangles = m.face_parse(&verts);
         triangles
     }
@@ -109,22 +109,46 @@ mod tests {
     fn triangle_vertex_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 1, y: 2, z: 3 },
-                Vertex { x: 4, y: 5, z: 6 },
-                Vertex { x: 7, y: 8, z: 9 },
+                Vertex {
+                    x: 1.,
+                    y: 2.,
+                    z: 3.,
+                },
+                Vertex {
+                    x: 4.,
+                    y: 5.,
+                    z: 6.,
+                },
+                Vertex {
+                    x: 7.,
+                    y: 8.,
+                    z: 9.,
+                },
             ],
         };
-        assert_eq!(t.vertices[1].y, 5);
-        assert_eq!(t.vertices[2].z, 9);
-        assert_eq!(t.vertices[0].x, 1);
+        assert_eq!(t.vertices[1].y, 5.);
+        assert_eq!(t.vertices[2].z, 9.);
+        assert_eq!(t.vertices[0].x, 1.);
     }
     #[test]
     fn normal_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 0, y: 0, z: 0 },
-                Vertex { x: 0, y: 1, z: 0 },
-                Vertex { x: 2, y: 0, z: 1 },
+                Vertex {
+                    x: 0.,
+                    y: 0.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 0.,
+                    y: 1.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 2.,
+                    y: 0.,
+                    z: 1.,
+                },
             ],
         };
         assert_eq!(t.normal(), vector!(1.0, 0.0, -2.0));
@@ -133,9 +157,21 @@ mod tests {
     fn normal2_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 1, y: 1, z: 0 },
-                Vertex { x: 0, y: 1, z: 0 },
-                Vertex { x: 1, y: 0, z: 0 },
+                Vertex {
+                    x: 1.,
+                    y: 1.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 0.,
+                    y: 1.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 1.,
+                    y: 0.,
+                    z: 0.,
+                },
             ],
         };
         assert_eq!(t.normal(), vector!(0.0, 0.0, 1.0));
@@ -144,9 +180,21 @@ mod tests {
     fn normal3_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 1, y: 1, z: 0 },
-                Vertex { x: 1, y: 0, z: 0 },
-                Vertex { x: 0, y: 1, z: 0 },
+                Vertex {
+                    x: 1.,
+                    y: 1.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 1.,
+                    y: 0.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 0.,
+                    y: 1.,
+                    z: 0.,
+                },
             ],
         };
         assert_eq!(t.normal(), vector!(0.0, 0.0, -1.0));
@@ -156,9 +204,21 @@ mod tests {
     fn normal4_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 1, y: 2, z: 3 },
-                Vertex { x: 4, y: 5, z: 6 },
-                Vertex { x: -1, y: -2, z: 3 },
+                Vertex {
+                    x: 1.,
+                    y: 2.,
+                    z: 3.,
+                },
+                Vertex {
+                    x: 4.,
+                    y: 5.,
+                    z: 6.,
+                },
+                Vertex {
+                    x: -1.,
+                    y: -2.,
+                    z: 3.,
+                },
             ],
         };
         assert_eq!(t.normal(), vector!(12.0, -6.0, -6.0));
@@ -174,9 +234,21 @@ mod tests {
     fn brightness_45_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 0, y: 0, z: 0 },
-                Vertex { x: 0, y: 1, z: 1 }, //tilted out 45 degrees
-                Vertex { x: 2, y: 0, z: 0 },
+                Vertex {
+                    x: 0.,
+                    y: 0.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 0.,
+                    y: 1.,
+                    z: 1.,
+                }, //tilted out 45 degrees
+                Vertex {
+                    x: 2.,
+                    y: 0.,
+                    z: 0.,
+                },
             ],
         };
         assert_eq!(t.brightness(), 127);
@@ -186,13 +258,21 @@ mod tests {
     fn brightness_45_in_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 0, y: 0, z: 0 },
                 Vertex {
-                    x: 0,
-                    y: 10,
-                    z: -10,
+                    x: 0.,
+                    y: 0.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 0.,
+                    y: 10.,
+                    z: -10.,
                 }, //tilted in 45 degrees
-                Vertex { x: 20, y: 0, z: 0 },
+                Vertex {
+                    x: 20.,
+                    y: 0.,
+                    z: 0.,
+                },
             ],
         };
         assert_eq!(t.brightness(), 127);
@@ -202,13 +282,21 @@ mod tests {
     fn brightness_0_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 0, y: 0, z: 0 },
                 Vertex {
-                    x: 10,
-                    y: -1,
-                    z: 10,
+                    x: 0.,
+                    y: 0.,
+                    z: 0.,
                 },
-                Vertex { x: 20, y: 0, z: 0 },
+                Vertex {
+                    x: 10.,
+                    y: -1.,
+                    z: 10.,
+                },
+                Vertex {
+                    x: 20.,
+                    y: 0.,
+                    z: 0.,
+                },
             ],
         };
         assert_eq!(t.brightness(), 0);
@@ -217,9 +305,21 @@ mod tests {
     fn brightness_full_test() {
         let t = Triangle {
             vertices: [
-                Vertex { x: 0, y: 0, z: 0 },
-                Vertex { x: 0, y: 10, z: 0 },
-                Vertex { x: 2, y: 0, z: 0 }, //tilted out 45 degrees
+                Vertex {
+                    x: 0.,
+                    y: 0.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 0.,
+                    y: 10.,
+                    z: 0.,
+                },
+                Vertex {
+                    x: 2.,
+                    y: 0.,
+                    z: 0.,
+                }, //tilted out 45 degrees
             ],
         };
         assert_eq!(t.brightness(), 1);

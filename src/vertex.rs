@@ -2,12 +2,19 @@ use std::ops;
 
 use super::*;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)] //TODO remove copy
 pub struct Vertex {
     // note could have aditional data like color
-    pub x: i32,
-    pub y: i32,
-    pub z: i32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+}
+
+pub struct ViewportPixel {
+    // note could have a1ditional data like color
+    pub x: u16,
+    pub y: u16,
+    pub z: u16,
 }
 
 pub type Vertices = Vec<Vertex>;
@@ -17,10 +24,8 @@ pub trait HasVerticies {
     fn vertices(&self) -> [Vertex; 3];
 
     fn vectors(&self) -> [Vector3<f64>; 3] {
-        let vectors = self
-            .vertices()
-            .map(|v| Vector3::<f64>::new(v.x as f64, v.y as f64, v.z as f64));
-        vectors
+        self.vertices()
+            .map(|v| Vector3::<f64>::new(v.x as f64, v.y as f64, v.z as f64))
     }
 }
 
@@ -32,9 +37,9 @@ impl Vertex {
     pub fn new_resized(x: f64, y: f64, z: f64, height: f64, width: f64) -> Vertex {
         let avg_resize = (height + width) / 2.0;
         Self {
-            x: ((x + 1.0) * (width / 2.0)).round() as i32,
-            y: ((y + 1.0) * (height / 2.0)).round() as i32,
-            z: ((z + 1.0) * (avg_resize / 2.0)).round() as i32, //not sure if that should be resized
+            x: ((x + 1.0) * (width / 2.0)).round() as f64,
+            y: ((y + 1.0) * (height / 2.0)).round() as f64,
+            z: ((z + 1.0) * (avg_resize / 2.0)).round() as f64, //not sure if that should be resized
         }
     }
 
@@ -87,9 +92,21 @@ impl ops::Mul<f64> for Vertex {
 
     fn mul(self, rhs: f64) -> Self::Output {
         Vertex {
-            x: (self.x as f64 * rhs) as i32,
-            y: (self.y as f64 * rhs) as i32,
-            z: (self.z as f64 * rhs) as i32,
+            x: (self.x * rhs),
+            y: (self.y * rhs),
+            z: (self.z * rhs),
+        }
+    }
+}
+
+impl ops::Div<f64> for Vertex {
+    type Output = Vertex;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Vertex {
+            x: (self.x / rhs),
+            y: (self.y / rhs),
+            z: (self.z / rhs),
         }
     }
 }

@@ -17,6 +17,7 @@ mod image;
 mod line;
 mod math;
 mod model_file;
+pub mod render;
 mod rendering_traits;
 mod triangle;
 pub mod utils;
@@ -34,30 +35,31 @@ use std::{
 pub use bounds::{Boundable, BoundingBox};
 pub use color::*;
 use fillable::Fillable;
-pub use image::*;
+use image::*;
 use line::Line;
 pub use model_file::ModelFile;
 use na::Vector3;
 use regex::Regex;
+pub use render::Render;
 use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
-pub use vertex::{HasVerticies, Vertex, Vertices};
 
+pub use vertex::{HasVerticies, Vertex, Vertices};
 pub const IMAGE_SIZE: usize = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     image.draw(&Vertex {
-        x: 50,
-        y: 40,
-        z: 40,
+        x: 50.,
+        y: 40.,
+        z: 40.,
     });
 
-    let file = ModelFile::open("head.obj");
+    let file = ModelFile::open("assets/head.obj");
 
-    let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
+    let verticies = file.vertex_parse();
 
     let triangles = file.face_parse(&verticies);
     for triangle in &triangles {
@@ -87,16 +89,20 @@ pub fn draw_triangle(
 
 pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let triangle = Triangle::new([
-        Vertex { x: 50, y: 50, z: 0 },
         Vertex {
-            x: 75,
-            y: 100,
-            z: 0,
+            x: 50.,
+            y: 50.,
+            z: 0.,
         },
         Vertex {
-            x: 100,
-            y: 50,
-            z: 0,
+            x: 75.,
+            y: 100.,
+            z: 0.,
+        },
+        Vertex {
+            x: 100.,
+            y: 50.,
+            z: 0.,
         },
     ]);
 
@@ -131,28 +137,30 @@ mod tests {
     fn triangle() -> Triangle {
         Triangle::new([
             Vertex {
-                x: 50,
-                y: 100,
-                z: 0,
+                x: 50.,
+                y: 100.,
+                z: 0.,
             },
             Vertex {
-                x: 75,
-                y: 100,
-                z: 0,
+                x: 75.,
+                y: 100.,
+                z: 0.,
             },
             Vertex {
-                x: 100,
-                y: 50,
-                z: 0,
+                x: 100.,
+                y: 50.,
+                z: 0.,
             },
         ])
     }
 
     #[test]
+    #[ignore]
     fn render_triangle_test() {
         render_triangle();
     }
     #[test]
+    #[ignore]
     fn make_image_test() {
         let filename = "lib_test_render.tga";
         if Path::new(filename).exists() {
@@ -164,6 +172,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn draw_triangle_test() {
         assert!(draw_triangle(triangle(), false).is_ok());
         assert!(draw_triangle(triangle(), true).is_ok());
@@ -181,7 +190,7 @@ mod tests {
     //     let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     //     let file = ModelFile {
-    //         filename: "head.obj",
+    //         filename: "assets/head.obj",
     //     };
 
     //     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);

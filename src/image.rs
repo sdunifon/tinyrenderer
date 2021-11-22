@@ -4,8 +4,8 @@ pub struct Image<const H: usize, const W: usize>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    height: usize,
-    width: usize,
+    pub height: usize,
+    pub width: usize,
     data: [Color; (H + 1) * (W + 1)], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
