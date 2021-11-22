@@ -12,7 +12,7 @@ use tinyrenderer::*;
 struct Cli {
     #[structopt(long = "render-type", short = "r", default_value = "full")]
     render_type: String,
-    #[structopt(default_value = "head.obj")]
+    #[structopt(default_value = "./assets/head.obj")]
     filename: String,
 }
 

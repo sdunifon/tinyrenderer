@@ -34,10 +34,7 @@ impl Render {
     }
 
     pub fn reload(&mut self) {
-        self.file
-            .as_mut()
-            .unwrap()
-            .load(RENDER_WIDTH, RENDER_HEIGHT);
+        self.file.as_mut().unwrap().load();
     }
 
     pub fn update(&mut self) {

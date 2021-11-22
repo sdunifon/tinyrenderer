@@ -15,16 +15,20 @@ fn fibonacci(n: u64) -> u64 {
 fn triangle() -> Triangle {
     Triangle {
         vertices: [
-            Vertex { x: 50, y: 50, z: 0 },
             Vertex {
-                x: 75,
-                y: 100,
-                z: 0,
+                x: 50.,
+                y: 50.,
+                z: 0.,
             },
             Vertex {
-                x: 100,
-                y: 50,
-                z: 0,
+                x: 75.,
+                y: 100.,
+                z: 0.,
+            },
+            Vertex {
+                x: 100.,
+                y: 50.,
+                z: 0.,
             },
         ],
     }
@@ -32,45 +36,37 @@ fn triangle() -> Triangle {
 
 fn bench_render_only(b: &mut Bencher) {
     const IMAGE_SIZE: usize = 1000;
-    let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
-
-    let file = ModelFile::open("head.obj");
-
-    let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
-
-    let faces = file.face_parse(&verticies);
-
-    b.iter(|| {
-        for face in &faces {
-            i.draw(face)
-        }
-    });
-
+    let mut render = Render::default();
+    render.load_file("assets/head.obj");
+    render.update();
     assert_file_creation("test_render.tga", |filename: &str| {
-        i.render(filename);
+        render.update();
     })
 }
 
 fn bench_render_triangle(b: &mut Bencher) {
-    const IMAGE_SIZE: usize = 250;
-    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+    todo!();
+    // const IMAGE_SIZE: usize = 250;
+    // let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
-    let triangle = triangle();
-    b.iter(|| {
-        image.draw(&triangle);
-        triangle.fill(&mut image);
-    });
+    // let triangle = triangle();
+    // b.iter(|| {
+    //     image.draw(&triangle);
+    //     triangle.fill(&mut image);
+    // });
 }
 
 fn bench_render_filled_triangle(b: &mut Bencher) {
-    const IMAGE_SIZE: usize = 500;
-    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+    todo!();
+    //const IMAGE_SIZE: usize = 250;
+    //const IMAGE_SIZE: usize = 500;
+    // let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
-    let triangle = triangle();
-    b.iter(|| {
-        image.draw(&triangle);
-        triangle.fill(&mut image)
-    });
+    // let triangle = triangle();
+    // b.iter(|| {
+    //     image.draw(&triangle);
+    //     triangle.fill(&mut image)
+    // });
 }
 
 fn image_creation(b: &mut Bencher) {

@@ -92,9 +92,21 @@ impl ops::Mul<f64> for Vertex {
 
     fn mul(self, rhs: f64) -> Self::Output {
         Vertex {
-            x: (self.x as f64 * rhs),
-            y: (self.y as f64 * rhs),
-            z: (self.z as f64 * rhs),
+            x: (self.x * rhs),
+            y: (self.y * rhs),
+            z: (self.z * rhs),
+        }
+    }
+}
+
+impl ops::Div<f64> for Vertex {
+    type Output = Vertex;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Vertex {
+            x: (self.x / rhs),
+            y: (self.y / rhs),
+            z: (self.z / rhs),
         }
     }
 }

@@ -59,7 +59,7 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
 
     let file = ModelFile::open("assets/head.obj");
 
-    let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
+    let verticies = file.vertex_parse();
 
     let triangles = file.face_parse(&verticies);
     for triangle in &triangles {
