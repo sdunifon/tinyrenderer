@@ -52,9 +52,9 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     image.draw(&Vertex {
-        x: 50,
-        y: 40,
-        z: 40,
+        x: 50.,
+        y: 40.,
+        z: 40.,
     });
 
     let file = ModelFile::open("assets/head.obj");
@@ -89,16 +89,20 @@ pub fn draw_triangle(
 
 pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     let triangle = Triangle::new([
-        Vertex { x: 50, y: 50, z: 0 },
         Vertex {
-            x: 75,
-            y: 100,
-            z: 0,
+            x: 50.,
+            y: 50.,
+            z: 0.,
         },
         Vertex {
-            x: 100,
-            y: 50,
-            z: 0,
+            x: 75.,
+            y: 100.,
+            z: 0.,
+        },
+        Vertex {
+            x: 100.,
+            y: 50.,
+            z: 0.,
         },
     ]);
 
@@ -133,19 +137,19 @@ mod tests {
     fn triangle() -> Triangle {
         Triangle::new([
             Vertex {
-                x: 50,
-                y: 100,
-                z: 0,
+                x: 50.,
+                y: 100.,
+                z: 0.,
             },
             Vertex {
-                x: 75,
-                y: 100,
-                z: 0,
+                x: 75.,
+                y: 100.,
+                z: 0.,
             },
             Vertex {
-                x: 100,
-                y: 50,
-                z: 0,
+                x: 100.,
+                y: 50.,
+                z: 0.,
             },
         ])
     }

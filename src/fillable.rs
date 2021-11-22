@@ -22,7 +22,7 @@ where
         // if v1.y>v2.y {std::swap(v1, t2)};
         let vn = self.sorted_verticies();
         let (v0, v1, v2): (Vertex, Vertex, Vertex) = (vn.0, vn.1, vn.2);
-        let total_height: i32 = v2.y - v0.y;
+        let total_height: i32 = v2.y as i32 - v0.y as i32;
 
         let color = self.color(); //TO FIX.. this is causing stack overflowj
 
@@ -33,10 +33,10 @@ where
         //let color = random_color();
 
         {
-            let mut y = v0.y;
+            let mut y = v0.y as i32;
 
-            while y <= v1.y {
-                let segment_height = v1.y - v0.y + 1;
+            while y as f64 <= v1.y {
+                let segment_height = v1.y - v0.y + 1.;
 
                 if total_height == 0 {
                     // some triangles are all on the same y.. not sure what to do here.. just returning for now
@@ -44,8 +44,8 @@ where
                     return;
                 }
                 assert!(total_height != 0, "total height can not be 0");
-                let alpha: f64 = (y - v0.y) as f64 / total_height as f64;
-                let beta: f64 = (y - v0.y) as f64 / segment_height as f64;
+                let alpha: f64 = (y as f64 - v0.y) as f64 / total_height as f64;
+                let beta: f64 = (y as f64 - v0.y) as f64 / segment_height as f64;
 
                 let a = v0 + (v2 - v0) * alpha;
                 let b = v0 + (v1 - v0) * beta;
@@ -81,13 +81,13 @@ where
         // }
 
         {
-            let mut y = v1.y;
+            let mut y = v1.y as i32;
 
-            while y <= v2.y {
-                let segment_height = v2.y - v1.y + 1;
+            while y as f64 <= v2.y {
+                let segment_height = v2.y - v1.y + 1.;
 
-                let alpha: f64 = (y - v0.y) as f64 / total_height as f64;
-                let beta: f64 = (y - v1.y) as f64 / segment_height as f64;
+                let alpha: f64 = (y as f64 - v0.y) as f64 / total_height as f64;
+                let beta: f64 = (y as f64 - v1.y) as f64 / segment_height as f64;
 
                 let a = v0 + (v2 - v0) * alpha;
                 let b = v1 + (v2 - v1) * beta;
@@ -120,7 +120,7 @@ where
 
     fn sorted_verticies(&self) -> (Vertex, Vertex, Vertex) {
         let mut va = self.vertices();
-        va.sort_by(|a, b| a.y.cmp(&b.y));
+        va.sort_by(|a, b| -> std::cmp::Ordering { a.y.partial_cmp(&b.y).unwrap() });
 
         (va[0], va[1], va[2])
     }

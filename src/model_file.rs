@@ -110,17 +110,17 @@ mod tests {
         assert_eq!(
             vecs[0],
             Vertex {
-                x: 250,
-                y: 66,
-                z: 94,
+                x: 250.,
+                y: 66.,
+                z: 94.,
             }
         );
         assert_eq!(
             vecs[17],
             Vertex {
-                x: 416,
-                y: 92,
-                z: 189,
+                x: 416.,
+                y: 92.,
+                z: 189.,
             }
         );
     }
