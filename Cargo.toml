@@ -5,11 +5,15 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = []
+show_image_render = ["show-image"]
+
 ["dependencies"]
 image_lib = { version = "0.23.14", package = "image" }
 regex = "1.5.4"
 lazy_static = "1.4.0"
-show-image = { version = "0.9.5", features = ["image", "macros"] }
+show-image = { version = "0.9.5", features = ["image", "macros"], optional = true} #not working with one of wgpu web-sys or seed
 rand = "0.8.4"
 nalgebra = "0.29.0"
 quicli = "0.4.0"

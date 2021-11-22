@@ -2,10 +2,11 @@ use quicli::prelude::*;
 use std::thread;
 use structopt::StructOpt;
 
+#[cfg(feature = "show_image_render")]
+use show_image::{create_window, event};
 // fn main() {
 //     make_image("render.tga");
 // }
-use show_image::{create_window, event};
 use tinyrenderer::render::Render;
 use tinyrenderer::*;
 #[derive(Debug, StructOpt)]
@@ -15,13 +16,13 @@ struct Cli {
     #[structopt(default_value = "./assets/head.obj")]
     filename: String,
 }
-
-#[show_image::main]
+#[cfg_attr(feature = "show_image_render", show_image::main)]
 fn main() -> CliResult {
     let args = Cli::from_args();
     let mut render = Render::default();
     render.load_file(&args.filename);
     render.update();
+    #[cfg(feature = "show-image")]
     display_window(&render);
     // const NEED_LARGE_STACK: bool = true;
     // if NEED_LARGE_STACK {
@@ -32,6 +33,7 @@ fn main() -> CliResult {
     Ok(())
 }
 
+#[cfg(feature = "show_image_render")]
 fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
     let image_buffer = render.image_buffer();
     // image.render("render.tga");

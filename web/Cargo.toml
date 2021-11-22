@@ -11,5 +11,6 @@ crate-type = ["cdylib"]
 wasm-bindgen-test = "0.3.18"
 
 [dependencies]
+tinyrenderer = { path = "../" }
 seed = "0.8.0"
 
