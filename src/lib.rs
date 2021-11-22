@@ -57,7 +57,7 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
         z: 40,
     });
 
-    let file = ModelFile::open("head.obj");
+    let file = ModelFile::open("assets/head.obj");
 
     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);
 
@@ -151,10 +151,12 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn render_triangle_test() {
         render_triangle();
     }
     #[test]
+    #[ignore]
     fn make_image_test() {
         let filename = "lib_test_render.tga";
         if Path::new(filename).exists() {
@@ -166,6 +168,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn draw_triangle_test() {
         assert!(draw_triangle(triangle(), false).is_ok());
         assert!(draw_triangle(triangle(), true).is_ok());
@@ -183,7 +186,7 @@ mod tests {
     //     let mut i = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
 
     //     let file = ModelFile {
-    //         filename: "head.obj",
+    //         filename: "assets/head.obj",
     //     };
 
     //     let verticies = file.vertex_parse(IMAGE_SIZE, IMAGE_SIZE);

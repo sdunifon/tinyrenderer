@@ -90,14 +90,22 @@ impl ModelFile {
 mod tests {
     use super::*;
 
+    fn test_file(filename: &str) {
+        let m = ModelFile::open(filename);
+        let verts = m.vertex_parse(500, 500);
+        assert!(verts.len() > 100);
+        let triangles = m.face_parse(&verts);
+        assert!(triangles.len() > 100);
+    }
+
     #[test]
     fn read_test() {
-        let m = ModelFile::open("head.obj");
+        let m = ModelFile::open("assets/head.obj");
         m.vertex_parse(250, 250);
     }
     #[test]
     fn vertex_parse_test() {
-        let m = ModelFile::open("head.obj");
+        let m = ModelFile::open("assets/head.obj");
         let vecs = m.vertex_parse(500, 500);
         assert_eq!(
             vecs[0],
@@ -118,21 +126,32 @@ mod tests {
     }
     #[test]
     fn face_parse_test() {
-        let m = ModelFile::open("head.obj");
+        let m = ModelFile::open("assets/head.obj");
 
         let verts = m.vertex_parse(500, 500);
         let faces = m.face_parse(&verts);
         assert_eq!(faces.len(), 2492);
     }
+
     #[test]
-    #[ignore] //need to add alternative obj face reg experssion
-    fn alternative_files_parse_test() {
-        for filename in ["airboat.obj", "cessna.obj"] {
-            let m = ModelFile::open(filename);
-            let verts = m.vertex_parse(500, 500);
-            assert!(verts.len() > 100);
-            let triangles = m.face_parse(&verts);
-            assert!(triangles.len() > 100);
-        }
+    fn min_max_range_detection_name() {
+        let m = ModelFile::open("assets/head.obj");
+        let verts = m.vertex_parse(500, 500);
+    }
+    #[test]
+    fn parse_head_obj() {
+        test_file("assets/head.obj");
+    }
+    #[test]
+    fn parse_airboat_obj() {
+        test_file("assets/airboat.obj");
+    }
+    #[test]
+    fn parse_torus_obj() {
+        test_file("assets/torus.obj");
+    }
+    #[test]
+    fn parse_cessna_obj() {
+        test_file("assets/cessna.obj");
     }
 }

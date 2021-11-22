@@ -99,7 +99,7 @@ mod tests {
     // use pretty_assertions::{assert_eq, assert_ne};
 
     fn triangles() -> Vec<Triangle> {
-        let m = ModelFile::open("head.obj");
+        let m = ModelFile::open("assets/head.obj");
 
         let verts = m.vertex_parse(500, 500);
         let triangles = m.face_parse(&verts);
