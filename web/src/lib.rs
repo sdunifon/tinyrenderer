@@ -3,14 +3,14 @@
 //! [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawWindow)
 
 use seed::{prelude::*, *};
+mod canvas;
 mod canvas_demo;
-
 // ------ ------
 //     Start
 // ------ ------
 
 //#[wasm_bindgen(start)]
 pub fn start() {
-    canvas_demo::start();
+    canvas::start();
     // App::start("app", init, update, view);
 }
