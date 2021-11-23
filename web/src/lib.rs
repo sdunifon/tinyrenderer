@@ -4,7 +4,6 @@
 
 use seed::{prelude::*, *};
 mod canvas;
-mod canvas_demo;
 // ------ ------
 //     Start
 // ------ ------
