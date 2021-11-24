@@ -70,7 +70,7 @@ where
 impl<const H: usize, const W: usize> Fillable<H, W> for Triangle where [u8; (H + 1) * (W + 1)]: Sized
 {}
 
-impl HasVerticies for Triangle {
+impl HasTriangleVerticies for Triangle {
     fn vertices(&self) -> [Vertex; 3] {
         //TODO make vertex a borrow instead of copy
         self.vertices.map(|v| v)

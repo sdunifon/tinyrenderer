@@ -1,7 +1,7 @@
 use super::*;
 
 // [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
-pub trait Fillable<const H: usize, const W: usize>: HasVerticies + Colorful
+pub trait Fillable<const H: usize, const W: usize>: HasTriangleVerticies + Colorful
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
@@ -20,7 +20,7 @@ where
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
         // if v1.y>v2.y {std::swap(v1, t2)};
-        let vn = self.sorted_verticies();
+        let vn = self.sorted_triangle_vertices();
         let (v0, v1, v2): (Vertex, Vertex, Vertex) = (vn.0, vn.1, vn.2);
         let total_height: i32 = v2.y as i32 - v0.y as i32;
 
@@ -118,7 +118,7 @@ where
         // }
     }
 
-    fn sorted_verticies(&self) -> (Vertex, Vertex, Vertex) {
+    fn sorted_triangle_vertices(&self) -> (Vertex, Vertex, Vertex) {
         let mut va = self.vertices();
         va.sort_by(|a, b| -> std::cmp::Ordering { a.y.partial_cmp(&b.y).unwrap() });
 

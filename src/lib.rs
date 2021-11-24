@@ -45,7 +45,7 @@ use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 
-pub use vertex::{HasVerticies, Vertex, Vertices};
+pub use vertex::{HasTriangleVerticies, Vertex, Vertices};
 pub const IMAGE_SIZE: usize = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 
 pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {

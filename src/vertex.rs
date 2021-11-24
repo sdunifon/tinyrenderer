@@ -19,7 +19,7 @@ pub struct ViewportPixel {
 
 pub type Vertices = Vec<Vertex>;
 // pub trait HasVerticies<const N: usize>
-pub trait HasVerticies {
+pub trait HasTriangleVerticies {
     // fn veuprtices(&self) -> [Vertex; N];
     fn vertices(&self) -> [Vertex; 3];
 
@@ -29,7 +29,7 @@ pub trait HasVerticies {
     }
 }
 
-pub trait HasNormal: HasVerticies {
+pub trait HasNormal: HasTriangleVerticies {
     fn normal(&self) -> Vector3<f64>;
 }
 
