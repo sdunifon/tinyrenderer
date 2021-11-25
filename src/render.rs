@@ -1,13 +1,18 @@
 use super::image::Drawable;
 use super::*;
 use std::path::Path;
+use crate::model_file::ModelFileDrawer;
 
 const RENDER_WIDTH: usize = 400;
 const RENDER_HEIGHT: usize = 400;
 
+pub struct RenderOptions {
+    pub wireframe: bool,
+}
 pub struct Render {
     file: Option<ModelFile>,
     image: Image<RENDER_HEIGHT, RENDER_WIDTH>,
+    options: RenderOptions,
 }
 
 impl Default for Render {
@@ -15,6 +20,7 @@ impl Default for Render {
         Self {
             file: Default::default(),
             image: Image::<RENDER_HEIGHT, RENDER_WIDTH>::new(),
+            options: RenderOptions { wireframe: true },
         }
     }
 }
@@ -38,12 +44,12 @@ impl Render {
     }
 
     pub fn update(&mut self) {
-        for vertex in &self.file.as_ref().unwrap().verticies {
-            self.image.draw(vertex);
-        }
-        for triangle in &self.file.as_ref().unwrap().triangles {
-            triangle.fill(&mut self.image)
-        }
+        let model_file_drawer = ModelFileDrawer{
+            options: &RenderOptions { wireframe: true},
+            model_file: self.file.as_ref().unwrap(),
+        };
+        model_file_drawer.draw(&mut self.image);
+
     }
 
     pub fn image_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {

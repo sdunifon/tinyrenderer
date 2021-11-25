@@ -3,6 +3,7 @@ use std::io::BufReader;
 
 use std::fs::File;
 use std::io::BufRead;
+use crate::render::RenderOptions;
 
 pub struct ModelFile {
     filename: String,
@@ -123,8 +124,6 @@ impl ModelFile {
         self.read_iter(|line: &str| {
             match FACE_RE.captures(line) {
                 Some(captures) => {
-                    println!("{:?}", captures);
-
                     let vertex_indices = [&captures[1], &captures[2], &captures[3]];
                     let vertex_indices: [usize; 3] =
                         vertex_indices.map(|vi_str| vi_str.parse().unwrap());
@@ -139,6 +138,26 @@ impl ModelFile {
     }
 }
 
+
+ pub struct ModelFileDrawer<'a, const H: usize, const W: usize> {
+   pub options: &'a RenderOptions,
+   pub model_file: &'a ModelFile,
+}
+
+impl<'a, const H: usize, const W: usize> Drawable<H, W> for ModelFileDrawer<'a, H, W>
+    where
+        [u8; (H + 1) * (W + 1)]: Sized,
+{
+    fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
+        self.model_file.verticies.draw(drawer);
+        if self.options.wireframe {
+            self.model_file.triangles.draw(drawer);
+        } else {
+            self.model_file.triangles.fill(drawer);
+        }
+
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

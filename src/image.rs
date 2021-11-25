@@ -67,13 +67,42 @@ where
         // Self::xy2i(pt.0, pt.1)
     }
 
+
+
+    pub fn point_in_bounds(&self, pt: Pt) -> Result<Pt, PointOutOfBoundsError> {
+        // if pt.0 > W || pt.1 > H || Self::pt2i(pt) > self.data.len() {
+        if pt.0 > W || pt.1 > H {
+            return Err(PointOutOfBoundsError(pt, Self::pt2i(pt), H, W));
+        }
+        Ok(pt)
+    }
+    // pub fn draw( drawer:( img ) -> () ){
+    //     drawer(self);
+    // }
+
+}
+pub trait Drawer<const H: usize, const W: usize>
+    where
+        [u8; (H + 1) * (W + 1)]: Sized,
+{
+    fn set(&mut self, point: Pt, color: Color);
+    fn get(&self, point: Pt) -> Color;
+    fn draw(&mut self, d: &dyn Drawable<H, W>);
+
+
+}
+impl<const H: usize, const W: usize> Drawer<H,W> for Image<H,W>
+where
+[u8; (H + 1) * (W + 1)]: Sized,
+{
+
     #[inline]
-    pub fn get(&self, pt: Pt) -> Color {
+    fn get(&self, pt: Pt) -> Color {
         self.data[Self::pt2i(pt)]
     }
 
     #[inline]
-    pub fn set(&mut self, pt: Pt, p: Color) {
+    fn set(&mut self, pt: Pt, p: Color) {
         // dbg!(pt.0, pt.1, pt);
 
         if pt.1 > H {
@@ -96,29 +125,19 @@ where
         self.data[Self::pt2i(pt)] = p;
     }
 
-    pub fn point_in_bounds(&self, pt: Pt) -> Result<Pt, PointOutOfBoundsError> {
-        // if pt.0 > W || pt.1 > H || Self::pt2i(pt) > self.data.len() {
-        if pt.0 > W || pt.1 > H {
-            return Err(PointOutOfBoundsError(pt, Self::pt2i(pt), H, W));
-        }
-        Ok(pt)
+    fn draw(&mut self, d: &dyn Drawable<H, W>) {
+        d.draw(self as &mut dyn Drawer<H,W>);
     }
-    // pub fn draw( drawer:( img ) -> () ){
-    //     drawer(self);
-    // }
 
-    pub fn draw(&mut self, d: &dyn Drawable<H, W>) {
-        d.draw(self)
-    }
 }
-
 pub trait Drawable<const H: usize, const W: usize>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, image: &mut Image<H, W>);
+    fn draw(&self, drawer: &mut dyn Drawer<H,W >);
     // fn draw2(&self, image: &mut Image<H, W>);
 }
+
 
 #[cfg(test)]
 mod tests {

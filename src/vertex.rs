@@ -72,9 +72,6 @@ struct NormalizedVertices {
 }
 
 impl NormalizedVertices {
-    fn calculate_scale(vertices: Vertices) -> f64 {
-        todo!()
-    }
     fn calculate_vertex_range(vertices: &Vertices) -> VertexRange {
         debug_assert!(
             vertices.len() > 0,
@@ -173,12 +170,20 @@ impl Vertex {
         todo!()
     }
 }
+impl<const H: usize, const W: usize> Drawable<H, W> for Vertices
+where
+[u8; (H + 1) * (W + 1)]: Sized,
+{
+    fn draw(&self, image: &mut dyn Drawer<H,W>) {
+      self.iter().for_each(|v| v.draw(image))
+    }
+}
 
 impl<const H: usize, const W: usize> Drawable<H, W> for Vertex
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, canvas: &mut Image<H, W>) {
+    fn draw(&self, canvas: &mut dyn Drawer<H,W>) {
         canvas.set(
             Pt(self.x as usize, self.y as usize),
             Color { r: 0, g: 0, b: 255 },
