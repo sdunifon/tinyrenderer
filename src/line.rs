@@ -1,14 +1,16 @@
 use super::*;
 
 use std::mem;
-pub struct Line {
-    p1: Pt,
-    p2: Pt,
+use crate::vertex::ToPoint;
+
+pub struct Line<const H:usize,const W:usize> {
+    p1: Pt<H,W>,
+    p2: Pt<H,W>,
     color: Color,
 }
 
-impl Line {
-    pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line {
+impl<const H:usize, const W:usize> Line<H,W> {
+    pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line<H,W> {
         Line {
             p1: v1.to_point(),
             p2: v2.to_point(),
@@ -17,7 +19,7 @@ impl Line {
     }
 }
 
-impl<const H: usize, const W: usize> Drawable<H, W> for Line
+impl<const H: usize, const W: usize> Drawable<H, W> for Line<H,W>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {

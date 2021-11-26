@@ -38,14 +38,7 @@ impl Triangle {
     pub fn new(vertices: [Vertex; 3]) -> Triangle {
         Triangle { vertices }
     }
-    pub fn lines(&self) -> [Line; 3] {
-        [
-            Line::from_vertices(&self.vertices[0], &self.vertices[1]),
-            Line::from_vertices(&self.vertices[0], &self.vertices[2]),
-            Line::from_vertices(&self.vertices[1], &self.vertices[2]),
-        ]
-    }
-    fn sorted_triangle_vertices( &self) -> (Vertex, Vertex, Vertex) {
+   fn sorted_triangle_vertices( &self) -> (Vertex, Vertex, Vertex) {
         let mut va = self.vertices();
         va.sort_by(|a, b| -> std::cmp::Ordering { a.y.partial_cmp(&b.y).unwrap() });
 
@@ -53,6 +46,18 @@ impl Triangle {
     }
 }
 
+trait ToLines<const H:usize, const W:usize> {
+    fn lines(&self) -> [Line<H,W>; 3];
+}
+impl<const H:usize, const W:usize> ToLines<H,W> for  Triangle {
+    fn lines(&self) -> [Line<H,W>; 3] {
+        [
+            Line::from_vertices(&self.vertices[0], &self.vertices[1]),
+            Line::from_vertices(&self.vertices[0], &self.vertices[2]),
+            Line::from_vertices(&self.vertices[1], &self.vertices[2]),
+        ]
+    }
+}
 impl HasNormal for Triangle {
     fn normal(&self) -> Vector3<f64> {
         let vector_array = self.vectors();
