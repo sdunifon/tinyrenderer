@@ -121,7 +121,7 @@ where
             pt.1,
             H
         );
-        // dbg!(pt);
+        dbg!(pt);
         self.data[Self::pt2i(pt)] = p;
     }
 

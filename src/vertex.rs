@@ -184,8 +184,12 @@ where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, canvas: &mut dyn Drawer<H,W>) {
+        let resized_vertex = *self * (H.max(W)/2) as f64; //TODO move this to set maybe?
+        let center_adjust_x: i32 = (W as i32)/2;
+        let center_adjust_y: i32 = (H as i32)/2;
+        let canavas_point = Pt((resized_vertex.x.round() as i32  + center_adjust_x).try_into().unwrap(), (resized_vertex.y.round() as i32 + center_adjust_y).try_into().unwrap());
         canvas.set(
-            Pt(self.x as usize, self.y as usize),
+            canavas_point,
             Color { r: 0, g: 0, b: 255 },
         )
     }
