@@ -3,11 +3,13 @@ use std::io::BufReader;
 
 use std::fs::File;
 use std::io::BufRead;
+use std::ops::Deref;
 use crate::render::RenderOptions;
+use crate::vertex::{NormalizedVertices};
 
 pub struct ModelFile {
     filename: String,
-    pub verticies: Vertices, // create normalized verticies
+    pub verticies: Option<NormalizedVertices>, // create normalized verticies
     pub triangles: Triangles,
     file_vertex_range: Option<VertexRange>, //TODO get rid of this causes extra complexity
 }
@@ -30,7 +32,7 @@ impl ModelFile {
     pub fn open(filename: &str) -> ModelFile {
         ModelFile {
             filename: filename.to_string(),
-            verticies: Vec::new(),
+            verticies: None,
             triangles: Vec::new(),
             file_vertex_range: None,
         }
@@ -48,19 +50,19 @@ impl ModelFile {
 
     fn calculate_vertex_range(&mut self) {
         //TODO remove mutable/get rid of side effects
-        debug_assert!(
-            self.verticies.len() > 0,
-            "Cannot calculate vertext range  because vertexes have not been parsed"
-        );
+        if self.verticies.is_none()  {
+            panic!("vertices have not been parsed yet")
+        }
+
         let mut range = VertexRange { min: 0., max: 0. };
-        for &vertex in &self.verticies {
+        for vertex in self.verticies.as_ref().unwrap().deref() {  //TODO why is deref not working??
             let Vertex { x, y, z } = vertex;
             for dimension in [x, y, z] {
-                if dimension > range.max {
-                    range.max = dimension;
+                if dimension > &range.max {
+                    range.max = *dimension;
                 }
-                if dimension < range.min {
-                    range.min = dimension;
+                if dimension < &range.min {
+                    range.min = *dimension;
                 }
             }
         }
@@ -68,8 +70,10 @@ impl ModelFile {
     }
 
     pub fn load(&mut self) {
-        self.verticies = self.vertex_parse();
-        self.triangles = self.face_parse(&self.verticies);
+        let original_vertices = self.vertex_parse();
+
+        self.verticies = Some(NormalizedVertices::from(original_vertices));
+        self.triangles = self.face_parse(&self.verticies.as_ref().unwrap());
         self.calculate_vertex_range();
     }
 
@@ -149,7 +153,7 @@ impl<'a, const H: usize, const W: usize> Drawable<H, W> for ModelFileDrawer<'a, 
         [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
-        self.model_file.verticies.draw(drawer);
+        self.model_file.verticies.as_ref().unwrap().draw(drawer);
         if self.options.wireframe {
             self.model_file.triangles.draw(drawer);
         } else {

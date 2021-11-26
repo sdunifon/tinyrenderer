@@ -66,10 +66,20 @@ impl Deref for SortedVertices {
     }
 }
 
-struct NormalizedVertices {
+impl Deref for NormalizedVertices {
+    type Target = Vertices;
+
+    fn deref(&self) -> &Self::Target {
+       &self.vertices
+    }
+}
+
+pub struct NormalizedVertices {
     scale: f64,
     vertices: Vertices,
 }
+
+
 
 impl NormalizedVertices {
     fn calculate_vertex_range(vertices: &Vertices) -> VertexRange {
