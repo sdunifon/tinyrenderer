@@ -1,4 +1,5 @@
 use quicli::prelude::*;
+use std::error::Error;
 use std::thread;
 use structopt::StructOpt;
 
@@ -6,22 +7,23 @@ use structopt::StructOpt;
 //     make_image("render.tga");
 // }
 use show_image::{create_window, event};
-use tinyrenderer::render::Render;
+use tinyrenderer::render::{Render, RenderError};
+use tinyrenderer::*;
 #[derive(Debug, StructOpt)]
 struct Cli {
     #[structopt(long = "render-type", short = "r", default_value = "full")]
     render_type: String,
-    #[structopt(default_value = "./assets/airboat.obj")]
+    #[structopt(default_value = "./assets/head.obj")]
     filename: String,
 }
 
 #[show_image::main]
-fn main() -> CliResult {
+fn main() -> Result<(), Box<dyn Error>> {
     let args = Cli::from_args();
-    let mut render = Render::default();
-    render.load_file(&args.filename);
-    render.update();
-    display_window(&render).unwrap();
+    let render = setup_render_no_error(&args.filename);
+    // let render = setup_render(&args.filename)?;
+    display_window(&render)?;
+    // image.render("render.tga");
     // const NEED_LARGE_STACK: bool = true;
     // if NEED_LARGE_STACK {
     //     image_render_on_large_stack_thread();
@@ -31,12 +33,25 @@ fn main() -> CliResult {
     Ok(())
 }
 
+// fn setup_render(filename: &str) {
+fn setup_render(filename: &str) -> Result<Render, RenderError> {
+    let mut render = Render::default();
+    render.load_file(filename)?;
+    render.update()?;
+    Ok(render)
+}
+
+fn setup_render_no_error(filename: &str) -> Render {
+    //TODO remove this and fix setup_render which is crashing with a stackoverflow
+    let mut render = Render::default();
+    render.load_file(filename);
+    render.update();
+    render
+}
+
 fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
     let image_buffer = render.image_buffer();
-    // image.render("render.tga");
-    // let image = ImageView::new(ImageInfo::rgb8(1920, 1080), pixel_data);
 
-    // // Create a window with default options and display the image.
     let window = create_window("image", Default::default())?;
     window.set_image("image-001", image_buffer)?;
 
@@ -94,3 +109,23 @@ fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
 
 //     Ok(())
 // }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[ignore]
+    // fn setup_render_test() -> Result<(), Box<dyn std::error::Error>> {
+    fn setup_render_test() {
+        let a = setup_render("assets/head.obj");
+        // setup_render("assets/head.obj")?;
+        // Ok(())
+    }
+    #[test]
+    fn setup_render_no_error_test() {
+        let a = setup_render_no_error("assets/head.obj");
+        // setup_render("assets/head.obj")?;
+        // Ok(())
+    }
+}
