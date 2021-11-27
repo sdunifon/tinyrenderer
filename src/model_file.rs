@@ -1,37 +1,22 @@
 use super::*;
 use std::io::BufReader;
 
+use crate::render::RenderOptions;
 use std::fs::File;
 use std::io::BufRead;
 
 pub struct ModelFile {
     filename: String,
-    pub verticies: Vertices, // create normalized verticies
+    pub verticies: Option<NormalizedVertices>, // create normalized verticies
     pub triangles: Triangles,
-    file_vertex_range: Option<VertexRange>, //TODO get rid of this causes extra complexity
-}
-#[derive(Debug, PartialEq)]
-pub struct VertexRange {
-    min: f64,
-    max: f64,
-}
-impl VertexRange {
-    fn highest(&self) -> f64 {
-        if self.min.abs() < self.max.abs() {
-            self.max.abs()
-        } else {
-            self.min.abs()
-        }
-    }
 }
 
 impl ModelFile {
     pub fn open(filename: &str) -> ModelFile {
         ModelFile {
             filename: filename.to_string(),
-            verticies: Vec::new(),
+            verticies: None,
             triangles: Vec::new(),
-            file_vertex_range: None,
         }
     }
 
@@ -45,31 +30,11 @@ impl ModelFile {
         }
     }
 
-    fn calculate_vertex_range(&mut self) {
-        //TODO remove mutable/get rid of side effects
-        debug_assert!(
-            self.verticies.len() > 0,
-            "Cannot calculate vertext range  because vertexes have not been parsed"
-        );
-        let mut range = VertexRange { min: 0., max: 0. };
-        for &vertex in &self.verticies {
-            let Vertex { x, y, z } = vertex;
-            for dimension in [x, y, z] {
-                if dimension > range.max {
-                    range.max = dimension;
-                }
-                if dimension < range.min {
-                    range.min = dimension;
-                }
-            }
-        }
-        self.file_vertex_range = Some(range);
-    }
-
     pub fn load(&mut self) {
-        self.verticies = self.vertex_parse();
-        self.triangles = self.face_parse(&self.verticies);
-        self.calculate_vertex_range();
+        let original_vertices = self.vertex_parse();
+
+        self.verticies = Some(NormalizedVertices::from(original_vertices));
+        self.triangles = self.face_parse(&self.verticies.as_ref().unwrap());
     }
 
     pub fn vertex_parse(&self) -> Vertices {
@@ -101,15 +66,6 @@ impl ModelFile {
         verticies
     }
 
-    pub fn normalize_verticies(verticies: Vertices, value_range: VertexRange) -> Vertices {
-        let mut normalized_verticies = Vertices::new();
-        let scale = value_range.highest();
-        for vertex in verticies {
-            normalized_verticies.push(vertex / scale);
-        }
-        normalized_verticies
-    }
-
     pub fn face_parse(&self, verticies: &Vertices) -> Triangles {
         lazy_static! {
             static ref FACE_RE: Regex =
@@ -123,8 +79,6 @@ impl ModelFile {
         self.read_iter(|line: &str| {
             match FACE_RE.captures(line) {
                 Some(captures) => {
-                    println!("{:?}", captures);
-
                     let vertex_indices = [&captures[1], &captures[2], &captures[3]];
                     let vertex_indices: [usize; 3] =
                         vertex_indices.map(|vi_str| vi_str.parse().unwrap());
@@ -139,6 +93,24 @@ impl ModelFile {
     }
 }
 
+pub struct ModelFileDrawer<'a, const H: usize, const W: usize> {
+    pub options: &'a RenderOptions,
+    pub model_file: &'a ModelFile,
+}
+
+impl<'a, const H: usize, const W: usize> Drawable<H, W> for ModelFileDrawer<'a, H, W>
+where
+    [u8; (H + 1) * (W + 1)]: Sized,
+{
+    fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
+        self.model_file.verticies.as_ref().unwrap().draw(drawer);
+        if self.options.wireframe {
+            self.model_file.triangles.draw(drawer);
+        } else {
+            self.model_file.triangles.fill(drawer);
+        }
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -187,11 +159,6 @@ mod tests {
     }
 
     #[test]
-    fn min_max_range_detection_name() {
-        let m = ModelFile::open("assets/head.obj");
-        let verts = m.vertex_parse();
-    }
-    #[test]
     fn parse_head_obj() {
         test_file("assets/head.obj");
     }
@@ -206,103 +173,5 @@ mod tests {
     #[test]
     fn parse_cessna_obj() {
         test_file("assets/cessna.obj");
-    }
-    #[test]
-    fn calculate_file_vertex_range_cessna_test() {
-        let mut f = ModelFile::open("assets/cessna.obj");
-        f.load();
-        assert_eq!(
-            VertexRange {
-                min: -22.152081,
-                max: 22.152081,
-            },
-            f.file_vertex_range.unwrap()
-        )
-    }
-    #[test]
-    fn calculate_file_vertex_range_head_test() {
-        let mut f = ModelFile::open("assets/head.obj");
-        f.load();
-        assert_eq!(
-            VertexRange { min: -1., max: 1. },
-            f.file_vertex_range.unwrap()
-        )
-    }
-
-    #[test]
-    fn normalize_verticies_test() {
-        let verts: Vertices = vec![
-            Vertex {
-                x: 1.0,
-                y: 2.0,
-                z: 3.0,
-            },
-            Vertex {
-                x: 4.0,
-                y: -10.0,
-                z: 10.0,
-            },
-        ];
-        let norm_verts = ModelFile::normalize_verticies(
-            verts,
-            VertexRange {
-                min: -10.0,
-                max: 10.0,
-            },
-        );
-        assert_eq!(
-            norm_verts[0],
-            Vertex {
-                x: 0.1,
-                y: 0.2,
-                z: 0.3
-            }
-        );
-        assert_eq!(
-            norm_verts[1],
-            Vertex {
-                x: 0.4,
-                y: -1.0,
-                z: 1.0
-            }
-        );
-    }
-    #[test]
-    fn normalize_verticies_test_2() {
-        let verts: Vertices = vec![
-            Vertex {
-                x: 1.0,
-                y: -4.0,
-                z: 2.0,
-            },
-            Vertex {
-                x: 1.0,
-                y: 2.0,
-                z: -3.0,
-            },
-        ];
-        let norm_verts = ModelFile::normalize_verticies(
-            verts,
-            VertexRange {
-                min: -4.0,
-                max: 2.0,
-            },
-        );
-        assert_eq!(
-            norm_verts[0],
-            Vertex {
-                x: 0.25,
-                y: -1.0,
-                z: 0.5
-            }
-        );
-        assert_eq!(
-            norm_verts[1],
-            Vertex {
-                x: 0.25,
-                y: 0.5,
-                z: -0.75
-            }
-        );
     }
 }

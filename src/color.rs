@@ -1,5 +1,3 @@
-use super::*;
-
 #[derive(PartialEq, Debug, Default, Clone, Copy)]
 pub struct Color {
     pub r: u8,

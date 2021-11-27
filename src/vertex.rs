@@ -1,25 +1,60 @@
-use std::ops;
+mod normalized_vertices;
 
 use super::*;
+pub use normalized_vertices::NormalizedVertices;
+use std::cmp::Ordering;
+use std::ops;
+use std::ops::Deref;
 
-#[derive(Debug, Clone, Copy, PartialEq)] //TODO remove copy
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)] //TODO remove copy
 pub struct Vertex {
-    // note could have aditional data like color
     pub x: f64,
     pub y: f64,
     pub z: f64,
 }
 
-pub struct ViewportPixel {
-    // note could have a1ditional data like color
-    pub x: u16,
-    pub y: u16,
-    pub z: u16,
+impl Eq for Vertex {}
+
+impl Ord for Vertex {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.y.partial_cmp(&other.y).expect("NAN")
+    }
 }
 
-pub type Vertices = Vec<Vertex>;
-// pub trait HasVerticies<const N: usize>
-pub trait HasVerticies {
+struct SortedVertices(Vertices);
+
+impl From<Vertices> for SortedVertices {
+    fn from(mut vertices: Vertices) -> Self {
+        vertices.sort();
+        Self(vertices)
+    }
+}
+
+impl Deref for SortedVertices {
+    type Target = Vertices;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+pub type Vertices = Vec<Vertex>; // abstract into own impl with all the needed vertice functions
+
+trait ToSortedVertices {
+    fn to_sorted_vertices(self) -> SortedVertices;
+    // {
+    //     self.sort();
+    //     SortedVertices(self)
+    // }
+}
+
+impl ToSortedVertices for Vertices {
+    fn to_sorted_vertices(mut self) -> SortedVertices {
+        self.sort();
+        SortedVertices(self)
+    }
+}
+pub trait HasTriangleVerticies {
     // fn veuprtices(&self) -> [Vertex; N];
     fn vertices(&self) -> [Vertex; 3];
 
@@ -29,7 +64,7 @@ pub trait HasVerticies {
     }
 }
 
-pub trait HasNormal: HasVerticies {
+pub trait HasNormal: HasTriangleVerticies {
     fn normal(&self) -> Vector3<f64>;
 }
 
@@ -42,9 +77,24 @@ impl Vertex {
             z: ((z + 1.0) * (avg_resize / 2.0)).round() as f64, //not sure if that should be resized
         }
     }
+}
 
-    pub fn to_point(&self) -> Pt {
-        Pt(self.x as usize, self.y as usize)
+pub trait ToPoint<const H: usize, const W: usize> {
+    fn to_point(&self) -> Pt<H, W>;
+}
+
+impl<const H: usize, const W: usize> ToPoint<H, W> for Vertex {
+    fn to_point(&self) -> Pt<H, W> {
+        Pt::<H, W>::from(self)
+    }
+}
+
+impl<const H: usize, const W: usize> Drawable<H, W> for Vertices
+where
+    [u8; (H + 1) * (W + 1)]: Sized,
+{
+    fn draw(&self, image: &mut dyn Drawer<H, W>) {
+        self.iter().for_each(|v| v.draw(image))
     }
 }
 
@@ -52,16 +102,9 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Vertex
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, canvas: &mut Image<H, W>) {
-        canvas.set(
-            Pt(self.x as usize, self.y as usize),
-            Color { r: 0, g: 0, b: 255 },
-        )
+    fn draw(&self, canvas: &mut dyn Drawer<H, W>) {
+        canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }
-
-    // fn draw2(&self, _canvas: &mut Image<H, W>) {
-    //     todo!()
-    // }
 }
 
 impl ops::Add<Vertex> for Vertex {
@@ -107,6 +150,17 @@ impl ops::Div<f64> for Vertex {
             x: (self.x / rhs),
             y: (self.y / rhs),
             z: (self.z / rhs),
+        }
+    }
+}
+impl ops::Add<f64> for Vertex {
+    type Output = Vertex;
+
+    fn add(self, rhs: f64) -> Self::Output {
+        Vertex {
+            x: (self.x + rhs),
+            y: (self.y + rhs),
+            z: (self.z + rhs),
         }
     }
 }

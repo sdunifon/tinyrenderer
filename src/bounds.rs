@@ -21,7 +21,7 @@ impl BoundingBox {
     }
 }
 
-pub trait Boundable: HasVerticies {
+pub trait Boundable: HasTriangleVerticies {
     fn bounding_box(&self) -> BoundingBox {
         let vertex_array = self.vertices();
 

@@ -4,3 +4,4 @@
 .DS_Store
 web/dist
 assets/backup
+.idea/
