@@ -12,8 +12,8 @@ pub struct Triangle {
 pub type Triangles = Vec<Triangle>;
 
 impl<const H: usize, const W: usize> Drawable<H, W> for Triangles
-    where
-        [u8; (H + 1) * (W + 1)]: Sized,
+where
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
         for triangle in self {
@@ -21,24 +21,22 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Triangles
         }
     }
 }
-impl<const H: usize, const W: usize> Fillable<H,W> for Triangles
-    where
-        [u8; (H + 1) * (W + 1)]: Sized,
+impl<const H: usize, const W: usize> Fillable<H, W> for Triangles
+where
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn fill(&self, drawer: &mut dyn Drawer<H,W>){
+    fn fill(&self, drawer: &mut dyn Drawer<H, W>) {
         for triangle in self {
             triangle.fill(drawer)
         }
     }
 }
-impl Colorful for Triangles {
-
-}
+impl Colorful for Triangles {}
 impl Triangle {
     pub fn new(vertices: [Vertex; 3]) -> Triangle {
         Triangle { vertices }
     }
-   fn sorted_triangle_vertices( &self) -> (Vertex, Vertex, Vertex) {
+    fn sorted_triangle_vertices(&self) -> (Vertex, Vertex, Vertex) {
         let mut va = self.vertices();
         va.sort_by(|a, b| -> std::cmp::Ordering { a.y.partial_cmp(&b.y).unwrap() });
 
@@ -46,11 +44,11 @@ impl Triangle {
     }
 }
 
-trait ToLines<const H:usize, const W:usize> {
-    fn lines(&self) -> [Line<H,W>; 3];
+trait ToLines<const H: usize, const W: usize> {
+    fn lines(&self) -> [Line<H, W>; 3];
 }
-impl<const H:usize, const W:usize> ToLines<H,W> for  Triangle {
-    fn lines(&self) -> [Line<H,W>; 3] {
+impl<const H: usize, const W: usize> ToLines<H, W> for Triangle {
+    fn lines(&self) -> [Line<H, W>; 3] {
         [
             Line::from_vertices(&self.vertices[0], &self.vertices[1]),
             Line::from_vertices(&self.vertices[0], &self.vertices[2]),
@@ -90,7 +88,7 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Triangle
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, image: &mut dyn Drawer<H,W>) {
+    fn draw(&self, image: &mut dyn Drawer<H, W>) {
         for line in self.lines() {
             image.draw(&line)
         }
@@ -100,8 +98,6 @@ where
     //     todo!()
     // }
 }
-
-
 
 impl HasTriangleVerticies for Triangle {
     fn vertices(&self) -> [Vertex; 3] {
@@ -117,20 +113,20 @@ impl Colorful for Triangle {
         let brightness: u8 = self.brightness();
         let Color { r, g, b } = self.base_color();
 
-        let c = Color {
+        let color = Color {
             r: ((r as f64) * (brightness as f64 / 255.0)) as u8,
             g: ((g as f64) * (brightness as f64 / 255.0)) as u8,
             b: ((b as f64) * (brightness as f64 / 255.0)) as u8,
         };
-        let v = 5;
-        c
+        color
     }
 }
 
 impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
-    where [u8; (H + 1) * (W + 1)]: Sized
+where
+    [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn fill(&self, image: &mut dyn Drawer<H,W>) {
+    fn fill(&self, image: &mut dyn Drawer<H, W>) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
@@ -232,8 +228,6 @@ impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
         //     }
         // }
     }
-
-
 }
 #[cfg(test)]
 mod tests {
@@ -444,6 +438,7 @@ mod tests {
         assert_eq!(t.brightness(), 0);
     }
 
+    #[test]
     fn brightness_full_test() {
         let t = Triangle {
             vertices: [

@@ -1,16 +1,16 @@
 use super::*;
 
-use std::mem;
 use crate::vertex::ToPoint;
+use std::mem;
 
-pub struct Line<const H:usize,const W:usize> {
-    p1: Pt<H,W>,
-    p2: Pt<H,W>,
+pub struct Line<const H: usize, const W: usize> {
+    p1: Pt<H, W>,
+    p2: Pt<H, W>,
     color: Color,
 }
 
-impl<const H:usize, const W:usize> Line<H,W> {
-    pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line<H,W> {
+impl<const H: usize, const W: usize> Line<H, W> {
+    pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line<H, W> {
         Line {
             p1: v1.to_point(),
             p2: v2.to_point(),
@@ -19,11 +19,11 @@ impl<const H:usize, const W:usize> Line<H,W> {
     }
 }
 
-impl<const H: usize, const W: usize> Drawable<H, W> for Line<H,W>
+impl<const H: usize, const W: usize> Drawable<H, W> for Line<H, W>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, canvas: &mut dyn Drawer<H,W>) {
+    fn draw(&self, canvas: &mut dyn Drawer<H, W>) {
         let (Pt(mut x0, mut y0), Pt(mut x1, mut y1)) = (self.p1, self.p2);
 
         let mut steep = false;

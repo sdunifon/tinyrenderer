@@ -7,12 +7,11 @@ use structopt::StructOpt;
 // }
 use show_image::{create_window, event};
 use tinyrenderer::render::Render;
-use tinyrenderer::*;
 #[derive(Debug, StructOpt)]
 struct Cli {
     #[structopt(long = "render-type", short = "r", default_value = "full")]
     render_type: String,
-    #[structopt(default_value = "./assets/cessna.obj")]
+    #[structopt(default_value = "./assets/airboat.obj")]
     filename: String,
 }
 
@@ -22,7 +21,7 @@ fn main() -> CliResult {
     let mut render = Render::default();
     render.load_file(&args.filename);
     render.update();
-    display_window(&render);
+    display_window(&render).unwrap();
     // const NEED_LARGE_STACK: bool = true;
     // if NEED_LARGE_STACK {
     //     image_render_on_large_stack_thread();
