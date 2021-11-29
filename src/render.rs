@@ -4,8 +4,8 @@ use crate::model_file::ModelFileDrawer;
 use std::path::Path;
 use std::{error, fmt};
 
-const RENDER_WIDTH: usize = 400;
-const RENDER_HEIGHT: usize = 400;
+const RENDER_WIDTH: usize = 150;
+const RENDER_HEIGHT: usize = 150;
 
 pub struct Render {
     file: Option<ModelFile>,

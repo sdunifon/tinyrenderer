@@ -5,19 +5,24 @@ use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
 fn init(_: Url, orders: &mut impl Orders<Msg>) -> Model {
     orders.after_next_render(|_| Msg::Rendered);
-    Model::default()
+    let mut model = Model::default();
+    // model.renderer.load_file("assets/cessna.obj");
+    model
 }
+
 const IMAGE_SIZE: usize = 400;
 struct Model {
     x: f64,
     y: f64,
     zoom: f64,
     canvas: ElRef<HtmlCanvasElement>,
+    renderer: Render
 }
 
 enum Msg {
     Rendered,
     Action,
+    DownloadFile,
 }
 
 impl Default for Model {
@@ -27,6 +32,7 @@ impl Default for Model {
             y: 0.0,
             zoom: 1.,
             canvas: ElRef::<HtmlCanvasElement>::default(),
+            renderer: Render::default(),
         }
     }
 }
@@ -54,7 +60,10 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
             draw(&model.canvas, &model);
             orders.after_next_render(|_| Msg::Rendered).skip();
         }
-        Msg::Action => todo!(),
+        Msg::Action => {
+            log("Action");
+        },
+        Msg::DownloadFile => todo!(),
     }
 }
 
@@ -71,7 +80,7 @@ fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
     ctx.set_fill_style(&JsValue::from_str("green"));
     ctx.fill();
     ctx.move_to(0., 0.);
-    ctx.line_to(200., 200.);
+    ctx.line_to(200., 250.);
     ctx.stroke();
     set_pixel(
         &mut ctx,
@@ -83,10 +92,15 @@ fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
             g: 0,
         },
     );
-    for x in 0..=width as u32 {
-        for y in 0..=height as u32 {
+    draw_buffer(ctx, model);
+
+}
+
+fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model){
+    for x in 0..=model.renderer.width() as u32 {
+        for y in 0..=model.renderer.height() as u32 {
             let color: Color;
-            if y < 50 {
+            if y < 80 {
                 color = Color { r: 240, g: 0, b: 0 };
             } else {
                 color = Color { r: 0, g: 200, b: 0 };
@@ -96,6 +110,9 @@ fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
     }
 }
 
+trait DrawBuffer {
+    fn draw_buffer(ctx: CanvasRenderingContext2d);
+}
 // trait SetPixel{
 fn set_pixel(ctx: &mut CanvasRenderingContext2d, x: u32, y: u32, color: Color) {
     let color_str = format!("rgba({},{},{},{})", color.r, color.g, color.b, 1);
