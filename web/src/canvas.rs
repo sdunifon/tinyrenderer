@@ -1,11 +1,12 @@
 use seed::{prelude::*, *};
 
+use serde::{Deserialize, Serialize};
 use tinyrenderer::{Color, Render};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
 fn init(_: Url, orders: &mut impl Orders<Msg>) -> Model {
     orders.after_next_render(|_| Msg::Rendered);
-    let mut model = Model::default();
+    let model = Model::default();
     // model.renderer.load_file("assets/cessna.obj");
     model
 }
@@ -16,13 +17,16 @@ struct Model {
     y: f64,
     zoom: f64,
     canvas: ElRef<HtmlCanvasElement>,
-    renderer: Render
+    renderer: Render,
+    filename: String,
 }
 
 enum Msg {
     Rendered,
     Action,
     DownloadFile,
+    Fetched(fetch::Result<String>),
+    Test,
 }
 
 impl Default for Model {
@@ -33,25 +37,9 @@ impl Default for Model {
             zoom: 1.,
             canvas: ElRef::<HtmlCanvasElement>::default(),
             renderer: Render::default(),
+            filename: "cessna.obj".to_string(),
         }
     }
-}
-
-fn view(model: &Model) -> impl IntoNodes<Msg> {
-    div![
-        style! { St::Display => "flex"},
-        canvas![
-            el_ref(&model.canvas),
-            attrs![
-              At::Width => px(400), //model.render.width()),
-              At::Height => px(400), //model.render.height()),
-            ],
-            style![
-              St::Border => "1px solid black"
-            ],
-        ],
-        button!["Action", ev(Ev::Click, |_| Msg::Action)]
-    ]
 }
 
 fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
@@ -61,10 +49,65 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
             orders.after_next_render(|_| Msg::Rendered).skip();
         }
         Msg::Action => {
-            log("Action");
-        },
-        Msg::DownloadFile => todo!(),
+            log("bAction");
+            // orders.send_msg(Msg::DownloadFile);
+            download_file("cessna.obj");
+            log("after downlaod");
+            orders.after_next_render(|_| Msg::Test).skip();
+
+            Msg::Test;
+        }
+        Msg::Fetched(Ok(response_data)) => {
+            log("got it result ok");
+            log(response_data);
+        }
+        Msg::Fetched(Err(response_data)) => {
+            log("got it");
+        }
+        Msg::DownloadFile => {
+            log("outside downloading file");
+
+            orders
+                .skip()
+                .perform_cmd({ async { Msg::Fetched(download_file("assets/cessna.obj").await) } });
+        }
+        Msg::Test => {
+            log("testing 1 2 3".to_string());
+        }
     }
+}
+//TODO do we really need serde? just got it from the example
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct SendMessageRequestBody {
+    pub text: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct SendMessageResponseBody {
+    pub ordinal_number: u32,
+    pub text: String,
+}
+
+async fn send_message(new_message: String) -> fetch::Result<String> {
+    Request::new("asdf.html")
+        .method(Method::Post)
+        .json(&SendMessageRequestBody { text: new_message })?
+        .fetch()
+        .await?
+        .check_status()?
+        .json()
+        .await
+}
+
+async fn download_file(filename: &str) -> fetch::Result<String> {
+    log("inside downloading file");
+    Request::new(filename)
+        .method(Method::Get)
+        .fetch()
+        .await?
+        .check_status()?
+        .text()
+        .await
 }
 
 fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
@@ -93,10 +136,9 @@ fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
         },
     );
     draw_buffer(ctx, model);
-
 }
 
-fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model){
+fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
     for x in 0..=model.renderer.width() as u32 {
         for y in 0..=model.renderer.height() as u32 {
             let color: Color;
@@ -110,6 +152,22 @@ fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model){
     }
 }
 
+fn view(model: &Model) -> impl IntoNodes<Msg> {
+    div![
+        style! { St::Display => "flex"},
+        canvas![
+            el_ref(&model.canvas),
+            attrs![
+              At::Width => px(400), //model.render.width()),
+              At::Height => px(400), //model.render.height()),
+            ],
+            style![
+              St::Border => "1px solid black"
+            ],
+        ],
+        button!["Action", ev(Ev::Click, |_| Msg::DownloadFile)]
+    ]
+}
 trait DrawBuffer {
     fn draw_buffer(ctx: CanvasRenderingContext2d);
 }
