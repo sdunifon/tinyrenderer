@@ -57,7 +57,7 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
         z: 40.,
     });
 
-    let file = ModelFile::open("assets/head.obj");
+    let file = ModelFile::open_file("assets/head.obj");
 
     let verticies = file.vertex_parse();
 

@@ -92,7 +92,7 @@ mod tests {
 
     #[test]
     fn vertex_range_cessna_test() {
-        let f = ModelFile::open("assets/cessna.obj");
+        let f = ModelFile::open_file("assets/cessna.obj");
         let verts = f.vertex_parse();
 
         let calculated_range = NormalizedVertices::calculate_vertex_range(&verts);
@@ -106,7 +106,7 @@ mod tests {
     }
     #[test]
     fn vertex_range_head_test() {
-        let f = ModelFile::open("assets/head.obj");
+        let f = ModelFile::open_file("assets/head.obj");
         let verts = f.vertex_parse();
 
         let calculated_range = NormalizedVertices::calculate_vertex_range(&verts);
@@ -120,21 +120,21 @@ mod tests {
     }
     #[test]
     fn calculate_scale_cessna_test() {
-        let mut f = ModelFile::open("assets/cessna.obj");
+        let mut f = ModelFile::open_file("assets/cessna.obj");
         f.load();
         assert_eq!(22.152081, f.vertices.unwrap().scale)
     }
 
     #[test]
     fn calculate_scale_head_test() {
-        let mut f = ModelFile::open("assets/head.obj");
+        let mut f = ModelFile::open_file("assets/head.obj");
         f.load();
         assert_eq!(1.0, f.vertices.unwrap().scale)
     }
 
     #[test]
     fn calculate_scale_airboat_test() {
-        let mut f = ModelFile::open("assets/airboat.obj");
+        let mut f = ModelFile::open_file("assets/airboat.obj");
         f.load();
         assert_eq!(8.114171, f.vertices.unwrap().scale)
     }

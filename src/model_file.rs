@@ -5,28 +5,49 @@ use crate::render::RenderOptions;
 use std::fs::File;
 use std::io::BufRead;
 
+#[derive(Default)]
 pub struct ModelFile {
-    filename: String,
+    pub file_data: Vec<String>,
     pub vertices: Option<NormalizedVertices>, // create normalized verticies
     pub triangles: Triangles,
 }
 
-impl ModelFile {
-    pub fn open(filename: &str) -> ModelFile {
+impl From<&str> for ModelFile {
+    fn from(str: &str) -> Self {
         ModelFile {
-            filename: filename.to_string(),
-            vertices: None,
-            triangles: Vec::new(),
+            file_data: str.split('\n').map(|str| str.to_string()).collect(),
+            ..Default::default()
         }
+    }
+}
+impl From<File> for ModelFile {
+    fn from(file: File) -> ModelFile {
+        // File::open(filename).expect("file not found!");
+        let file_data = BufReader::new(file).lines().map(|l| l.unwrap()).collect();
+        ModelFile {
+            file_data,
+            ..Default::default()
+        }
+    }
+}
+impl ModelFile {
+    pub fn open_file(filename: &str) -> ModelFile {
+        let file = File::open(filename).expect("file not found!");
+        // let file_data = BufReader::new(file).lines().map(|l| l.unwrap()).collect();
+
+        Self::from(file)
+        // ModelFile {
+        //     file_data,
+        //     vertices: None,
+        //     triangles: Vec::new(),
+        // }
     }
 
     fn read_iter<F: FnMut(&str)>(&self, mut func: F) {
         // make this a trait so we can use files from the browser
-        let file = File::open(&self.filename).expect("file not found!");
-        let reader = BufReader::new(file);
 
-        for line in reader.lines() {
-            func(&line.unwrap());
+        for line in &self.file_data {
+            func(&line);
         }
     }
 
@@ -116,7 +137,7 @@ mod tests {
     use super::*;
 
     fn test_file(filename: &str) {
-        let m = ModelFile::open(filename);
+        let m = ModelFile::open_file(filename);
         let verts = m.vertex_parse();
         assert!(verts.len() > 100);
         let triangles = m.face_parse(&verts);
@@ -125,12 +146,12 @@ mod tests {
 
     #[test]
     fn read_test() {
-        let m = ModelFile::open("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj");
         m.vertex_parse();
     }
     #[test]
     fn vertex_parse_test() {
-        let m = ModelFile::open("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj");
         let vecs = m.vertex_parse();
         assert_eq!(
             vecs[0],
@@ -151,7 +172,7 @@ mod tests {
     }
     #[test]
     fn face_parse_test() {
-        let m = ModelFile::open("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj");
 
         let verts = m.vertex_parse();
         let faces = m.face_parse(&verts);

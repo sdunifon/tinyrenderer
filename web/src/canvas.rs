@@ -51,7 +51,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         Msg::Action => {
             log("bAction");
             // orders.send_msg(Msg::DownloadFile);
-            download_file("cessna.obj");
+            // download_file("/assets/cessna.obj");
             log("after downlaod");
             orders.after_next_render(|_| Msg::Test).skip();
 
@@ -59,7 +59,9 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
         }
         Msg::Fetched(Ok(response_data)) => {
             log("got it result ok");
-            log(response_data);
+            model.renderer.load_from_string(response_data.as_str());
+            // log(response_data);
+            log(format!("file_data {:?}", model.renderer.file_data()));
         }
         Msg::Fetched(Err(response_data)) => {
             log("got it");
@@ -69,7 +71,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             orders
                 .skip()
-                .perform_cmd({ async { Msg::Fetched(download_file("assets/cessna.obj").await) } });
+                .perform_cmd({ async { Msg::Fetched(download_file("/assets/cessna.obj").await) } });
         }
         Msg::Test => {
             log("testing 1 2 3".to_string());

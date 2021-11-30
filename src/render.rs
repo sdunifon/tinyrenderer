@@ -36,13 +36,21 @@ impl Render {
     // }
 
     pub fn load_file(&mut self, filepath: &str) -> Result<()> {
-        self.file = Some(ModelFile::open(filepath));
+        self.file = Some(ModelFile::open_file(filepath));
         self.reload();
         Ok(())
     }
 
+    pub fn load_from_string(&mut self, str: &str) {
+        self.file = Some(ModelFile::from(str))
+    }
+
     pub fn reload(&mut self) {
         self.file.as_mut().unwrap().load();
+    }
+
+    pub fn file_data(&self) -> String {
+        self.file.as_ref().unwrap().file_data.join("\n")
     }
 
     pub fn update(&mut self) -> Result<()> {
