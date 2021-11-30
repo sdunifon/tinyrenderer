@@ -7,7 +7,7 @@ use std::io::BufRead;
 
 pub struct ModelFile {
     filename: String,
-    pub verticies: Option<NormalizedVertices>, // create normalized verticies
+    pub vertices: Option<NormalizedVertices>, // create normalized verticies
     pub triangles: Triangles,
 }
 
@@ -15,7 +15,7 @@ impl ModelFile {
     pub fn open(filename: &str) -> ModelFile {
         ModelFile {
             filename: filename.to_string(),
-            verticies: None,
+            vertices: None,
             triangles: Vec::new(),
         }
     }
@@ -33,8 +33,8 @@ impl ModelFile {
     pub fn load(&mut self) {
         let original_vertices = self.vertex_parse();
 
-        self.verticies = Some(NormalizedVertices::from(original_vertices));
-        self.triangles = self.face_parse(&self.verticies.as_ref().unwrap());
+        self.vertices = Some(NormalizedVertices::from(original_vertices));
+        self.triangles = self.face_parse(&self.vertices.as_ref().unwrap());
     }
 
     pub fn vertex_parse(&self) -> Vertices {
@@ -103,7 +103,7 @@ where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
     fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
-        self.model_file.verticies.as_ref().unwrap().draw(drawer);
+        self.model_file.vertices.as_ref().unwrap().draw(drawer);
         if self.options.wireframe {
             self.model_file.triangles.draw(drawer);
         } else {

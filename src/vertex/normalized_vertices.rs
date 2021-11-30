@@ -122,21 +122,21 @@ mod tests {
     fn calculate_scale_cessna_test() {
         let mut f = ModelFile::open("assets/cessna.obj");
         f.load();
-        assert_eq!(22.152081, f.verticies.unwrap().scale)
+        assert_eq!(22.152081, f.vertices.unwrap().scale)
     }
 
     #[test]
     fn calculate_scale_head_test() {
         let mut f = ModelFile::open("assets/head.obj");
         f.load();
-        assert_eq!(1.0, f.verticies.unwrap().scale)
+        assert_eq!(1.0, f.vertices.unwrap().scale)
     }
 
     #[test]
     fn calculate_scale_airboat_test() {
         let mut f = ModelFile::open("assets/airboat.obj");
         f.load();
-        assert_eq!(8.114171, f.verticies.unwrap().scale)
+        assert_eq!(8.114171, f.vertices.unwrap().scale)
     }
 
     #[test]
