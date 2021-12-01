@@ -9,7 +9,7 @@ const RENDER_HEIGHT: usize = 150;
 
 pub struct Render {
     file: Option<ModelFile>,
-    image: Image<RENDER_HEIGHT, RENDER_WIDTH>,
+    pub image: Image<RENDER_HEIGHT, RENDER_WIDTH>, //TODO privatize me
     options: RenderOptions,
 }
 pub struct RenderOptions {
@@ -49,6 +49,12 @@ impl Render {
         self.file.as_mut().unwrap().load();
     }
 
+    // fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
+    //     match self.file {
+    //         None => {}
+    //         Some(file) => self.model_file.draw(drawer),
+    //     }
+    // }
     pub fn file_data(&self) -> String {
         self.file.as_ref().unwrap().file_data.join("\n")
     }

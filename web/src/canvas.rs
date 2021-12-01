@@ -5,7 +5,7 @@ use tinyrenderer::{Color, Render};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
 fn init(_: Url, orders: &mut impl Orders<Msg>) -> Model {
-    orders.after_next_render(|_| Msg::Rendered);
+    orders.after_next_render(|_| Msg::TestRender);
     let model = Model::default();
     // model.renderer.load_file("assets/cessna.obj");
     model
@@ -18,12 +18,13 @@ struct Model {
     zoom: f64,
     canvas: ElRef<HtmlCanvasElement>,
     renderer: Render,
+    loaded: bool,
     filename: String,
 }
 
 enum Msg {
-    Rendered,
-    Action,
+    TestRender,
+    Render,
     DownloadFile,
     Fetched(fetch::Result<String>),
     Test,
@@ -38,30 +39,30 @@ impl Default for Model {
             canvas: ElRef::<HtmlCanvasElement>::default(),
             renderer: Render::default(),
             filename: "cessna.obj".to_string(),
+            loaded: false,
         }
     }
 }
 
 fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
     match msg {
-        Msg::Rendered => {
-            draw(&model.canvas, &model);
-            orders.after_next_render(|_| Msg::Rendered).skip();
+        Msg::TestRender => {
+            if model.loaded {
+                draw(&model.canvas, &model)
+            } else {
+                draw_test(&model.canvas, &model);
+            }
+            orders.after_next_render(|_| Msg::TestRender).skip();
         }
-        Msg::Action => {
-            log("bAction");
-            // orders.send_msg(Msg::DownloadFile);
-            // download_file("/assets/cessna.obj");
-            log("after downlaod");
-            orders.after_next_render(|_| Msg::Test).skip();
-
-            Msg::Test;
-        }
+        Msg::Render => {}
         Msg::Fetched(Ok(response_data)) => {
             log("got it result ok");
             model.renderer.load_from_string(response_data.as_str());
             // log(response_data);
             log(format!("file_data {:?}", model.renderer.file_data()));
+            model.renderer.reload();
+            model.renderer.update();
+            model.loaded = true;
         }
         Msg::Fetched(Err(response_data)) => {
             log("got it");
@@ -112,6 +113,48 @@ async fn download_file(filename: &str) -> fetch::Result<String> {
         .await
 }
 
+fn draw_test(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
+    let canvas = canvas.get().expect("get canvas element");
+    let mut ctx = seed::canvas_context_2d(&canvas);
+
+    let height: f64 = 400.;
+    let width: f64 = 400.;
+    ctx.begin_path();
+    ctx.clear_rect(0., 0., height, width);
+    ctx.rect(0., 0., height, width);
+    // DO remove me if below works outk
+    ctx.set_fill_style(&JsValue::from_str("green"));
+    ctx.fill();
+    ctx.move_to(0., 0.);
+    ctx.line_to(200., 250.);
+    ctx.stroke();
+    set_pixel(
+        &mut ctx,
+        100,
+        40,
+        Color {
+            r: 200,
+            b: 100,
+            g: 0,
+        },
+    );
+    draw_test_buffer(ctx, model);
+}
+
+fn draw_test_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
+    for x in 0..=model.renderer.width() as u32 {
+        for y in 0..=model.renderer.height() as u32 {
+            let color: Color;
+            if y < 80 {
+                color = Color { r: 240, g: 0, b: 0 };
+            } else {
+                color = Color { r: 0, g: 200, b: 0 };
+            }
+            set_pixel(&mut ctx, x, y, color);
+        }
+    }
+}
+
 fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
     let canvas = canvas.get().expect("get canvas element");
     let mut ctx = seed::canvas_context_2d(&canvas);
@@ -144,16 +187,12 @@ fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
     for x in 0..=model.renderer.width() as u32 {
         for y in 0..=model.renderer.height() as u32 {
             let color: Color;
-            if y < 80 {
-                color = Color { r: 240, g: 0, b: 0 };
-            } else {
-                color = Color { r: 0, g: 200, b: 0 };
-            }
+            let color =
+                model.renderer.image.data[(y as usize) * model.renderer.width() + (x as usize)];
             set_pixel(&mut ctx, x, y, color);
         }
     }
 }
-
 fn view(model: &Model) -> impl IntoNodes<Msg> {
     div![
         style! { St::Display => "flex"},
@@ -167,12 +206,14 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
               St::Border => "1px solid black"
             ],
         ],
-        button!["Action", ev(Ev::Click, |_| Msg::DownloadFile)]
+        button!["Load File", ev(Ev::Click, |_| Msg::DownloadFile)],
+        button!["Render", ev(Ev::Click, |_| Msg::Render)]
     ]
 }
 trait DrawBuffer {
     fn draw_buffer(ctx: CanvasRenderingContext2d);
 }
+
 // trait SetPixel{
 fn set_pixel(ctx: &mut CanvasRenderingContext2d, x: u32, y: u32, color: Color) {
     let color_str = format!("rgba({},{},{},{})", color.r, color.g, color.b, 1);

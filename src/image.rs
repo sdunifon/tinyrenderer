@@ -6,7 +6,7 @@ where
 {
     pub height: usize,
     pub width: usize,
-    data: [Color; (H + 1) * (W + 1)], // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
+    pub data: [Color; (H + 1) * (W + 1)], //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 #[derive(PartialEq, Default, Clone, Copy)]
 pub struct Pt<const H: usize, const W: usize>(pub usize, pub usize);
