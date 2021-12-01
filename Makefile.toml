@@ -13,23 +13,22 @@ dependencies = ["clean"]
 
 [tasks.serve]
 dependencies = [
-    "build",
+    "build-web",
 ]
 command = "trunk"
-args = ["serve" ]
+args = ["serve"]
+
+[tasks.build-web]
+command = "cargo"
+args = ["build", "--no-default-features" ]
 
 [tasks.open-browser]
-dependencies = [
-  "serve",
-]
+dependencies = ["serve"]
 command = "open"
 args = ["https://localhost:8080"]
 
-
 [tasks.curl]
-dependencies = [
-  "serve",
-]
+dependencies = ["serve"]
 command = "curl"
 args = ["https://localhost:8080"]
 

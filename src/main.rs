@@ -3,13 +3,12 @@ use std::error::Error;
 use std::thread;
 use structopt::StructOpt;
 
-#[cfg(feature = "show_image_render")]
-use show_image::{create_window, event};
-// fn main() {
-//     make_image("render.tga");
-// }
 use tinyrenderer::render::{Render, RenderError};
 use tinyrenderer::*;
+
+#[cfg(feature = "native_image_render")]
+use show_image::{create_window, event};
+
 #[derive(Debug, StructOpt)]
 struct Cli {
     #[structopt(long = "render-type", short = "r", default_value = "full")]
@@ -17,13 +16,13 @@ struct Cli {
     #[structopt(default_value = "./assets/cessna.obj")]
     filename: String,
 }
-#[cfg_attr(feature = "show_image_render", show_image::main)]
+#[cfg_attr(feature = "native_image_render", show_image::main)]
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Cli::from_args();
     let render = setup_render_no_error(&args.filename);
     // let render = setup_render(&args.filename)?;
     // image.render("render.tga");
-    #[cfg(feature = "show_image_render")]
+    #[cfg(feature = "native_image_render")]
     display_window(&render);
     // const NEED_LARGE_STACK: bool = true;
     // if NEED_LARGE_STACK {
@@ -50,7 +49,7 @@ fn setup_render_no_error(filename: &str) -> Render {
     render
 }
 
-#[cfg(feature = "show_image_render")]
+#[cfg(feature = "native_image_render")]
 fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
     let image_buffer = render.image_buffer();
 
