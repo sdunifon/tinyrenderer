@@ -14,6 +14,6 @@ async fn main() {
     pretty_env_logger::init();
 
     warp::serve(warp::fs::dir("./web/dist"))
-        .run(([127, 0, 0, 1], port))
+        .run(([0, 0, 0, 0], port))
         .await;
 }
