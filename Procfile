@@ -1,1 +1,1 @@
-web: target/release/web-server -p 80
+web: ./web-server -p 80

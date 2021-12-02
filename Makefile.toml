@@ -1,6 +1,6 @@
 [env]
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
-TRUNK_CONFIG="./web/Trunk.toml"
+TRUNK_CONFIG = "./web/Trunk.toml"
 
 [tasks.clean]
 command = "cargo"
@@ -12,15 +12,13 @@ args = ["build"]
 dependencies = ["clean"]
 
 [tasks.serve]
-dependencies = [
-    "build-web",
-]
+dependencies = ["build-web"]
 command = "trunk"
 args = ["serve"]
 
 [tasks.build-web]
 command = "cargo"
-args = ["build", "--no-default-features" ]
+args = ["build", "--no-default-features"]
 
 [tasks.open-browser]
 dependencies = ["serve"]
@@ -36,9 +34,7 @@ args = ["https://localhost:8080"]
 
 [tasks.watch]
 description = "Watch files and recompile the project on change"
-run_task = [
-    { name = "build" },
-]
+run_task = [{ name = "build" }]
 watch = true
 
 
@@ -61,7 +57,17 @@ args = ["build", "--target", "web", "--out-name", "package"]
 description = "Lint with Clippy"
 install_crate = { rustup_component_name = "clippy", binary = "cargo-clippy", test_arg = "--help" }
 command = "cargo"
-args = ["clippy", "--all-features", "--", "--deny", "warnings", "--deny", "clippy::pedantic", "--deny", "clippy::nursery"]
+args = [
+  "clippy",
+  "--all-features",
+  "--",
+  "--deny",
+  "warnings",
+  "--deny",
+  "clippy::pedantic",
+  "--deny",
+  "clippy::nursery",
+]
 
 [tasks.fmt]
 description = "Format with rustfmt"
@@ -96,16 +102,14 @@ description = "Use trunk to build and configure wasm output for release"
 install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "-V" }
 workspace = false
 command = "trunk"
-args = ["build", "--release" ]
+args = ["build", "--release"]
 
 [tasks.build-web-server]
 description = "build web_server crate for serving the built wasm/html files"
 command = "cargo"
-args = ["build", "-p", "web-server"]
+args = ["build", "-p", "web-server", "--release"]
 
 [tasks.build-heroku]
 description = "Build for heroku deployment"
 workspace = false
-dependencies = [
-  "trunk-release-build",
-]
+dependencies = ["trunk-release-build", "build-web-server"]
