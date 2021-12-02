@@ -13,7 +13,10 @@ native_image_render = ["show-image"]
 image_lib = { version = "0.23.14", package = "image" }
 regex = "1.5.4"
 lazy_static = "1.4.0"
-show-image = { version = "0.9.5", features = ["image", "macros"], optional = true} #not working with one of wgpu web-sys or seed
+show-image = { version = "0.9.5", features = [
+  "image",
+  "macros",
+], optional = true } #not working with one of wgpu web-sys or seed
 rand = "0.8.4"
 nalgebra = "0.29.0"
 quicli = "0.4.0"
@@ -31,7 +34,7 @@ name = "render_benchmark"
 harness = false
 
 [workspace]
-members = ["web"]
+members = ["web", "web-server"]
 
 [profile.release]
 lto = true

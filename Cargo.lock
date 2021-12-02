@@ -4303,9 +4303,15 @@ dependencies = [
  "seed",
  "serde",
  "tinyrenderer",
+ "wasm-bindgen-test",
+]
+
+[[package]]
+name = "web-server"
+version = "0.1.0"
+dependencies = [
  "tokio",
  "warp",
- "wasm-bindgen-test",
 ]
 
 [[package]]

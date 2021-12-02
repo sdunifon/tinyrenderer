@@ -1,16 +1,10 @@
 [package]
-name = "web"
+name = "web-server"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[lib]
-crate-type = ["cdylib"]
-
-[dev-dependencies]
-wasm-bindgen-test = "0.3.18"
 
 [dependencies]
-tinyrenderer = { path = "../" }
-seed = "0.8.0"
-serde = "1.0.130"
+tokio = { version = "1", features = ["full"] }
+warp = "0.3.2"
