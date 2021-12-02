@@ -91,3 +91,21 @@ args = ["test", "--${@}"]
 description = "Format, lint with Clippy and run tests"
 dependencies = ["fmt", "clippy", "test_h_firefox"]
 
+[tasks.trunk-release-build]
+description = "Use trunk to build and configure wasm output for release"
+install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "-V" }
+workspace = false
+command = "trunk"
+args = ["build", "--release" ]
+
+[tasks.build-web-server]
+description = "build web_server crate for serving the built wasm/html files"
+command = "cargo"
+args = ["build", "-p", "web-server"]
+
+[tasks.build-heroku]
+description = "Build for heroku deployment"
+workspace = false
+dependencies = [
+  "trunk-release-build",
+]
