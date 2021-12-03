@@ -1,8 +1,8 @@
 use super::ImageBuffer;
 use super::{Color, Pt};
 pub trait DrawTools {
-    fn set(&mut self, point: Pt, color: Color);
-    fn get(&self, point: Pt) -> Color;
+    fn set(&mut self, point: Pt, color: &Color);
+    fn get(&self, point: Pt) -> &Color;
     fn draw(&mut self, d: &dyn Drawable);
     // fn draw_iter(&self) {}
 }

@@ -14,7 +14,7 @@ pub struct Image {
     pub buffer: ImageBuffer, //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 #[derive(PartialEq, Default, Clone, Copy)]
-pub struct Pt(pub usize, pub usize);
+pub struct Pt(pub u32, pub u32);
 impl fmt::Display for Pt {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Pt({},{})", self.0, self.1)
@@ -64,7 +64,7 @@ impl Image {
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
             let y = self.height - y;
-            *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_color_ary())
+            *pixel = image_lib::Rgb::<u8>(self.buffer[&Pt(x, y)].to_color_ary())
         }
         image_buffer
     }
@@ -93,34 +93,13 @@ impl Image {
 
 impl DrawTools for Image {
     #[inline]
-    fn get(&self, pt: Pt) -> Color {
-        self.buffer.data[self.pt2i(pt) as usize]
+    fn get(&self, pt: Pt) -> &Color {
+        &self.buffer[&pt]
     }
 
     #[inline]
-    fn set(&mut self, pt: Pt, p: Color) {
-        // dbg!(pt.0, pt.1, pt);
-
-        if pt.1 > self.height as usize {
-            println!("debug me");
-        }
-
-        debug_assert!(
-            pt.0 as u32 <= self.width,
-            "x is grearter than width: ! pt.0: {} < W:{}",
-            pt.0,
-            self.width
-        );
-        debug_assert!(
-            pt.1 as u32 <= self.height,
-            "y is grearter than height ! pt.1: {} < H:{}",
-            pt.1,
-            self.height
-        );
-        // dbg!(pt);
-        todo!();
-        //put set on buffer to access it
-        // self.buffer.data[self.pt2i(pt) as usize] = p;
+    fn set(&mut self, pt: Pt, color: &Color) {
+        self.buffer[&pt] = color.clone();
     }
 
     fn draw(&mut self, d: &dyn Drawable) {

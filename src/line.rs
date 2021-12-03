@@ -46,9 +46,9 @@ impl Drawable for Line {
 
         for x in x0..=x1 {
             if steep {
-                canvas.set(Pt(y as usize, x as usize), self.color);
+                canvas.set(Pt(y as u32, x as u32), &self.color);
             } else {
-                canvas.set(Pt(x as usize, y as usize), self.color);
+                canvas.set(Pt(x as u32, y as u32), &self.color);
             }
 
             error += derror;

@@ -158,9 +158,9 @@ impl Fillable for Triangle {
                 swap_vars!(a.x > b.x, a, b);
 
                 {
-                    let mut j: usize = a.x as usize;
-                    while j <= b.x as usize {
-                        image.set(Pt(j - 1, y as usize), color);
+                    let mut j: u32 = a.x as u32; // TODO might need to round instead of truncxate here
+                    while j <= b.x as u32 {
+                        image.set(Pt(j as u32 - 1, y as u32), &color);
                         j += 1;
                     }
                 }
@@ -195,9 +195,9 @@ impl Fillable for Triangle {
                 swap_vars!(a.x > b.x, a, b);
 
                 {
-                    let mut j: usize = a.x as usize;
-                    while j <= b.x as usize {
-                        image.set(Pt(j, y as usize), color);
+                    let mut j: u32 = a.x as u32;
+                    while j <= b.x as u32 {
+                        image.set(Pt(j, y as u32), &color);
                         j += 1;
                     }
                 }
