@@ -109,7 +109,7 @@ mod tests {
                 p2: Pt(20, 20),
                 color: Color { r: 255, g: 0, b: 0 },
             };
-            let mut i = Image::<250, 250>::new();
+            let mut i = Image::new(500, 500);
             i.draw(&l);
             i.render(filename);
         })
@@ -133,7 +133,7 @@ mod tests {
                 p2: Pt(150, 2),
                 color: Color { r: 0, g: 0, b: 255 },
             };
-            let mut i = Image::<250, 250>::new();
+            let mut i = Image::new(250, 250);
             i.draw(&l0);
             i.draw(&l1);
             i.draw(&l2);
