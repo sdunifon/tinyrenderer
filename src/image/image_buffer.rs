@@ -2,8 +2,8 @@ use super::Color;
 use super::DrawTools;
 
 pub struct ImageBuffer {
-    height: usize,
-    width: usize,
+    height: u32,
+    width: u32,
     pub(super) data: Vec<Color>,
 }
 
@@ -16,5 +16,13 @@ impl Default for ImageBuffer {
         }
     }
 }
-
+impl ImageBuffer {
+    pub(crate) fn new(height: u32, width: u32) -> ImageBuffer {
+        ImageBuffer {
+            height,
+            width,
+            data: vec![Color::default(); (height * width) as usize],
+        }
+    }
+}
 // impl DrawTool for ImageBuffer {}

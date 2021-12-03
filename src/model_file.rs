@@ -114,16 +114,13 @@ impl ModelFile {
     }
 }
 
-pub struct ModelFileDrawer<'a, const H: usize, const W: usize> {
+pub struct ModelFileDrawer<'a> {
     pub options: &'a RenderOptions,
     pub model_file: &'a ModelFile,
 }
 
-impl<'a, const H: usize, const W: usize> Drawable<H, W> for ModelFileDrawer<'a, H, W>
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn draw(&self, drawer: &mut dyn DrawTools<H, W>) {
+impl<'a> Drawable for ModelFileDrawer<'a> {
+    fn draw(&self, drawer: &mut dyn DrawTools) {
         self.model_file.vertices.as_ref().unwrap().draw(drawer);
         if self.options.wireframe {
             self.model_file.triangles.draw(drawer);

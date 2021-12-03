@@ -11,21 +11,15 @@ pub struct Triangle {
 
 pub type Triangles = Vec<Triangle>;
 
-impl<const H: usize, const W: usize> Drawable<H, W> for Triangles
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn draw(&self, drawer: &mut dyn DrawTools<H, W>) {
+impl Drawable for Triangles {
+    fn draw(&self, drawer: &mut dyn DrawTools) {
         for triangle in self {
             triangle.draw(drawer)
         }
     }
 }
-impl<const H: usize, const W: usize> Fillable<H, W> for Triangles
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn fill(&self, drawer: &mut dyn DrawTools<H, W>) {
+impl Fillable for Triangles {
+    fn fill(&self, drawer: &mut dyn DrawTools) {
         for triangle in self {
             triangle.fill(drawer)
         }
@@ -44,11 +38,12 @@ impl Triangle {
     }
 }
 
-trait ToLines<const H: usize, const W: usize> {
-    fn lines(&self) -> [Line<H, W>; 3];
+trait ToLines {
+    fn lines(&self) -> [Line; 3];
 }
-impl<const H: usize, const W: usize> ToLines<H, W> for Triangle {
-    fn lines(&self) -> [Line<H, W>; 3] {
+impl ToLines for Triangle {
+    fn lines(&self) -> [Line; 3] {
+        todo!();
         [
             Line::from_vertices(&self.vertices[0], &self.vertices[1]),
             Line::from_vertices(&self.vertices[0], &self.vertices[2]),
@@ -84,17 +79,14 @@ impl Brightness for Triangle {
 //     y: f64,
 //     z: f64_u
 // }
-impl<const H: usize, const W: usize> Drawable<H, W> for Triangle
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn draw(&self, image: &mut dyn DrawTools<H, W>) {
+impl Drawable for Triangle {
+    fn draw(&self, image: &mut dyn DrawTools) {
         for line in self.lines() {
             image.draw(&line)
         }
     }
 
-    // fn draw2(&self, image: &mut Image<H, W>) {
+    // fn draw2(&self, image: &mut Image) {
     //     todo!()
     // }
 }
@@ -122,11 +114,8 @@ impl Colorful for Triangle {
     }
 }
 
-impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn fill(&self, image: &mut dyn DrawTools<H, W>) {
+impl Fillable for Triangle {
+    fn fill(&self, image: &mut dyn DrawTools) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};

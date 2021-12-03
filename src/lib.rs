@@ -44,10 +44,11 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 
 pub use vertex::{HasTriangleVerticies, NormalizedVertices, Vertex, Vertices};
-pub const IMAGE_SIZE: usize = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_HEIGHT: u32 = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_WIDTH: u32 = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 
-pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
-    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+pub fn make_image() -> Image {
+    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
 
     image.draw(&Vertex {
         x: 50.,
@@ -72,11 +73,8 @@ pub fn make_image() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
     image
 }
 
-pub fn draw_triangle(
-    triangle: Triangle,
-    fill: bool,
-) -> Result<Image<IMAGE_SIZE, IMAGE_SIZE>, Box<dyn std::error::Error>> {
-    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+pub fn draw_triangle(triangle: Triangle, fill: bool) -> Result<Image, Box<dyn std::error::Error>> {
+    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
 
     image.draw(&triangle);
     if fill {
@@ -85,7 +83,7 @@ pub fn draw_triangle(
     Ok(image)
 }
 
-pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
+pub fn render_triangle() -> Image {
     let triangle = Triangle::new([
         Vertex {
             x: 50.,
@@ -104,7 +102,7 @@ pub fn render_triangle() -> Image<IMAGE_SIZE, IMAGE_SIZE> {
         },
     ]);
 
-    let mut image = Image::<IMAGE_SIZE, IMAGE_SIZE>::new();
+    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
 
     image.draw(&triangle);
     triangle.fill(&mut image);

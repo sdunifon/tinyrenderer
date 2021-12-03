@@ -8,33 +8,37 @@ pub use image_buffer::ImageBuffer;
 pub use traits::{DrawTools, Drawable};
 
 use core::fmt;
-pub struct Image<const H: usize, const W: usize>
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    pub height: usize,
-    pub width: usize,
-    pub data: [Color; (H + 1) * (W + 1)], //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
+pub struct Image {
+    pub height: u32,
+    pub width: u32,
+    pub buffer: ImageBuffer, //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 #[derive(PartialEq, Default, Clone, Copy)]
-pub struct Pt<const H: usize, const W: usize>(pub usize, pub usize);
-impl<const H: usize, const W: usize> fmt::Display for Pt<H, W> {
+pub struct Pt(pub usize, pub usize);
+impl fmt::Display for Pt {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Pt<{},{}>({},{})", H, W, self.0, self.1)
+        write!(f, "Pt({},{})", self.0, self.1)
     }
 }
 
-impl<const H: usize, const W: usize> fmt::Debug for Pt<H, W> {
+impl fmt::Debug for Pt {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Pt<{},{}>({},{})", H, W, self.0, self.1)
+        write!(f, "Pt({},{})", self.0, self.1)
     }
 }
 
-impl<const H: usize, const W: usize> From<&Vertex> for Pt<H, W> {
-    fn from(vertex: &Vertex) -> Self {
-        let resized_vertex = *vertex * (H.max(W) / 2) as f64;
-        let center_adjust_x: i32 = (W as i32) / 2;
-        let center_adjust_y: i32 = (H as i32) / 2;
+//implement method on image that takes a normalized vertex and translattes to something else
+struct Translator {
+    height: usize,
+    width: usize,
+}
+//vertex plus translator =
+// impl From<&Vertex> for Pt {
+impl Pt {
+    pub(crate) fn pt_on_image(vertex: &Vertex, image: &Image) -> Self {
+        let resized_vertex = *vertex * (image.height.max(image.width) / 2) as f64;
+        let center_adjust_x: i32 = (image.width as i32) / 2;
+        let center_adjust_y: i32 = (image.height as i32) / 2;
         Pt(
             (resized_vertex.x.round() as i32 + center_adjust_x)
                 .try_into()
@@ -46,27 +50,12 @@ impl<const H: usize, const W: usize> From<&Vertex> for Pt<H, W> {
     }
 }
 
-#[derive(Debug)]
-pub struct PointOutOfBoundsError<const H: usize, const W: usize>(Pt<H, W>, usize, usize, usize);
-impl<const H: usize, const W: usize> fmt::Display for PointOutOfBoundsError<H, W> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "Point: {}  -> index[{}] is outside the image bounds of {}x{}:  ",
-            self.0, self.1, self.2, self.3
-        )
-    }
-}
-
-impl<const H: usize, const W: usize> Image<H, W>
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    pub fn new() -> Image<H, W> {
+impl Image {
+    pub fn new(height: u32, width: u32) -> Image {
         Image {
-            height: H,
-            width: W,
-            data: [Color::default(); (H + 1) * (W + 1)],
+            height,
+            width,
+            buffer: ImageBuffer::new(height, width),
         }
     }
     // image_lib::ImageBuffer<image_lib::Rgb::<u8>, Container>
@@ -74,7 +63,7 @@ where
         let mut image_buffer = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
-            let y = H - y as usize;
+            let y = self.height - y;
             *pixel = image_lib::Rgb::<u8>(self.get(Pt(x as usize, y as usize)).to_color_ary())
         }
         image_buffer
@@ -86,64 +75,56 @@ where
     }
 
     #[inline]
-    fn xy2i(x: usize, y: usize) -> usize {
-        y * W + x
+    fn xy2i(&self, x: u32, y: u32) -> u32 {
+        y * self.width + x
     }
 
     #[inline]
-    fn pt2i(pt: Pt<H, W>) -> usize {
+    fn pt2i(&self, pt: Pt) -> u32 {
         // dbg!(pt.1 * W + pt.0)
-        pt.1 * W + pt.0
+        pt.1 as u32 * self.width + pt.0 as u32
         // Self::xy2i(pt.0, pt.1)
     }
 
-    pub fn point_in_bounds(&self, pt: Pt<H, W>) -> Result<Pt<H, W>, PointOutOfBoundsError<H, W>> {
-        // if pt.0 > W || pt.1 > H || Self::pt2i(pt) > self.data.len() {
-        if pt.0 > W || pt.1 > H {
-            return Err(PointOutOfBoundsError(pt, Self::pt2i(pt), H, W));
-        }
-        Ok(pt)
-    }
     // pub fn draw( drawer:( img ) -> () ){
     //     drawer(self);
     // }
 }
 
-impl<const H: usize, const W: usize> DrawTools<H, W> for Image<H, W>
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
+impl DrawTools for Image {
     #[inline]
-    fn get(&self, pt: Pt<H, W>) -> Color {
-        self.data[Self::pt2i(pt)]
+    fn get(&self, pt: Pt) -> Color {
+        self.buffer.data[self.pt2i(pt) as usize]
     }
 
     #[inline]
-    fn set(&mut self, pt: Pt<H, W>, p: Color) {
+    fn set(&mut self, pt: Pt, p: Color) {
         // dbg!(pt.0, pt.1, pt);
 
-        if pt.1 > H {
+        if pt.1 > self.height as usize {
             println!("debug me");
         }
 
         debug_assert!(
-            pt.0 <= W,
+            pt.0 as u32 <= self.width,
             "x is grearter than width: ! pt.0: {} < W:{}",
             pt.0,
-            W
+            self.width
         );
         debug_assert!(
-            pt.1 <= H,
+            pt.1 as u32 <= self.height,
             "y is grearter than height ! pt.1: {} < H:{}",
             pt.1,
-            H
+            self.height
         );
         // dbg!(pt);
-        self.data[Self::pt2i(pt)] = p;
+        todo!();
+        //put set on buffer to access it
+        // self.buffer.data[self.pt2i(pt) as usize] = p;
     }
 
-    fn draw(&mut self, d: &dyn Drawable<H, W>) {
-        d.draw(self as &mut dyn DrawTools<H, W>);
+    fn draw(&mut self, d: &dyn Drawable) {
+        d.draw(self as &mut dyn DrawTools);
     }
 }
 

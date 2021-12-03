@@ -4,12 +4,12 @@ use crate::model_file::ModelFileDrawer;
 use std::path::Path;
 use std::{error, fmt};
 
-const RENDER_WIDTH: usize = 150;
-const RENDER_HEIGHT: usize = 150;
+const RENDER_WIDTH: u32 = 150;
+const RENDER_HEIGHT: u32 = 150;
 
 pub struct Render {
     file: Option<ModelFile>,
-    pub image: Image<RENDER_HEIGHT, RENDER_WIDTH>, //TODO privatize me
+    pub image: Image, //TODO privatize me
     options: RenderOptions,
 }
 pub struct RenderOptions {
@@ -21,7 +21,7 @@ impl Default for Render {
     fn default() -> Self {
         Self {
             file: Default::default(),
-            image: Image::<RENDER_HEIGHT, RENDER_WIDTH>::new(),
+            image: Image::new(RENDER_HEIGHT, RENDER_WIDTH),
             options: RenderOptions { wireframe: true },
         }
     }
@@ -71,10 +71,10 @@ impl Render {
     pub fn image_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {
         self.image.render_to_buffer()
     }
-    pub fn width(&self) -> usize {
+    pub fn width(&self) -> u32 {
         self.image.width
     }
-    pub fn height(&self) -> usize {
+    pub fn height(&self) -> u32 {
         self.image.height
     }
 }

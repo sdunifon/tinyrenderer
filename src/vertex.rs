@@ -79,31 +79,26 @@ impl Vertex {
     }
 }
 
-pub trait ToPoint<const H: usize, const W: usize> {
-    fn to_point(&self) -> Pt<H, W>;
+pub trait ToPoint {
+    fn to_point(&self) -> Pt;
 }
 
-impl<const H: usize, const W: usize> ToPoint<H, W> for Vertex {
-    fn to_point(&self) -> Pt<H, W> {
-        Pt::<H, W>::from(self)
-    }
-}
+// impl ToPoint for Vertex {
+// fn to_point(&self) -> Pt {
+//     Pt::pt_on_image(self)
+// }
+// }
 
-impl<const H: usize, const W: usize> Drawable<H, W> for Vertices
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn draw(&self, image: &mut dyn DrawTools<H, W>) {
+impl Drawable for Vertices {
+    fn draw(&self, image: &mut dyn DrawTools) {
         self.iter().for_each(|v| v.draw(image));
     }
 }
 
-impl<const H: usize, const W: usize> Drawable<H, W> for Vertex
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn draw(&self, canvas: &mut dyn DrawTools<H, W>) {
-        canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
+impl Drawable for Vertex {
+    fn draw(&self, canvas: &mut dyn DrawTools) {
+        todo!();
+        // canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }
 }
 
