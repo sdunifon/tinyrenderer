@@ -93,8 +93,8 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Vertices
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, image: &mut dyn Drawer<H, W>) {
-        self.iter().for_each(|v| v.draw(image))
+    fn draw(&self, image: &mut dyn DrawTools<H, W>) {
+        self.iter().for_each(|v| v.draw(image));
     }
 }
 
@@ -102,7 +102,7 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Vertex
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, canvas: &mut dyn Drawer<H, W>) {
+    fn draw(&self, canvas: &mut dyn DrawTools<H, W>) {
         canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }
 }

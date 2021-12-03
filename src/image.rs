@@ -1,4 +1,12 @@
+pub mod color;
+mod image_buffer;
+mod traits;
+
 use super::*;
+pub use color::*;
+pub use image_buffer::ImageBuffer;
+pub use traits::{DrawTools, Drawable};
+
 use core::fmt;
 pub struct Image<const H: usize, const W: usize>
 where
@@ -100,15 +108,8 @@ where
     //     drawer(self);
     // }
 }
-pub trait Drawer<const H: usize, const W: usize>
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn set(&mut self, point: Pt<H, W>, color: Color);
-    fn get(&self, point: Pt<H, W>) -> Color;
-    fn draw(&mut self, d: &dyn Drawable<H, W>);
-}
-impl<const H: usize, const W: usize> Drawer<H, W> for Image<H, W>
+
+impl<const H: usize, const W: usize> DrawTools<H, W> for Image<H, W>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
@@ -142,15 +143,8 @@ where
     }
 
     fn draw(&mut self, d: &dyn Drawable<H, W>) {
-        d.draw(self as &mut dyn Drawer<H, W>);
+        d.draw(self as &mut dyn DrawTools<H, W>);
     }
-}
-pub trait Drawable<const H: usize, const W: usize>
-where
-    [u8; (H + 1) * (W + 1)]: Sized,
-{
-    fn draw(&self, drawer: &mut dyn Drawer<H, W>);
-    // fn draw2(&self, image: &mut Image<H, W>);
 }
 
 #[cfg(test)]

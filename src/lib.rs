@@ -23,8 +23,6 @@ mod triangle;
 pub mod utils;
 mod vertex;
 
-pub mod color;
-
 pub mod test_helper;
 
 // use std::{
@@ -33,8 +31,8 @@ pub mod test_helper;
 // };
 
 pub use bounds::{Boundable, BoundingBox};
-pub use color::*;
 use fillable::Fillable;
+pub use image::color::*;
 use image::*;
 use line::Line;
 pub use model_file::ModelFile;

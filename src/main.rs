@@ -23,7 +23,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     // let render = setup_render(&args.filename)?;
     // image.render("render.tga");
     #[cfg(feature = "native_image_render")]
-    display_window(&render);
+    display_window(&render)?;
+
     // const NEED_LARGE_STACK: bool = true;
     // if NEED_LARGE_STACK {
     //     image_render_on_large_stack_thread();

@@ -15,7 +15,7 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Triangles
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
+    fn draw(&self, drawer: &mut dyn DrawTools<H, W>) {
         for triangle in self {
             triangle.draw(drawer)
         }
@@ -25,7 +25,7 @@ impl<const H: usize, const W: usize> Fillable<H, W> for Triangles
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn fill(&self, drawer: &mut dyn Drawer<H, W>) {
+    fn fill(&self, drawer: &mut dyn DrawTools<H, W>) {
         for triangle in self {
             triangle.fill(drawer)
         }
@@ -88,7 +88,7 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Triangle
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, image: &mut dyn Drawer<H, W>) {
+    fn draw(&self, image: &mut dyn DrawTools<H, W>) {
         for line in self.lines() {
             image.draw(&line)
         }
@@ -126,7 +126,7 @@ impl<const H: usize, const W: usize> Fillable<H, W> for Triangle
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn fill(&self, image: &mut dyn Drawer<H, W>) {
+    fn fill(&self, image: &mut dyn DrawTools<H, W>) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};

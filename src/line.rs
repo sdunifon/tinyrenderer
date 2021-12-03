@@ -23,7 +23,7 @@ impl<const H: usize, const W: usize> Drawable<H, W> for Line<H, W>
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, canvas: &mut dyn Drawer<H, W>) {
+    fn draw(&self, canvas: &mut dyn DrawTools<H, W>) {
         let (Pt(mut x0, mut y0), Pt(mut x1, mut y1)) = (self.p1, self.p2);
 
         let mut steep = false;

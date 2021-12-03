@@ -123,7 +123,7 @@ impl<'a, const H: usize, const W: usize> Drawable<H, W> for ModelFileDrawer<'a, 
 where
     [u8; (H + 1) * (W + 1)]: Sized,
 {
-    fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
+    fn draw(&self, drawer: &mut dyn DrawTools<H, W>) {
         self.model_file.vertices.as_ref().unwrap().draw(drawer);
         if self.options.wireframe {
             self.model_file.triangles.draw(drawer);
