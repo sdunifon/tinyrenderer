@@ -62,11 +62,13 @@ impl Index<&Pt> for ImageBuffer {
         &self.data[self.x_y_to_index(x, y)]
     }
 }
-impl IndexMut<&Pt> for ImageBuffer {
-    fn index_mut(&mut self, index: &Pt) -> &mut Self::Output {
+impl<'a> IndexMut<&'a Pt> for ImageBuffer {
+    fn index_mut(&mut self, index: &'a Pt) -> &mut Self::Output {
         debug_assert!(self.debug_bounds_check(&index));
         let Pt(x, y) = index;
-        &mut self.data[self.x_y_to_index(x, y)]
+        let index = self.x_y_to_index(x, y);
+        &mut self.data[index]
     }
 }
+
 // impl DrawTool for ImageBuffer {}
