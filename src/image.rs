@@ -1,11 +1,12 @@
 pub mod color;
 mod image_buffer;
-mod px;
+mod pt;
 mod scalar;
+mod traits;
 
 use super::*;
-pub use color::*;
 pub use image_buffer::ImageBuffer;
+pub use scalar::Scalar;
 pub use traits::{Canvas, Drawable};
 
 use core::fmt;

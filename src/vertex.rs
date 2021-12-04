@@ -96,7 +96,7 @@ impl Drawable for Vertices {
 }
 
 impl Drawable for Vertex {
-    fn draw(&self, drawer: &mut dyn Canvas) {
+    fn draw(&self, canvas: &mut dyn Canvas) {
         todo!();
         // canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }
