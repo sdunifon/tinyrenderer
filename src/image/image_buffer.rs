@@ -1,6 +1,6 @@
 use super::Canvas;
 use super::Color;
-use crate::Xy;
+use super::Xy;
 use std::ops::{Index, IndexMut};
 
 pub struct ImageBuffer {
