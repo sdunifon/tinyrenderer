@@ -1,6 +1,7 @@
 pub mod color;
 mod image_buffer;
-mod traits;
+mod px;
+mod scalar;
 
 use super::*;
 pub use color::*;
