@@ -1,10 +1,11 @@
 use super::ImageBuffer;
 use super::{Color, Pt};
-pub trait DrawTools {
+pub trait Canvas {
     fn set(&mut self, point: Pt, color: &Color);
     fn get(&self, point: Pt) -> &Color;
     fn draw(&mut self, d: &dyn Drawable);
-    // fn draw_iter(&self) {}
+    fn height(&self) -> u32;
+    fn width(&self) -> u32;
 }
 
 // pub trait DrawToolsB {
@@ -54,12 +55,12 @@ trait IterateByDrawnPixels: DrawBuffer {
     }
 }
 pub trait Drawable {
-    fn draw(&self, drawer: &mut dyn DrawTools);
+    fn draw(&self, drawer: &mut dyn Canvas);
 }
 
-pub trait DrawBuffer: DrawTools {
+pub trait DrawBuffer: Canvas {
     //TODO figure out a way to just copy the entire source buffer to the destination
-    fn draw_buffer(&self, destination: impl DrawTools) {}
+    fn draw_buffer(&self, destination: impl Canvas) {}
 
     fn draw_iter(&self) -> DrawIter;
 }

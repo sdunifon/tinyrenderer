@@ -120,7 +120,7 @@ pub struct ModelFileDrawer<'a> {
 }
 
 impl<'a> Drawable for ModelFileDrawer<'a> {
-    fn draw(&self, drawer: &mut dyn DrawTools) {
+    fn draw(&self, drawer: &mut dyn Canvas) {
         self.model_file.vertices.as_ref().unwrap().draw(drawer);
         if self.options.wireframe {
             self.model_file.triangles.draw(drawer);

@@ -21,7 +21,7 @@ impl Line {
 }
 
 impl Drawable for Line {
-    fn draw(&self, canvas: &mut dyn DrawTools) {
+    fn draw(&self, canvas: &mut dyn Canvas) {
         let (Pt(mut x0, mut y0), Pt(mut x1, mut y1)) = (self.p1, self.p2);
 
         let mut steep = false;

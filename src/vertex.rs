@@ -90,13 +90,13 @@ pub trait ToPoint {
 // }
 
 impl Drawable for Vertices {
-    fn draw(&self, image: &mut dyn DrawTools) {
+    fn draw(&self, image: &mut dyn Canvas) {
         self.iter().for_each(|v| v.draw(image));
     }
 }
 
 impl Drawable for Vertex {
-    fn draw(&self, canvas: &mut dyn DrawTools) {
+    fn draw(&self, drawer: &mut dyn Canvas) {
         todo!();
         // canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }

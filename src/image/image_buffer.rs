@@ -1,5 +1,5 @@
+use super::Canvas;
 use super::Color;
-use super::DrawTools;
 use crate::Pt;
 use std::ops::{Index, IndexMut};
 

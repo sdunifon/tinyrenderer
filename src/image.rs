@@ -5,7 +5,7 @@ mod traits;
 use super::*;
 pub use color::*;
 pub use image_buffer::ImageBuffer;
-pub use traits::{DrawTools, Drawable};
+pub use traits::{Canvas, Drawable};
 
 use core::fmt;
 pub struct Image {
@@ -91,7 +91,7 @@ impl Image {
     // }
 }
 
-impl DrawTools for Image {
+impl Canvas for Image {
     #[inline]
     fn get(&self, pt: Pt) -> &Color {
         &self.buffer[&pt]
@@ -103,7 +103,15 @@ impl DrawTools for Image {
     }
 
     fn draw(&mut self, d: &dyn Drawable) {
-        d.draw(self as &mut dyn DrawTools);
+        d.draw(self as &mut dyn Canvas);
+    }
+
+    fn height(&self) -> u32 {
+        self.height
+    }
+
+    fn width(&self) -> u32 {
+        self.width
     }
 }
 

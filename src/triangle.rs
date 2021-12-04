@@ -12,14 +12,14 @@ pub struct Triangle {
 pub type Triangles = Vec<Triangle>;
 
 impl Drawable for Triangles {
-    fn draw(&self, drawer: &mut dyn DrawTools) {
+    fn draw(&self, drawer: &mut dyn Canvas) {
         for triangle in self {
             triangle.draw(drawer)
         }
     }
 }
 impl Fillable for Triangles {
-    fn fill(&self, drawer: &mut dyn DrawTools) {
+    fn fill(&self, drawer: &mut dyn Canvas) {
         for triangle in self {
             triangle.fill(drawer)
         }
@@ -80,7 +80,7 @@ impl Brightness for Triangle {
 //     z: f64_u
 // }
 impl Drawable for Triangle {
-    fn draw(&self, image: &mut dyn DrawTools) {
+    fn draw(&self, image: &mut dyn Canvas) {
         for line in self.lines() {
             image.draw(&line)
         }
@@ -115,7 +115,7 @@ impl Colorful for Triangle {
 }
 
 impl Fillable for Triangle {
-    fn fill(&self, image: &mut dyn DrawTools) {
+    fn fill(&self, image: &mut dyn Canvas) {
         // // sort the vertices, v0, t1, t2 lower−to−upper (bubblesort yay!)
         // if v0.y>v1.y {std::swap(v0, t1)};
         // if v0.y>v2.y {std::swap(v0, t2)};
