@@ -1,16 +1,16 @@
 use super::ImageBuffer;
-use super::{Color, Pt};
+use super::{Color, Xy};
 pub trait Canvas {
-    fn set(&mut self, point: Pt, color: &Color);
-    fn get(&self, point: Pt) -> &Color;
+    fn set(&mut self, point: Xy, color: &Color);
+    fn get(&self, point: Xy) -> &Color;
     fn draw(&mut self, d: &dyn Drawable);
     fn height(&self) -> u32;
     fn width(&self) -> u32;
 }
 
 // pub trait DrawToolsB {
-//     fn set(&mut self, point: Pt<H, W>, color: Color);
-//     fn get(&self, point: Pt<H, W>) -> Color;
+//     fn set(&mut self, point: Xy<H, W>, color: Color);
+//     fn get(&self, point: Xy<H, W>) -> Color;
 //     fn draw(&mut self, d: &dyn Drawable<H, W>);
 //     fn draw_iter() {}
 // }
@@ -22,14 +22,14 @@ pub struct DrawIter {
 }
 
 impl Iterator for DrawIter {
-    type Item = (Pt, Color);
+    type Item = (Xy, Color);
 
     fn next(&mut self) -> Option<Self::Item> {
         return if self.index < self.len() {
             let color = self.buffer.data[self.index];
             self.index += 1;
             todo!("correct me");
-            Some((Pt(0, 0), color))
+            Some((Xy(0, 0), color))
         } else {
             None
         };
@@ -39,7 +39,7 @@ impl ExactSizeIterator for DrawIter {}
 
 struct DrawnPixelsIter(DrawIter);
 impl Iterator for DrawnPixelsIter {
-    type Item = (Pt, Color);
+    type Item = (Xy, Color);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()

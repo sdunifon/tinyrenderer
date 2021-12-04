@@ -160,7 +160,7 @@ impl Fillable for Triangle {
                 {
                     let mut j: u32 = a.x as u32; // TODO might need to round instead of truncxate here
                     while j <= b.x as u32 {
-                        image.set(Pt(j as u32 - 1, y as u32), &color);
+                        image.set(Xy(j as u32 - 1, y as u32), &color);
                         j += 1;
                     }
                 }
@@ -197,7 +197,7 @@ impl Fillable for Triangle {
                 {
                     let mut j: u32 = a.x as u32;
                     while j <= b.x as u32 {
-                        image.set(Pt(j, y as u32), &color);
+                        image.set(Xy(j, y as u32), &color);
                         j += 1;
                     }
                 }

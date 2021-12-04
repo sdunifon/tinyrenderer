@@ -15,32 +15,26 @@ pub struct Image {
     pub buffer: ImageBuffer, //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
 }
 #[derive(PartialEq, Default, Clone, Copy)]
-pub struct Pt(pub u32, pub u32);
-impl fmt::Display for Pt {
+pub struct Xy(pub u32, pub u32);
+impl fmt::Display for Xy {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Pt({},{})", self.0, self.1)
+        write!(f, "Xy({},{})", self.0, self.1)
     }
 }
 
-impl fmt::Debug for Pt {
+impl fmt::Debug for Xy {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Pt({},{})", self.0, self.1)
+        write!(f, "Xy({},{})", self.0, self.1)
     }
 }
 
-//implement method on image that takes a normalized vertex and translattes to something else
-struct Translator {
-    height: usize,
-    width: usize,
-}
-//vertex plus translator =
-// impl From<&Vertex> for Pt {
-impl Pt {
+// impl From<&Vertex> for Xy {
+impl Xy {
     pub(crate) fn pt_on_image(vertex: &Vertex, image: &Image) -> Self {
         let resized_vertex = *vertex * (image.height.max(image.width) / 2) as f64;
         let center_adjust_x: i32 = (image.width as i32) / 2;
         let center_adjust_y: i32 = (image.height as i32) / 2;
-        Pt(
+        Xy(
             (resized_vertex.x.round() as i32 + center_adjust_x)
                 .try_into()
                 .unwrap(),
@@ -65,7 +59,7 @@ impl Image {
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
             let y = self.height - y;
-            *pixel = image_lib::Rgb::<u8>(self.buffer[&Pt(x, y)].to_color_ary())
+            *pixel = image_lib::Rgb::<u8>(self.buffer[&Xy(x, y)].to_color_ary())
         }
         image_buffer
     }
@@ -81,7 +75,7 @@ impl Image {
     }
 
     #[inline]
-    fn pt2i(&self, pt: Pt) -> u32 {
+    fn pt2i(&self, pt: Xy) -> u32 {
         // dbg!(pt.1 * W + pt.0)
         pt.1 as u32 * self.width + pt.0 as u32
         // Self::xy2i(pt.0, pt.1)
@@ -94,12 +88,12 @@ impl Image {
 
 impl Canvas for Image {
     #[inline]
-    fn get(&self, pt: Pt) -> &Color {
+    fn get(&self, pt: Xy) -> &Color {
         &self.buffer[&pt]
     }
 
     #[inline]
-    fn set(&mut self, pt: Pt, color: &Color) {
+    fn set(&mut self, pt: Xy, color: &Color) {
         self.buffer[&pt] = color.clone();
     }
 
@@ -138,16 +132,16 @@ mod tests {
     fn set_get_test() {
         let mut img = Image::new(500, 500);
 
-        assert_eq!(img.get(Pt(250, 250)), Color { r: 0, g: 0, b: 0 });
-        img.set(Pt(250, 250), Color { r: 0, g: 255, b: 0 });
-        assert_eq!(img.get(Pt(250, 250)), Color { r: 0, g: 255, b: 0 });
-        assert_eq!(img.get(Pt(251, 250)), Color { r: 0, g: 0, b: 0 });
-        img.set(Pt(250, 250), Color { r: 0, g: 1, b: 0 });
-        assert_eq!(img.get(Pt(250, 250)), Color { r: 0, g: 1, b: 0 });
+        assert_eq!(img.get(Xy(250, 250)), Color { r: 0, g: 0, b: 0 });
+        img.set(Xy(250, 250), Color { r: 0, g: 255, b: 0 });
+        assert_eq!(img.get(Xy(250, 250)), Color { r: 0, g: 255, b: 0 });
+        assert_eq!(img.get(Xy(251, 250)), Color { r: 0, g: 0, b: 0 });
+        img.set(Xy(250, 250), Color { r: 0, g: 1, b: 0 });
+        assert_eq!(img.get(Xy(250, 250)), Color { r: 0, g: 1, b: 0 });
     }
     // #[test]
     // fn index_conversion_test() {
-    //     assert_eq!(Image::xy2i(68, 345), Image::pt2i(Pt(68, 345)));
+    //     assert_eq!(Image::xy2i(68, 345), Image::pt2i(Xy(68, 345)));
     // }
 
     #[test]
@@ -156,6 +150,6 @@ mod tests {
         // if we are able to get this test working we can remvoe all the + 1 to the image size for the
         // where boundry l and switch back from [u8; (H + 1) * (W + 1)]: Sized, to [u8,H * W]
         let image = Image::new(500, 500);
-        assert_eq!(image.pt2i(Pt(500, 500)), 250000)
+        assert_eq!(image.pt2i(Xy(500, 500)), 250000)
     }
 }

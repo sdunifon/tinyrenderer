@@ -1,6 +1,6 @@
 use super::Canvas;
 use super::Color;
-use crate::Pt;
+use crate::Xy;
 use std::ops::{Index, IndexMut};
 
 pub struct ImageBuffer {
@@ -30,8 +30,8 @@ impl ImageBuffer {
         self.height * self.width
     }
 
-    fn debug_bounds_check(&self, pt: &Pt) -> bool {
-        let Pt(x, y) = pt;
+    fn debug_bounds_check(&self, pt: &Xy) -> bool {
+        let Xy(x, y) = pt;
         debug_assert!(
             x < &self.width,
             "x is out of bounds: !(x:{} < self.width{})",
@@ -52,20 +52,20 @@ impl ImageBuffer {
     }
 }
 
-impl Index<&Pt> for ImageBuffer {
+impl Index<&Xy> for ImageBuffer {
     type Output = Color;
 
-    fn index(&self, index: &Pt) -> &Self::Output {
+    fn index(&self, index: &Xy) -> &Self::Output {
         debug_assert!(self.debug_bounds_check(&index));
-        let Pt(x, y) = index;
+        let Xy(x, y) = index;
 
         &self.data[self.x_y_to_index(x, y)]
     }
 }
-impl<'a> IndexMut<&'a Pt> for ImageBuffer {
-    fn index_mut(&mut self, index: &'a Pt) -> &mut Self::Output {
+impl<'a> IndexMut<&'a Xy> for ImageBuffer {
+    fn index_mut(&mut self, index: &'a Xy) -> &mut Self::Output {
         debug_assert!(self.debug_bounds_check(&index));
-        let Pt(x, y) = index;
+        let Xy(x, y) = index;
         let index = self.x_y_to_index(x, y);
         &mut self.data[index]
     }

@@ -80,12 +80,12 @@ impl Vertex {
 }
 
 pub trait ToPoint {
-    fn to_point(&self) -> Pt;
+    fn to_point(&self) -> Xy;
 }
 
 // impl ToPoint for Vertex {
-// fn to_point(&self) -> Pt {
-//     Pt::pt_on_image(self)
+// fn to_point(&self) -> Xy {
+//     Xy::pt_on_image(self)
 // }
 // }
 
