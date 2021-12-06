@@ -2,9 +2,10 @@ use super::Scalar;
 use crate::{Vertex, Xy};
 use std::ops::Deref;
 
+#[derive(Debug, Clone, Copy)]
 pub struct Pt {
-    x: i32,
-    y: i32,
+    pub x: i32,
+    pub y: i32,
     vertex: Vertex,
     scalar: Scalar,
 }

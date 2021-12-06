@@ -31,29 +31,36 @@ impl Scalar {
     }
 }
 
-pub struct Resizer(dyn Fn(Vertex) -> Pt);
+pub struct Resizer(Box<dyn Fn(Vertex) -> Pt>);
 
 impl Resizer {
-    fn new(height: u32, width: u32) -> Resizer {
+    pub fn new(height: u32, width: u32) -> Resizer {
         let (height, width) = (400, 400);
         let func = |vertex: Vertex| -> Pt {
-            let resized_vertex = *vertex * (height.max(width) / 2) as f64;
-            let x = (resized_vertex.x.round() as i32);
-            let y = (resized_vertex.y.round() as i32);
-            Pt { x, y }
+            let resized_vertex = vertex * (height.max(width) / 2) as f64;
+            let x = resized_vertex.x.round() as i32;
+            let y = resized_vertex.y.round() as i32;
+            Pt::new(
+                x,
+                y,
+                &vertex,
+                &Scalar::Scale {
+                    x: x as u32,
+                    y: y as u32,
+                },
+            )
         };
-        Resizer(func)
+        Resizer(Box::new(func))
     }
 }
-pub struct Translator(dyn Fn(Pt) -> Pt);
+pub struct Translator(Box<dyn Fn(Pt) -> Pt>);
 impl Translator {
-    fn new() -> Pt {
-        let (height, width) = (400, 400);
-        let translator = |pt| {
-            pt.x += width / 2;
-            pt.y += height / 2;
+    pub fn new(height: u32, width: u32) -> Translator {
+        let translator = |pt: Pt| {
+            pt.x += (width / 2) as i32;
+            pt.y += (height / 2) as i32;
             pt
         };
-        Translator(translator)
+        Translator(Box::new(translator))
     }
 }

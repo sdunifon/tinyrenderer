@@ -43,7 +43,6 @@ trait ToLines {
 }
 impl ToLines for Triangle {
     fn lines(&self) -> [Line; 3] {
-        todo!();
         [
             Line::from_vertices(&self.vertices[0], &self.vertices[1]),
             Line::from_vertices(&self.vertices[0], &self.vertices[2]),

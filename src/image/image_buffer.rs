@@ -47,8 +47,8 @@ impl ImageBuffer {
         true
     }
     #[inline]
-    fn x_y_to_index(&self, x: &u32, y: &u32) -> usize {
-        (y * self.width + x) as usize
+    fn x_y_to_index(&self, x: &i32, y: &i32) -> usize {
+        (y * (self.width as i32) + x) as usize
     }
 }
 

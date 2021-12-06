@@ -34,8 +34,8 @@ impl Image {
                 x: height,
                 y: width,
             },
-            resizer: Resizer::new(height, width),
-            translator: Translator::new(height, width),
+            resizer: Box::new(Resizer::new(height, width)),
+            translator: Box::new(Translator::new(height, width)),
             buffer: ImageBuffer::new(height, width),
         }
     }
@@ -45,7 +45,7 @@ impl Image {
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
             let y = self.height - y;
-            *pixel = image_lib::Rgb::<u8>(self.buffer[&Xy(x, y)].to_color_ary())
+            *pixel = image_lib::Rgb::<u8>(self.buffer[&Xy((x as i32), (y as i32))].to_color_ary())
         }
         image_buffer
     }
