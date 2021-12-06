@@ -1,5 +1,6 @@
 use super::Image;
-use super::{Vertex, Xy};
+use super::{Pt, Vertex, Xy};
+use std::ops::Deref;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Scalar {
@@ -8,20 +9,24 @@ pub enum Scalar {
 }
 
 impl Scalar {
-    fn scale(vertex: &Vertex) -> Xy {
-        Xy(9, 9)
-    }
-    fn scaled_pt(vertex: &Vertex, image: &Image) -> Xy {
-        let resized_vertex = *vertex * (image.height.max(image.width) / 2) as f64;
-        let center_adjust_x: i32 = (image.width as i32) / 2;
-        let center_adjust_y: i32 = (image.height as i32) / 2;
-        Xy(
-            (resized_vertex.x.round() as i32 + center_adjust_x)
-                .try_into()
-                .unwrap(),
-            (resized_vertex.y.round() as i32 + center_adjust_y)
-                .try_into()
-                .unwrap(),
-        )
+    pub fn scaled_pt(&self, vertex: &Vertex) -> Pt {
+        match self {
+            Scalar::Scale {
+                x: height,
+                y: width,
+            } => {
+                let resized_vertex = *vertex * (height.max(width) / 2) as f64;
+                let center_adjust_x: i32 = (*width as i32) / 2;
+                let center_adjust_y: i32 = (*height as i32) / 2;
+                let x = (resized_vertex.x.round() as i32 + center_adjust_x)
+                    .try_into()
+                    .unwrap();
+                let y = (resized_vertex.y.round() as i32 + center_adjust_y)
+                    .try_into()
+                    .unwrap();
+                Pt::new(x, y, vertex, self)
+            }
+            Scalar::None => Pt::new(vertex.x as u32, vertex.y as u32, vertex, self),
+        }
     }
 }

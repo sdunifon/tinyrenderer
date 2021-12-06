@@ -1,5 +1,6 @@
 mod normalized_vertices;
 
+use super::image::Canvas;
 use super::*;
 pub use normalized_vertices::NormalizedVertices;
 use std::cmp::Ordering;
@@ -97,7 +98,15 @@ impl Drawable for Vertices {
 
 impl Drawable for Vertex {
     fn draw(&self, canvas: &mut dyn Canvas) {
-        todo!();
+        canvas.set(
+            //todo this should accept a pt to ensure the scaling instead of an xy
+            canvas.scalar().scaled_pt(self).into(),
+            &Color {
+                r: 255,
+                g: 255,
+                b: 255,
+            },
+        )
         // canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }
 }

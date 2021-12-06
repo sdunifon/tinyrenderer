@@ -1,11 +1,13 @@
 use super::ImageBuffer;
 use super::{Color, Xy};
+use crate::Scalar;
 pub trait Canvas {
     fn set(&mut self, point: Xy, color: &Color);
     fn get(&self, point: Xy) -> &Color;
     fn draw(&mut self, d: &dyn Drawable);
     fn height(&self) -> u32;
     fn width(&self) -> u32;
+    fn scalar(&self) -> &Scalar;
 }
 
 // pub trait DrawToolsB {

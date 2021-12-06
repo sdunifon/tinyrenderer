@@ -7,6 +7,7 @@ mod xy;
 
 use super::*;
 pub use image_buffer::ImageBuffer;
+pub use pt::Pt;
 pub use scalar::Scalar;
 pub use traits::{Canvas, Drawable};
 pub use xy::Xy;
@@ -16,6 +17,7 @@ pub struct Image {
     pub height: u32,
     pub width: u32,
     pub buffer: ImageBuffer, //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
+    scalar: Scalar,
 }
 
 impl Image {
@@ -23,6 +25,10 @@ impl Image {
         Image {
             height,
             width,
+            scalar: Scalar::Scale {
+                x: height,
+                y: width,
+            },
             buffer: ImageBuffer::new(height, width),
         }
     }
@@ -80,6 +86,9 @@ impl Canvas for Image {
 
     fn width(&self) -> u32 {
         self.width
+    }
+    fn scalar(&self) -> &Scalar {
+        &self.scalar
     }
 }
 
