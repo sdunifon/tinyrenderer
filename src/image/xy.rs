@@ -2,7 +2,7 @@ use crate::{Image, Vertex};
 use std::fmt;
 
 #[derive(PartialEq, Default, Clone, Copy)]
-pub struct Xy(pub u32, pub u32);
+pub struct Xy(pub i32, pub i32);
 
 impl fmt::Display for Xy {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

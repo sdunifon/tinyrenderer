@@ -26,7 +26,34 @@ impl Scalar {
                     .unwrap();
                 Pt::new(x, y, vertex, self)
             }
-            Scalar::None => Pt::new(vertex.x as u32, vertex.y as u32, vertex, self),
+            Scalar::None => Pt::new(vertex.x as i32, vertex.y as i32, vertex, self),
         }
+    }
+}
+
+pub struct Resizer(dyn Fn(Vertex) -> Pt);
+
+impl Resizer {
+    fn new(height: u32, width: u32) -> Resizer {
+        let (height, width) = (400, 400);
+        let func = |vertex: Vertex| -> Pt {
+            let resized_vertex = *vertex * (height.max(width) / 2) as f64;
+            let x = (resized_vertex.x.round() as i32);
+            let y = (resized_vertex.y.round() as i32);
+            Pt { x, y }
+        };
+        Resizer(func)
+    }
+}
+pub struct Translator(dyn Fn(Pt) -> Pt);
+impl Translator {
+    fn new() -> Pt {
+        let (height, width) = (400, 400);
+        let translator = |pt| {
+            pt.x += width / 2;
+            pt.y += height / 2;
+            pt
+        };
+        Translator(translator)
     }
 }

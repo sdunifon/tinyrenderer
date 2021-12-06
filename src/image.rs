@@ -12,12 +12,17 @@ pub use scalar::Scalar;
 pub use traits::{Canvas, Drawable};
 pub use xy::Xy;
 
+use crate::image::scalar::Translator;
 use core::fmt;
+use scalar::Resizer;
+
 pub struct Image {
     pub height: u32,
     pub width: u32,
     pub buffer: ImageBuffer, //TODO privatize me // buffer : ImageBuffer<Rgb<u8>, Vec<Rgb<u8::Subpixel> >
     scalar: Scalar,
+    resizer: Box<Resizer>,
+    translator: Box<Translator>,
 }
 
 impl Image {
@@ -29,6 +34,8 @@ impl Image {
                 x: height,
                 y: width,
             },
+            resizer: Resizer::new(height, width),
+            translator: Translator::new(height, width),
             buffer: ImageBuffer::new(height, width),
         }
     }

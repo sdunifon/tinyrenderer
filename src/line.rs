@@ -4,8 +4,8 @@ use crate::vertex::ToPoint;
 use std::mem;
 
 pub struct Line {
-    p1: Xy,
-    p2: Xy,
+    p1: Pt,
+    p2: Pt,
     color: Color,
 }
 
@@ -22,7 +22,7 @@ impl Line {
 
 impl Drawable for Line {
     fn draw(&self, canvas: &mut dyn Canvas) {
-        let (Xy(mut x0, mut y0), Xy(mut x1, mut y1)) = (self.p1, self.p2);
+        let (Pt{ x: mut x0, y: mut y0, .. }, Pt{x: mut x1, y: mut y1, ..}) = (self.p1.clone(), self.p2.clone());
 
         let mut steep = false;
         if (x0 as i32 - x1 as i32).abs() < (y0 as i32 - y1 as i32).abs() {

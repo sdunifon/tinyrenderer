@@ -3,15 +3,15 @@ use crate::{Vertex, Xy};
 use std::ops::Deref;
 
 pub struct Pt {
-    x: u32,
-    y: u32,
+    x: i32,
+    y: i32,
     vertex: Vertex,
     scalar: Scalar,
 }
 
 impl Pt {
     //TODO this should not be pub.. should only be able to create pts through a scalar to ensure that it has been scaled to the correct dimensions
-    pub fn new(x: u32, y: u32, vertex: &Vertex, scalar: &Scalar) -> Pt {
+    pub fn new(x: i32, y: i32, vertex: &Vertex, scalar: &Scalar) -> Pt {
         Pt {
             x,
             y,

@@ -33,13 +33,13 @@ impl ImageBuffer {
     fn debug_bounds_check(&self, pt: &Xy) -> bool {
         let Xy(x, y) = pt;
         debug_assert!(
-            x < &self.width,
+            *x < self.width as i32,
             "x is out of bounds: !(x:{} < self.width{})",
             x,
             self.width
         );
         debug_assert!(
-            y < &self.height,
+            *y < self.height as i32,
             "y is out of bounds: !(x:{} < self.width{})",
             y,
             self.height
@@ -56,6 +56,7 @@ impl Index<&Xy> for ImageBuffer {
     type Output = Color;
 
     fn index(&self, index: &Xy) -> &Self::Output {
+        //todo resize index to the relative position
         debug_assert!(self.debug_bounds_check(&index));
         let Xy(x, y) = index;
 
