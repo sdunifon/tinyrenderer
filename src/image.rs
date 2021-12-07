@@ -7,7 +7,7 @@ mod xy;
 
 use super::*;
 pub use image_buffer::ImageBuffer;
-pub use pt::Pt;
+use pt::Pt;
 pub use scalar::Scalar;
 pub use traits::{Canvas, Drawable};
 pub use xy::Xy;
@@ -97,6 +97,18 @@ impl Canvas for Image {
     fn scalar(&self) -> &Scalar {
         &self.scalar
     }
+
+    fn resizer(&self) -> &Resizer {
+        &self.resizer
+    }
+
+    fn translator(&self) -> &Translator {
+        &self.translator
+    }
+
+    fn scale(&self, vertex: &Vertex) -> Xy {
+        self.scalar.scale_v(vertex)
+    }
 }
 
 #[cfg(test)]
@@ -121,12 +133,12 @@ mod tests {
     fn set_get_test() {
         let mut img = Image::new(500, 500);
 
-        assert_eq!(img.get(Xy(250, 250)), Color { r: 0, g: 0, b: 0 });
-        img.set(Xy(250, 250), Color { r: 0, g: 255, b: 0 });
-        assert_eq!(img.get(Xy(250, 250)), Color { r: 0, g: 255, b: 0 });
-        assert_eq!(img.get(Xy(251, 250)), Color { r: 0, g: 0, b: 0 });
-        img.set(Xy(250, 250), Color { r: 0, g: 1, b: 0 });
-        assert_eq!(img.get(Xy(250, 250)), Color { r: 0, g: 1, b: 0 });
+        assert_eq!(*img.get(Xy(250, 250)), Color { r: 0, g: 0, b: 0 });
+        img.set(Xy(250, 250), &Color { r: 0, g: 255, b: 0 });
+        assert_eq!(*img.get(Xy(250, 250)), Color { r: 0, g: 255, b: 0 });
+        assert_eq!(*img.get(Xy(251, 250)), Color { r: 0, g: 0, b: 0 });
+        img.set(Xy(250, 250), &Color { r: 0, g: 1, b: 0 });
+        assert_eq!(*img.get(Xy(250, 250)), Color { r: 0, g: 1, b: 0 });
     }
     // #[test]
     // fn index_conversion_test() {

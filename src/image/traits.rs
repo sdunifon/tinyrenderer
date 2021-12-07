@@ -1,5 +1,6 @@
 use super::ImageBuffer;
 use super::{Color, Xy};
+use crate::image::scalar::{Resizer, Translator};
 use crate::Scalar;
 pub trait Canvas {
     fn set(&mut self, point: Xy, color: &Color);
@@ -8,6 +9,9 @@ pub trait Canvas {
     fn height(&self) -> u32;
     fn width(&self) -> u32;
     fn scalar(&self) -> &Scalar;
+    fn scale(&self, vertex: &Vertex) -> Xy;
+    fn resizer(&self) -> &Resizer;
+    fn translator(&self) -> &Translator;
 }
 
 // pub trait DrawToolsB {

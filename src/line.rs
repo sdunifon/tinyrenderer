@@ -1,28 +1,26 @@
 use super::*;
 
-use crate::vertex::ToPoint;
 use std::mem;
 
 pub struct Line {
-    p1: Pt,
-    p2: Pt,
+    v1: Vertex,
+    v2: Vertex,
     color: Color,
 }
-
 impl Line {
     pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line {
-        todo!();
-        // Line {
-        //     p1: v1.to_point(),
-        //     p2: v2.to_point(),
-        //     color: WHITE,
-        // }
+        Line {
+            v1: v1.clone(),
+            v2: v2.clone(),
+            color: WHITE,
+        }
     }
 }
 
 impl Drawable for Line {
     fn draw(&self, canvas: &mut dyn Canvas) {
-        let (Pt{ x: mut x0, y: mut y0, .. }, Pt{x: mut x1, y: mut y1, ..}) = (self.p1.clone(), self.p2.clone());
+        let (Xy(mut x0, mut y0), Xy(mut x1, mut y1)) =
+            (canvas.scale(self.v1), canvas.scale(self.v2));
 
         let mut steep = false;
         if (x0 as i32 - x1 as i32).abs() < (y0 as i32 - y1 as i32).abs() {
@@ -38,17 +36,17 @@ impl Drawable for Line {
             mem::swap(&mut y0, &mut y1);
         }
 
-        let dx: i64 = x1 as i64 - x0 as i64;
-        let dy: i64 = y1 as i64 - y0 as i64;
+        let dx: i32 = x1 as i32 - x0 as i32;
+        let dy: i32 = y1 as i32 - y0 as i32;
         let derror: f64 = (dy as f64 / dx as f64).abs();
         let mut error: f64 = 0.0;
-        let mut y: i64 = y0 as i64;
+        let mut y: i32 = y0 as i32;
 
         for x in x0..=x1 {
             if steep {
-                canvas.set(Xy(y as u32, x as u32), &self.color);
+                canvas.set(Xy(y, x), &self.color);
             } else {
-                canvas.set(Xy(x as u32, y as u32), &self.color);
+                canvas.set(Xy(x, y), &self.color);
             }
 
             error += derror;
@@ -105,8 +103,16 @@ mod tests {
     fn line_draw_test() {
         assert_file_creation("line_draw_test.tga", |filename: &str| {
             let l = Line {
-                p1: Xy(10, 10),
-                p2: Xy(20, 20),
+                v1: Vertex {
+                    x: 10.,
+                    y: 10.,
+                    z: 10.,
+                },
+                v2: Vertex {
+                    x: 20.,
+                    y: 20.,
+                    z: 20.,
+                },
                 color: Color { r: 255, g: 0, b: 0 },
             };
             let mut i = Image::new(500, 500);
@@ -119,18 +125,42 @@ mod tests {
     fn multiple_line_draw_test() {
         assert_file_creation("multiple_line_draw_test.tga", |filename: &str| {
             let l0 = Line {
-                p1: Xy(10, 10),
-                p2: Xy(20, 20),
+                v1: Vertex {
+                    x: 10.,
+                    y: 10.,
+                    z: 10.,
+                },
+                v2: Vertex {
+                    x: 20.,
+                    y: 20.,
+                    z: 20.,
+                },
                 color: Color { r: 255, g: 0, b: 0 },
             };
             let l1 = Line {
-                p1: Xy(5, 5),
-                p2: Xy(70, 7),
+                v1: Vertex {
+                    x: 5.,
+                    y: 5.,
+                    z: 5.,
+                },
+                v2: Vertex {
+                    x: 70.,
+                    y: 7.,
+                    z: 5.,
+                },
                 color: Color { r: 0, g: 255, b: 0 },
             };
             let l2 = Line {
-                p1: Xy(20, 20),
-                p2: Xy(150, 2),
+                v1: Vertex {
+                    x: 20.,
+                    y: 20.,
+                    z: 0.,
+                },
+                v2: Vertex {
+                    x: 150.,
+                    y: 2.,
+                    z: 0.,
+                },
                 color: Color { r: 0, g: 0, b: 255 },
             };
             let mut i = Image::new(250, 250);

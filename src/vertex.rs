@@ -100,7 +100,7 @@ impl Drawable for Vertex {
     fn draw(&self, canvas: &mut dyn Canvas) {
         canvas.set(
             //todo this should accept a pt to ensure the scaling instead of an xy
-            canvas.scalar().scaled_pt(self).into(),
+            canvas.scalar().scale_v(self).into(),
             &Color {
                 r: 255,
                 g: 255,
