@@ -20,7 +20,7 @@ impl Line {
 impl Drawable for Line {
     fn draw(&self, canvas: &mut dyn Canvas) {
         let (Xy(mut x0, mut y0), Xy(mut x1, mut y1)) =
-            (canvas.scale(self.v1), canvas.scale(self.v2));
+            (canvas.scale(&self.v1), canvas.scale(&self.v2));
 
         let mut steep = false;
         if (x0 as i32 - x1 as i32).abs() < (y0 as i32 - y1 as i32).abs() {

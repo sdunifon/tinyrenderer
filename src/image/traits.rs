@@ -1,7 +1,8 @@
+use super::scalar::{Resizer, Translator};
 use super::ImageBuffer;
+use super::Scalar;
+use super::Vertex;
 use super::{Color, Xy};
-use crate::image::scalar::{Resizer, Translator};
-use crate::Scalar;
 pub trait Canvas {
     fn set(&mut self, point: Xy, color: &Color);
     fn get(&self, point: Xy) -> &Color;

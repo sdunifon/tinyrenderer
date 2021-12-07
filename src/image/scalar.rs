@@ -35,8 +35,7 @@ pub struct Resizer(pub Box<dyn Fn(&Vertex) -> Pt>);
 
 impl Resizer {
     pub fn new(height: u32, width: u32) -> Resizer {
-        let (height, width) = (400, 400);
-        let func = |vertex: &Vertex| -> Pt {
+        let func = move |vertex: &Vertex| -> Pt {
             let resized_vertex = *vertex * (height.max(width) / 2) as f64;
             let x = resized_vertex.x.round() as i32;
             let y = resized_vertex.y.round() as i32;
@@ -56,8 +55,8 @@ impl Resizer {
 pub struct Translator(pub Box<dyn Fn(&Pt) -> Pt>);
 impl Translator {
     pub fn new(height: u32, width: u32) -> Translator {
-        let translator = |pt: &Pt| {
-            let new_pt = pt.clone();
+        let translator = move |pt: &Pt| {
+            let mut new_pt = pt.clone();
             new_pt.x += (width / 2) as i32;
             new_pt.y += (height / 2) as i32;
             new_pt
