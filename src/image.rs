@@ -40,6 +40,8 @@ impl Image {
         }
     }
     // image_lib::ImageBuffer<image_lib::Rgb::<u8>, Container>
+
+    //TODO move to image_buffer
     pub fn render_to_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {
         let mut image_buffer = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
 

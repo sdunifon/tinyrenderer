@@ -18,12 +18,9 @@ impl Scalar {
                 let resized_vertex = *vertex * (height.max(width) / 2) as f64;
                 let center_adjust_x: i32 = (*width as i32) / 2;
                 let center_adjust_y: i32 = (*height as i32) / 2;
-                let x = (resized_vertex.x.round() as i32 + center_adjust_x)
-                    .try_into()
-                    .unwrap();
-                let y = (resized_vertex.y.round() as i32 + center_adjust_y)
-                    .try_into()
-                    .unwrap();
+                let x = resized_vertex.x.round() as i32 + center_adjust_x;
+                let y = resized_vertex.y.round() as i32 + center_adjust_y;
+
                 Xy(x, y)
             }
             Scalar::None => Xy(vertex.x.round() as i32, vertex.y.round() as i32),
@@ -62,5 +59,112 @@ impl Translator {
             new_pt
         };
         Translator(Box::new(translator))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn scale_v_test() {
+        let s = Scalar::Scale { x: 100, y: 100 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: -1.,
+                y: 1.,
+                z: 0.5,
+            }),
+            Xy(0, 100)
+        )
+    }
+
+    #[test]
+    fn scale_v_test2() {
+        let s = Scalar::Scale { x: 100, y: 100 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 0.,
+                y: 0.,
+                z: 0.5
+            }),
+            Xy(0, 0)
+        )
+    }
+
+    #[test]
+    fn scale_v_test3() {
+        let s = Scalar::Scale { x: 100, y: 100 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 0.75,
+                y: 0.,
+                z: 0.5
+            }),
+            Xy(0, 0)
+        )
+    }
+
+    #[test]
+    fn scale_v_test4() {
+        let s = Scalar::Scale { x: 20, y: 300 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: -0.75,
+                y: 0.5,
+                z: 0.5,
+            }),
+            Xy(-59, 225)
+        );
+    }
+
+    #[test]
+    fn scale_v_test5() {
+        let s = Scalar::Scale { x: 100, y: 10 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 0.1,
+                y: 0.1,
+                z: 0.5,
+            }),
+            Xy(75, 8)
+        )
+    }
+
+    #[test]
+    fn scale_v_test6() {
+        let s = Scalar::Scale { x: 101, y: 101 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 1.,
+                y: 0.,
+                z: 0.5,
+            }),
+            Xy(101, 8)
+        )
+    }
+
+    #[test]
+    fn scale_v_test7() {
+        let s = Scalar::Scale { x: 101, y: 101 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: -1,
+                y: 0.75,
+                z: 0.5,
+            }),
+            Xy(-101, 75)
+        );
+    }
+
+    #[test]
+    #[should_panic]
+    fn scale_v_panic_test() {
+        let s = Scalar::Scale { x: 100, y: 100 };
+        s.scale_v(&Vertex {
+            x: -1.1,
+            y: 10.,
+            z: 0.5,
+        });
     }
 }

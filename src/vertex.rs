@@ -70,13 +70,20 @@ pub trait HasNormal: HasTriangleVerticies {
 }
 
 impl Vertex {
-    pub fn new_resized(x: f64, y: f64, z: f64, height: f64, width: f64) -> Vertex {
+    pub fn nw_resized(x: f64, y: f64, z: f64, height: f64, width: f64) -> Vertex {
         let avg_resize = (height + width) / 2.0;
         Self {
             x: ((x + 1.0) * (width / 2.0)).round() as f64,
             y: ((y + 1.0) * (height / 2.0)).round() as f64,
             z: ((z + 1.0) * (avg_resize / 2.0)).round() as f64, //not sure if that should be resized
         }
+    }
+    pub fn new(x: f64, y: f64, z: f64) -> Vertex {
+        //TODO force new to enforce normalized coordinates
+        debug_assert!(x <= 1., "x must be less than or equal to 1");
+        debug_assert!(y <= 1., "y must be less than or equal to 1");
+        debug_assert!(z <= 1., "z must be less than or equal to 1");
+        Vertex { x, y, z }
     }
 }
 
@@ -166,5 +173,36 @@ impl ops::Add<f64> for Vertex {
             y: (self.y + rhs),
             z: (self.z + rhs),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[should_panic]
+    fn vertex_must_be_normalized_test() {
+        Vertex {
+            x: 5.0,
+            y: 5.0,
+            z: 5.0,
+        };
+    }
+    #[test]
+    fn valid_vertex_test() {
+        let v = Vertex {
+            x: 0.05,
+            y: 1.0,
+            z: -0.3,
+        };
+        assert_eq!(
+            v,
+            Vertex {
+                x: 0.05,
+                y: 1.0,
+                z: -0.3
+            }
+        );
     }
 }

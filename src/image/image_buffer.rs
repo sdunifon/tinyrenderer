@@ -26,21 +26,18 @@ impl ImageBuffer {
             data: vec![Color::default(); (height * width) as usize],
         }
     }
-    fn len(&self) -> u32 {
-        self.height * self.width
-    }
 
     fn debug_bounds_check(&self, pt: &Xy) -> bool {
         let Xy(x, y) = pt;
         debug_assert!(
             *x < self.width as i32,
-            "x is out of bounds: !(x:{} < self.width{})",
+            "x is out of bounds: !(x:{} < width:{})",
             x,
             self.width
         );
         debug_assert!(
             *y < self.height as i32,
-            "y is out of bounds: !(x:{} < self.width{})",
+            "y is out of bounds: !(y:{} < height:{})",
             y,
             self.height
         );
@@ -73,3 +70,50 @@ impl<'a> IndexMut<&'a Xy> for ImageBuffer {
 }
 
 // impl DrawTool for ImageBuffer {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn image_buffer_index_test() {
+        let buf = ImageBuffer::new(250, 250);
+        buf[&Xy(0, 250)];
+    }
+
+    #[test]
+    #[should_panic]
+    fn image_buffer_index_overflow1_test() {
+        let buf = ImageBuffer::new(250, 250);
+        buf[&Xy(0, 251)];
+    }
+
+    #[test]
+    #[should_panic]
+    fn image_buffer_index_overflow2_test() {
+        let buf = ImageBuffer::new(250, 250);
+        buf[&Xy(251, 250)];
+    }
+
+    #[test]
+    fn image_library_buffer_index_test() {
+        let (width, height) = (100, 100);
+        let mut image_buffer: image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> =
+            image_lib::ImageBuffer::new(width, height);
+
+        for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
+            assert!(y < height);
+            assert!(x < width);
+        }
+        image_buffer[(width - 1, height - 1)];
+    }
+
+    #[test]
+    #[should_panic]
+    fn image_library_buffer_index2_test() {
+        let (width, height) = (100, 100);
+        let image_buffer: image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> =
+            image_lib::ImageBuffer::new(width, height);
+        image_buffer[(width, height)];
+    }
+}
