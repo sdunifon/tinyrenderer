@@ -47,7 +47,7 @@ impl Image {
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
             let y = self.height - y;
-            *pixel = image_lib::Rgb::<u8>(self.buffer[&Xy((x as i32), (y as i32))].to_color_ary())
+            *pixel = image_lib::Rgb::<u8>(self.buffer[&Xy(x as i32, y as i32)].to_color_ary())
         }
         image_buffer
     }
@@ -56,32 +56,42 @@ impl Image {
         let image_buffer = self.render_to_buffer();
         image_buffer.save(filename).unwrap();
     }
-
-    #[inline]
-    fn xy2i(&self, x: u32, y: u32) -> u32 {
-        y * self.width + x
-    }
-
-    #[inline]
-    fn pt2i(&self, pt: Xy) -> u32 {
-        // dbg!(pt.1 * W + pt.0)
-        pt.1 as u32 * self.width + pt.0 as u32
-        // Self::xy2i(pt.0, pt.1)
-    }
-
-    // pub fn draw( drawer:( img ) -> () ){
-    //     drawer(self);
-    // }
 }
 
 impl Canvas for Image {
     #[inline]
     fn get(&self, pt: Xy) -> &Color {
+        debug_assert!(
+            pt.0 < self.width as i32 && pt.0 >= 0 as i32,
+            "image: image.get x is out of bounds pt.0:{} self.width:{}",
+            pt.0,
+            self.width
+        );
+        debug_assert!(
+            pt.1 < self.height as i32 && pt.1 >= 0 as i32,
+            "image: image.get y is out of bounds pt.0:{} self.height:{}",
+            pt.1,
+            self.height
+        );
+
         &self.buffer[&pt]
     }
 
     #[inline]
     fn set(&mut self, pt: Xy, color: &Color) {
+        debug_assert!(
+            pt.0 < self.width as i32 && pt.0 >= 0 as i32,
+            "image: image.set x is out of bounds pt.0:{} self.width:{}",
+            pt.0,
+            self.width
+        );
+        debug_assert!(
+            pt.1 < self.height as i32 && pt.1 >= 0 as i32,
+            "image: image.set y is out of bounds pt.0:{} self.height:{}",
+            pt.1,
+            self.height
+        );
+
         self.buffer[&pt] = color.clone();
     }
 
@@ -117,6 +127,7 @@ impl Canvas for Image {
 mod tests {
     use super::*;
     use crate::test_helper::assert_file_creation;
+    use assert_panic::assert_panic;
 
     #[test]
     fn render_test() {
@@ -124,11 +135,6 @@ mod tests {
             let img = Image::new(500, 500);
             img.render(filename);
         });
-    }
-
-    #[test]
-    fn xy2a_test() {
-        assert_eq!(Image::new(500, 500).xy2i(25, 25), 12525)
     }
 
     #[test]
@@ -142,17 +148,33 @@ mod tests {
         img.set(Xy(250, 250), &Color { r: 0, g: 1, b: 0 });
         assert_eq!(*img.get(Xy(250, 250)), Color { r: 0, g: 1, b: 0 });
     }
-    // #[test]
-    // fn index_conversion_test() {
-    //     assert_eq!(Image::xy2i(68, 345), Image::pt2i(Xy(68, 345)));
-    // }
 
     #[test]
-    #[ignore]
-    fn get_set_boundries_test() {
-        // if we are able to get this test working we can remvoe all the + 1 to the image size for the
-        // where boundry l and switch back from [u8; (H + 1) * (W + 1)]: Sized, to [u8,H * W]
-        let image = Image::new(500, 500);
-        assert_eq!(image.pt2i(Xy(500, 500)), 250000)
+    fn set_out_of_bounds_test() {
+        assert_panic!(Image::new(100, 100).set(Xy(100, 0), &WHITE), String, starts with "image: image.set");
+        assert_panic!(Image::new(100, 100).set(Xy(0, 100), &WHITE), String, starts with "image: image.set");
+        assert_panic!(Image::new(100, 100).set(Xy(0, 101), &WHITE), String, starts with "image: image.set");
+        assert_panic!(Image::new(100, 100).set(Xy(100, 100), &WHITE), String, starts with "image: image.set");
+        assert_panic!(Image::new(500, 500).set(Xy(0, 500), &WHITE), String, starts with "image: image.set");
+        assert_panic!(Image::new(500, 500).set(Xy(500, 0), &WHITE), String, starts with "image: image.set");
+        assert_panic!(Image::new(500, 500).set(Xy(-1, 250), &WHITE), String, starts with "image: image.set");
+        Image::new(500, 500).set(Xy(499, 499), &WHITE);
+        Image::new(500, 500).set(Xy(0, 0), &WHITE);
+    }
+    #[test]
+    fn get_out_of_bounds_test() {
+        assert_panic!(let _i = Image::new(100, 100).get(Xy(100, 0)), String, starts with "image: image.get");
+        assert_panic!(let _i = Image::new(100, 100).get(Xy(0, 100)), String, starts with "image: image.get");
+        assert_panic!(let _i = Image::new(100, 100).get(Xy(0, 101)), String, starts with "image: image.get");
+        assert_panic!(let _i = Image::new(100, 100).get(Xy(100, 100)), String, starts with "image: image.get");
+        assert_panic!(let _i = Image::new(500, 500).get(Xy(0,500)), String, starts with "image: image.get");
+        assert_panic!(let _i = Image::new(500, 500).get(Xy(500, 0)), String, starts with "image: image.get");
+        assert_panic!(let _i = Image::new(500, 500).get(Xy(-1, 250)), String, starts with "image: image.get");
+        Image::new(500, 500).get(Xy(499, 499));
+        Image::new(500, 500).get(Xy(0, 0));
+    }
+    #[test]
+    fn set_out_of_bounds_test2() {
+        assert_panic!(Image::new(100, 100).set(Xy(100, 0), &WHITE), String, starts with "image:");
     }
 }

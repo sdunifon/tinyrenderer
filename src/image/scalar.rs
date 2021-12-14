@@ -149,7 +149,7 @@ mod tests {
         let s = Scalar::Scale { x: 101, y: 101 };
         assert_eq!(
             s.scale_v(&Vertex {
-                x: -1,
+                x: -1.,
                 y: 0.75,
                 z: 0.5,
             }),

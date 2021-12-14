@@ -28,6 +28,7 @@ pretty_assertions = "1.0.0"
 all_asserts = "2.3.0"
 cargo-make = "0.35.1"
 trunk = "0.14.0"
+assert-panic = "1.0.1"
 
 [[bench]]
 name = "render_benchmark"
