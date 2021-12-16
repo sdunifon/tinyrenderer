@@ -1,6 +1,4 @@
-use super::Image;
 use super::{Pt, Vertex, Xy};
-use std::ops::Deref;
 
 #[derive(Debug, Clone, Copy)]
 pub enum Scalar {
@@ -15,26 +13,24 @@ impl Scalar {
             "Vertex: {:?} has coordinates with length greater than one",
             vertex
         );
-        let scaler = |coordinate: f64, scale: f64| -> i32 {
-            (((scale - 1.) * (coordinate + 1.)) / 2.).round() as i32
-        };
+
         match self {
             Scalar::Scale {
                 x: width,
                 y: height,
             } => {
-                // let resized_vertex = *vertex * (height.max(width) / 2) as f64;
-                // let center_adjust_x: i32 = (*width as i32) / 2;
-                // let center_adjust_y: i32 = (*height as i32) / 2;
-                // let x = resized_vertex.x.round() as i32 + center_adjust_x;
-                // let y = resized_vertex.y.round() as i32 + center_adjust_y;
-
-                let x = scaler(vertex.x, *width as f64);
-                let y = scaler(vertex.y, *height as f64);
+                let x = Self::scale(vertex.x, *width as f64);
+                let y = Self::scale(vertex.y, *height as f64);
                 Xy(x, y)
             }
             Scalar::None => Xy(vertex.x.round() as i32, vertex.y.round() as i32),
         }
+    }
+
+    //    private
+    #[inline]
+    fn scale(n: f64, scale: f64) -> i32 {
+        (((scale - 1.) * (n + 1.)) / 2.).round() as i32
     }
 }
 
