@@ -75,10 +75,22 @@ mod tests {
                 y: 1.,
                 z: 0.5,
             }),
-            Xy(0, 100)
+            Xy(0, 99)
         )
     }
 
+    #[test]
+    fn scale_v_test1() {
+        let s = Scalar::Scale { x: 300, y: 300 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 0.5,
+                y: -0.5,
+                z: 0.5,
+            }),
+            Xy(224, 75)
+        )
+    }
     #[test]
     fn scale_v_test2() {
         let s = Scalar::Scale { x: 100, y: 100 };
@@ -88,7 +100,7 @@ mod tests {
                 y: 0.,
                 z: 0.5
             }),
-            Xy(0, 0)
+            Xy(50, 50) //49.5 rounds to 50
         )
     }
 
@@ -98,10 +110,10 @@ mod tests {
         assert_eq!(
             s.scale_v(&Vertex {
                 x: 0.75,
-                y: 0.,
+                y: -0.75,
                 z: 0.5
             }),
-            Xy(0, 0)
+            Xy(87, 12)
         )
     }
 
@@ -114,20 +126,20 @@ mod tests {
                 y: 0.5,
                 z: 0.5,
             }),
-            Xy(-59, 225)
+            Xy(2, 224)
         );
     }
 
     #[test]
     fn scale_v_test5() {
-        let s = Scalar::Scale { x: 100, y: 10 };
+        let s = Scalar::Scale { x: 101, y: 10 };
         assert_eq!(
             s.scale_v(&Vertex {
                 x: 0.1,
                 y: 0.1,
                 z: 0.5,
             }),
-            Xy(75, 8)
+            Xy(55, 5)
         )
     }
 
@@ -137,10 +149,10 @@ mod tests {
         assert_eq!(
             s.scale_v(&Vertex {
                 x: 1.,
-                y: 0.,
+                y: 0.75,
                 z: 0.5,
             }),
-            Xy(101, 8)
+            Xy(100, 88)
         )
     }
 
@@ -149,11 +161,32 @@ mod tests {
         let s = Scalar::Scale { x: 101, y: 101 };
         assert_eq!(
             s.scale_v(&Vertex {
-                x: -1.,
-                y: 0.75,
+                x: 0.99,
+                y: 0.987,
                 z: 0.5,
             }),
-            Xy(-101, 75)
+            Xy(100, 99)
+        );
+    }
+
+    #[test]
+    fn scale_v_test8() {
+        let s = Scalar::Scale { x: 10, y: 10 };
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 0.35,
+                y: 0.74,
+                z: 0.5,
+            }),
+            Xy(6, 8)
+        );
+        assert_eq!(
+            s.scale_v(&Vertex {
+                x: 1.,
+                y: -1.,
+                z: 0.5,
+            }),
+            Xy(9, 0)
         );
     }
 
@@ -163,6 +196,28 @@ mod tests {
         let s = Scalar::Scale { x: 100, y: 100 };
         s.scale_v(&Vertex {
             x: -1.1,
+            y: 0.6,
+            z: 0.5,
+        });
+    }
+
+    #[test]
+    #[should_panic]
+    fn scale_v_panic_test1() {
+        let s = Scalar::Scale { x: 100, y: 100 };
+        s.scale_v(&Vertex {
+            x: -1.0,
+            y: 10.6,
+            z: 0.5,
+        });
+    }
+
+    #[test]
+    #[should_panic]
+    fn scale_v_panic_test2() {
+        let s = Scalar::Scale { x: 100, y: 100 };
+        s.scale_v(&Vertex {
+            x: 0.4,
             y: 10.,
             z: 0.5,
         });
