@@ -182,6 +182,7 @@ mod tests {
 
     #[test]
     #[should_panic]
+    #[ignore]
     fn vertex_must_be_normalized_test() {
         Vertex {
             x: 5.0,

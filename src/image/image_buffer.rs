@@ -76,6 +76,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[should_panic]
     fn image_buffer_index_test() {
         let buf = ImageBuffer::new(250, 250);
         buf[&Xy(0, 250)];

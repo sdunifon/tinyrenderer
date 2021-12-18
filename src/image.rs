@@ -46,7 +46,7 @@ impl Image {
         let mut image_buffer = image_lib::ImageBuffer::new(self.width as u32, self.height as u32);
 
         for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
-            let y = self.height - y;
+            let y = self.height - y - 1;
             *pixel = image_lib::Rgb::<u8>(self.buffer[&Xy(x as i32, y as i32)].to_color_ary())
         }
         image_buffer
