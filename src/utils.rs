@@ -1,3 +1,5 @@
+use std::ops::{Add, Mul};
+
 use super::*;
 use rand::random;
 
@@ -25,8 +27,25 @@ pub fn random_grayscale() -> Color {
         b: gray_value,
     }
 }
+
+pub fn lerp<T>(a: T, b: T, percent: i32) -> T
+where
+    T: Add<T, Output = T>,
+    T: Mul<i32, Output = T>,
+    T: Into<i32>,
+    T: From<i32>,
+{
+    // let range = [a..b];
+    // let size = range.len();
+    // range[]
+    // range[(size as f64 * t).round() as usize]
+    a + ((b.into() * percent) / 100).into()
+}
+
 #[cfg(test)]
 mod tests {
+
+    use super::*;
 
     #[test]
     fn swap_vars() {
@@ -43,5 +62,14 @@ mod tests {
         swap_vars!(3 > 2, c, d);
         assert_eq!(c, 2);
         assert_eq!(d, 1);
+    }
+    #[test]
+    fn lerp_test() {
+        assert_eq!(lerp(0, 10, 0), 0);
+        assert_eq!(lerp(0, 10, 100), 10);
+        assert_eq!(lerp(0, 5, 100), 5);
+        assert_eq!(lerp(5, 10, 0), 5);
+        assert_eq!(lerp(0, 10, 50), 5);
+        assert_eq!(lerp(6, 11, 27), 8);
     }
 }
