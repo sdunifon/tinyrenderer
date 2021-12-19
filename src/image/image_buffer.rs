@@ -3,6 +3,7 @@ use super::Color;
 use super::Xy;
 use std::ops::{Index, IndexMut};
 
+#[derive(Debug, Clone)]
 pub struct ImageBuffer {
     height: u32,
     width: u32,

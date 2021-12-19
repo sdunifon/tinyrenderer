@@ -1,7 +1,6 @@
 use super::image::Drawable;
 use super::*;
 use crate::model_file::ModelFileDrawer;
-use std::path::Path;
 use std::{error, fmt};
 
 const RENDER_WIDTH: u32 = 800;
@@ -68,8 +67,10 @@ impl Render {
         Ok(())
     }
 
-    pub fn image_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {
-        self.image.render_to_buffer()
+    // pub fn image_buffer(&self) -> image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> {
+    pub fn image_buffer(&self) -> ImageBuffer {
+        // self.image.render_to_buffer()
+        self.image.buffer.clone() //TODO remove clone
     }
     pub fn width(&self) -> u32 {
         self.image.width

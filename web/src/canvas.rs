@@ -1,7 +1,7 @@
 use seed::{prelude::*, *};
 
 use serde::{Deserialize, Serialize};
-use tinyrenderer::{Color, Render};
+use tinyrenderer::{Color, Render, Xy};
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 
 fn init(_: Url, orders: &mut impl Orders<Msg>) -> Model {
@@ -38,7 +38,7 @@ impl Default for Model {
             zoom: 1.,
             canvas: ElRef::<HtmlCanvasElement>::default(),
             renderer: Render::default(),
-            filename: "cessna.obj".to_string(),
+            filename: "airboat.obj".to_string(),
             loaded: false,
         }
     }
@@ -72,7 +72,8 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             orders
                 .skip()
-                .perform_cmd({ async { Msg::Fetched(download_file("/assets/cessna.obj").await) } });
+                .perform_cmd(async { Msg::Fetched(download_file("airboat.obj").await) });
+            // .perform_cmd(async { Msg::Fetched(download_file(model.filenameo).await) });
         }
         Msg::Test => {
             log("testing 1 2 3".to_string());
@@ -184,11 +185,13 @@ fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
 }
 
 fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
-    for x in 0..=model.renderer.width() as u32 {
-        for y in 0..=model.renderer.height() as u32 {
+    let image_buffer = model.renderer.image_buffer();
+    for x in 0..model.renderer.width() as u32 {
+        for y in 0..model.renderer.height() as u32 {
             let color: Color;
-            let color =
-                model.renderer.image.data[(y as usize) * model.renderer.width() + (x as usize)];
+            let color = image_buffer[&Xy(x as i32, y as i32)];
+            // model.renderer.image.data[(y as usize) * model.renderer.width() + (x as usize)];
+
             set_pixel(&mut ctx, x, y, color);
         }
     }
@@ -199,8 +202,8 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
         canvas![
             el_ref(&model.canvas),
             attrs![
-              At::Width => px(400), //model.render.width()),
-              At::Height => px(400), //model.render.height()),
+              At::Width => px(1000), //model.render.width()),
+              At::Height => px(1000), //model.render.height()),
             ],
             style![
               St::Border => "1px solid black"

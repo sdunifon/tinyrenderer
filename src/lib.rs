@@ -34,6 +34,7 @@ pub use bounds::{Boundable, BoundingBox};
 use fillable::Fillable;
 pub use image::color::*;
 use image::*;
+pub use image::{ImageBuffer, Xy};
 use line::Line;
 pub use model_file::ModelFile;
 use na::Vector3;

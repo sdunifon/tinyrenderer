@@ -52,7 +52,7 @@ fn setup_render_no_error(filename: &str) -> Render {
 
 #[cfg(feature = "native_image_render")]
 fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
-    let image_buffer = render.image_buffer();
+    let image_buffer = render.image.render_to_buffer();
 
     let window = create_window("image", Default::default())?;
     window.set_image("image-001", image_buffer)?;
