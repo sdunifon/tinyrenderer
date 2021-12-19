@@ -72,7 +72,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             orders
                 .skip()
-                .perform_cmd(async { Msg::Fetched(download_file("airboat.obj").await) });
+                .perform_cmd(async { Msg::Fetched(download_file("cessna.obj").await) });
             // .perform_cmd(async { Msg::Fetched(download_file(model.filenameo).await) });
         }
         Msg::Test => {
