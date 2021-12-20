@@ -13,7 +13,6 @@ pub use traits::{Canvas, Drawable};
 pub use xy::Xy;
 
 use crate::image::scalar::Translator;
-use core::fmt;
 use scalar::Resizer;
 
 pub struct Image {

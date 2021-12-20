@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
-default = []
+default = ["native_image_render"]
 native_image_render = ["show-image"]
 
 ["dependencies"]
@@ -29,6 +29,7 @@ all_asserts = "2.3.0"
 cargo-make = "0.35.1"
 trunk = "0.14.0"
 assert-panic = "1.0.1"
+float_eq = "0.7.0"
 
 [[bench]]
 name = "render_benchmark"
