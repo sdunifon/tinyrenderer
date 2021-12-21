@@ -14,6 +14,7 @@ extern crate lazy_static;
 mod bounds;
 pub mod fillable;
 mod image;
+mod lerp;
 mod line;
 mod math;
 mod model_file;
