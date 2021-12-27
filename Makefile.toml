@@ -12,6 +12,7 @@ args = ["build"]
 dependencies = ["clean"]
 
 [tasks.serve]
+install_crate = "trunk"
 dependencies = ["build-web"]
 command = "trunk"
 args = ["serve"]
