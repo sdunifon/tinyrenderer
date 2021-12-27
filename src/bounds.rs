@@ -21,6 +21,19 @@ impl BoundingBox {
     }
 }
 
+struct BoundingIterator {
+    index: Xy,
+    bounding_box: BoundingBox,
+}
+
+impl Iterator for BoundingIterator {
+    type Item = Xy;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        unimplemented!();
+    }
+}
+
 pub trait Boundable: HasTriangleVerticies {
     fn bounding_box(&self) -> BoundingBox {
         let vertex_array = self.vertices();
@@ -50,6 +63,9 @@ pub trait Boundable: HasTriangleVerticies {
             y_min,
             y_max,
         }
+    }
+    fn is_inside(pt: Xy) -> bool {
+        unimplemented!()
     }
 }
 
@@ -85,5 +101,9 @@ mod tests {
                 y_max: 25.
             }
         );
+    }
+    #[test]
+    fn bound_iterator_test() {
+        assert!(true)
     }
 }
