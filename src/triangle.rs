@@ -263,7 +263,7 @@ mod tests {
                 Vertex::new(0.2, 0.0, 0.1),
             ],
         };
-        assert_eq!(t.normal(), vector!(0.10, 0.00, -0.20));
+        assert_eq!(t.normal(), vector!(0.44, 0.00, -0.89)); // correct but not normalized
     }
     #[test]
     fn normal2_test() {
@@ -351,6 +351,6 @@ mod tests {
                 Vertex::new(0.2, 0.0, 0.0), //tilted out 45 degrees
             ],
         };
-        assert_eq!(t.brightness(), 1);
+        assert_eq!(t.brightness(), 255);
     }
 }
