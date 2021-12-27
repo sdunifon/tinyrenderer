@@ -18,7 +18,9 @@ impl Drawable for Triangles {
         }
     }
 }
+
 impl Fillable for Triangles {
+    // not sure if we want this
     fn fill(&self, drawer: &mut dyn Canvas) {
         for triangle in self {
             triangle.fill(drawer)
@@ -74,11 +76,6 @@ impl Brightness for Triangle {
     }
 }
 
-// struct Vector {
-//     x: f64,
-//     y: f64,
-//     z: f64_u
-// }
 impl Drawable for Triangle {
     fn draw(&self, image: &mut dyn Canvas) {
         for line in self.lines() {

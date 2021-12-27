@@ -21,13 +21,13 @@ rand = "0.8.4"
 nalgebra = "0.29.0"
 quicli = "0.4.0"
 structopt = "0.3.23"
+num-traits = "^0.2.14"
 
 [dev-dependencies]
 criterion = "0.3"           #version 0.3.5 is conflicting websys versions with show-image for some reason.. this sems to install 0.3.4 and work.. be on the lookout for an upgraded that works --spd
 pretty_assertions = "1.0.0"
 all_asserts = "2.3.0"
 cargo-make = "0.35.1"
-trunk = "0.14.0"
 assert-panic = "1.0.1"
 float_eq = "0.7.0"
 
