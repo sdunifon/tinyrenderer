@@ -46,7 +46,7 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 
 // pub use vector::Vector3;
-pub use vertex::{HasTriangleVerticies, NormalizedVertices, Vertex, Vertices};
+pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
 pub const IMAGE_HEIGHT: u32 = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 pub const IMAGE_WIDTH: u32 = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
 

@@ -55,7 +55,7 @@ impl ToSortedVertices for Vertices {
         SortedVertices(self)
     }
 }
-pub trait HasTriangleVerticies {
+pub trait HasTriangleVertices {
     // fn veuprtices(&self) -> [Vertex; N];
     fn vertices(&self) -> [Vertex; 3];
 
@@ -65,7 +65,7 @@ pub trait HasTriangleVerticies {
     }
 }
 
-pub trait HasNormal: HasTriangleVerticies {
+pub trait HasNormal: HasTriangleVertices {
     fn normal(&self) -> Vector3<f64>;
 }
 

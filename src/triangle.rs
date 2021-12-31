@@ -1,4 +1,4 @@
-use na::Vector3; //TODO get rid of
+// use na::Vector3; //TODO get rid of
 
 use na::vector;
 
@@ -88,7 +88,7 @@ impl Drawable for Triangle {
     // }
 }
 
-impl HasTriangleVerticies for Triangle {
+impl HasTriangleVertices for Triangle {
     fn vertices(&self) -> [Vertex; 3] {
         //TODO make vertex a borrow instead of copy
         self.vertices.map(|v| v)

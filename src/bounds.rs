@@ -34,7 +34,7 @@ impl Iterator for BoundingIterator {
     }
 }
 
-pub trait Boundable: HasTriangleVerticies {
+pub trait Boundable: HasTriangleVertices {
     fn bounding_box(&self) -> BoundingBox {
         let vertex_array = self.vertices();
 
