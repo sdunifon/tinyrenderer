@@ -3,3 +3,4 @@
 channel = "nightly"
 components = ["rustc", "cargo", "rustfmt", "rust-docs", "clippy", "miri", "rust-src"]
 profile = "default"
+targets = [ "wasm32-unknown-unknown"]

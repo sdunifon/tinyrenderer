@@ -1,10 +1,7 @@
-use quicli::prelude::*;
 use std::error::Error;
-use std::thread;
 use structopt::StructOpt;
 
 use tinyrenderer::render::{Render, RenderError};
-use tinyrenderer::*;
 
 #[cfg(feature = "native_image_render")]
 use show_image::{create_window, event};
@@ -19,11 +16,11 @@ struct Cli {
 #[cfg_attr(feature = "native_image_render", show_image::main)]
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Cli::from_args();
-    let render = setup_render_no_error(&args.filename);
+    let render = setup_render(&args.filename);
     // let render = setup_render(&args.filename)?;
     // image.render("render.tga");
     #[cfg(feature = "native_image_render")]
-    display_window(&render)?;
+    display_window(&render.unwrap())?;
 
     // const NEED_LARGE_STACK: bool = true;
     // if NEED_LARGE_STACK {
@@ -40,14 +37,6 @@ fn setup_render(filename: &str) -> Result<Render, RenderError> {
     render.load_file(filename)?;
     render.update()?;
     Ok(render)
-}
-
-fn setup_render_no_error(filename: &str) -> Render {
-    //TODO remove this and fix setup_render which is crashing with a stackoverflow
-    let mut render = Render::default();
-    render.load_file(filename);
-    render.update();
-    render
 }
 
 #[cfg(feature = "native_image_render")]
@@ -117,16 +106,8 @@ mod tests {
     use super::*;
 
     #[test]
-    #[ignore]
-    // fn setup_render_test() -> Result<(), Box<dyn std::error::Error>> {
     fn setup_render_test() {
         let a = setup_render("assets/head.obj");
-        // setup_render("assets/head.obj")?;
-        // Ok(())
-    }
-    #[test]
-    fn setup_render_no_error_test() {
-        let a = setup_render_no_error("assets/head.obj");
         // setup_render("assets/head.obj")?;
         // Ok(())
     }

@@ -16,7 +16,7 @@ pub struct NormalizedVertices {
 impl NormalizedVertices {
     fn calculate_vertex_range(vertices: &Vertices) -> VertexRange {
         debug_assert!(
-            vertices.len() > 0,
+            !vertices.is_empty(),
             "Cannot calculate vertext range  because vertexes have not been parsed"
         );
         let mut range = VertexRange::default();
