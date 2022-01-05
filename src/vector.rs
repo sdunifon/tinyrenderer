@@ -29,8 +29,15 @@ where
         // *self.clone()
         // *self.clone() / self.x //self.norm()
         let new_vec = self.clone();
-        let zz = new_vec / self.norm();
-        zz
+        new_vec / self.norm()
+    }
+
+    fn cross(&self, rhs: &Vector3<T>) -> Vector3<T> {
+        Vector3 {
+            x: (self.y * rhs.z) - (self.z * rhs.y),
+            y: (self.z * rhs.x) - (self.x * rhs.z),
+            z: (self.x * rhs.y) - (self.y * rhs.x),
+        }
     }
 }
 
@@ -63,6 +70,7 @@ where
 //         }
 //     }
 // }
+impl<T> Vector3<T> {}
 impl<T> ops::Div<T> for Vector3<T>
 where
     T: ops::Div<T, Output = T> + Copy, // do we need copy
@@ -85,6 +93,12 @@ mod tests {
     use criterion::black_box;
     use test::Bencher;
 
+    fn assert_vector_eq(v1: Vector3<f64>, v2: Vector3<f64>) {
+        assert_near!(v1.x, v2.x, 0.001);
+        assert_near!(v1.y, v2.y, 0.001);
+        assert_near!(v1.z, v2.z, 0.001);
+    }
+
     #[test]
     fn norm() {
         assert_near!(Vector3::new(1., 2., 3.).norm(), 3.741, 0.001);
@@ -99,12 +113,6 @@ mod tests {
     #[cfg(test)]
     mod tests {
         use super::*;
-
-        fn assert_vector_eq(v1: Vector3<f64>, v2: Vector3<f64>) {
-            assert_near!(v1.x, v2.x, 0.001);
-            assert_near!(v1.y, v2.y, 0.001);
-            assert_near!(v1.z, v2.z, 0.001);
-        }
 
         #[cfg(test)]
         mod tests {
@@ -128,6 +136,29 @@ mod tests {
                 Vector3::new(0.234, -0.669, 0.704),
             );
         }
+    }
+    /// short hand for creating a vector with x y z input
+    macro_rules! v {
+        ($a:expr,$b:expr,$c:expr) => {
+            Vector3::new($a as f64, $b as f64, $c as f64)  //TODO take out automatic conversion to f64.. currently haveing some problems with erros sayingit could be f32
+        };
+    }
+
+    #[test]
+    fn macro_test() {
+        assert_eq!(Vector3::new(2., 4., -5.), v!(2., 4., -5.))
+    }
+
+    #[test]
+    fn cross_test() {
+        assert_eq!(
+            Vector3::new(1., 2., 0.).cross(&Vector3::new(3., 1., 0.)),
+            v!(0., 0., -5.)
+        );
+        assert_vector_eq(
+            v!(2.6, 4.0, -0.4).cross(&v!(-8., 0., 0.6)),
+            v!(2.4, 1.64, 32.),
+        )
     }
 
     #[bench]
