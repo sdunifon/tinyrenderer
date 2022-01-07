@@ -126,7 +126,7 @@ impl Canvas for Image {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_helper::assert_file_creation;
+    use crate::test_helper::tests::assert_file_creation;
     use assert_panic::assert_panic;
 
     #[test]

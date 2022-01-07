@@ -97,7 +97,7 @@ impl Drawable for Line {
 mod tests {
 
     use super::*;
-    use crate::test_helper::assert_file_creation;
+    use crate::test_helper::tests::assert_file_creation;
 
     #[test]
     fn line_draw_test() {

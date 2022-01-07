@@ -125,6 +125,7 @@ pub fn render_triangle() -> Image {
 //     handler.join().expect("something's wrong with the thread");
 // }
 // pub fn render(image: &mut Image, faces: &Faces, verticies: &Vertices) {}
+
 #[cfg(test)]
 mod tests {
 

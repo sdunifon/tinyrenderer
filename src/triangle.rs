@@ -1,7 +1,5 @@
 // use na::Vector3; //TODO get rid of
 
-use na::vector;
-
 use crate::vertex::HasNormal;
 
 use super::*;
@@ -260,7 +258,7 @@ mod tests {
                 Vertex::new(0.2, 0.0, 0.1),
             ],
         };
-        assert_eq!(t.normal(), vector!(0.44, 0.00, -0.89)); // correct but not normalized
+        assert_eq!(t.normal(), Vector3::new(0.44, 0.00, -0.89)); // correct but not normalized
     }
     #[test]
     fn normal2_test() {
@@ -271,7 +269,7 @@ mod tests {
                 Vertex::new(0.1, 0.0, 0.0),
             ],
         };
-        assert_fvector_eq(t.normal(), vector!(0.00, 0.00, 0.010));
+        assert_fvector_eq(t.normal(), Vector3::new(0.00, 0.00, 0.010));
     }
     #[test]
     fn normal3_test() {
@@ -282,7 +280,7 @@ mod tests {
                 Vertex::new(0.0, 0.1, 0.0),
             ],
         };
-        assert_fvector_eq(t.normal(), vector!(0.00, 0.00, -0.010));
+        assert_fvector_eq(t.normal(), Vector3::new(0.00, 0.00, -0.010));
     }
 
     #[test]
@@ -294,13 +292,13 @@ mod tests {
                 Vertex::new(-0.1, -0.2, 0.3),
             ],
         };
-        assert_fvector_eq(t.normal(), vector!(0.120, -0.060, -0.060));
+        assert_fvector_eq(t.normal(), Vector3::new(0.120, -0.060, -0.060));
     }
     #[test]
     fn normal_from_file_test() {
         let triangles = triangles();
         // Vector3::<f64>::new(6 as f64, 5 as f64, 4 as f64);
-        let a = vector!(92.0, -6.0, 130.0);
+        let a = Vector3::new(92.0, -6.0, 130.0);
         assert_fvector_eq(triangles[300].normal(), a);
     }
     #[test]

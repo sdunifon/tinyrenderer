@@ -30,6 +30,7 @@ impl From<File> for ModelFile {
         }
     }
 }
+
 impl ModelFile {
     pub fn open_file(filename: &str) -> ModelFile {
         let file = File::open(filename).expect("file not found!");

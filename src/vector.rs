@@ -89,6 +89,7 @@ where
 mod tests {
     use super::*;
     extern crate test;
+    use crate::test_helper::tests::v;
     use all_asserts::assert_near;
     use criterion::black_box;
     use test::Bencher;
@@ -136,12 +137,6 @@ mod tests {
                 Vector3::new(0.234, -0.669, 0.704),
             );
         }
-    }
-    /// short hand for creating a vector with x y z input
-    macro_rules! v {
-        ($a:expr,$b:expr,$c:expr) => {
-            Vector3::new($a as f64, $b as f64, $c as f64)  //TODO take out automatic conversion to f64.. currently haveing some problems with erros sayingit could be f32
-        };
     }
 
     #[test]
