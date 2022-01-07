@@ -1,11 +1,12 @@
+use super::*;
 use num_traits::float::Float;
 use std::ops::{self, Add, Mul};
 
 #[derive(Debug, PartialEq, Clone, Copy)] // try removing copy here and the impl where statement of div.. and try to get it unit working without a copy
 pub struct Vector3<T> {
-    x: T,
-    y: T,
-    z: T,
+    pub x: T,
+    pub y: T,
+    pub z: T,
 }
 
 impl<T> Vector3<T>
@@ -38,6 +39,11 @@ where
             y: (self.z * rhs.x) - (self.x * rhs.z),
             z: (self.x * rhs.y) - (self.y * rhs.x),
         }
+    }
+}
+impl From<Vertex> for Vector3<f64> {
+    fn from(vex: Vertex) -> Self {
+        Vector3::new(vex.x, vex.y, vex.z)
     }
 }
 
@@ -88,17 +94,13 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::vector::Vector3;
     extern crate test;
+    use crate::test_helper::tests::assert_vector_eq;
     use crate::test_helper::tests::v;
     use all_asserts::assert_near;
     use criterion::black_box;
     use test::Bencher;
-
-    fn assert_vector_eq(v1: Vector3<f64>, v2: Vector3<f64>) {
-        assert_near!(v1.x, v2.x, 0.001);
-        assert_near!(v1.y, v2.y, 0.001);
-        assert_near!(v1.z, v2.z, 0.001);
-    }
 
     #[test]
     fn norm() {

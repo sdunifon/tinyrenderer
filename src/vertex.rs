@@ -6,6 +6,7 @@ pub use normalized_vertices::NormalizedVertices;
 use std::cmp::Ordering;
 use std::ops;
 use std::ops::Deref;
+use vector::Vector3;
 
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)] //TODO remove copy
 pub struct Vertex {
@@ -58,6 +59,13 @@ impl ToSortedVertices for Vertices {
 pub trait HasTriangleVertices {
     // fn veuprtices(&self) -> [Vertex; N];
     fn vertices(&self) -> [Vertex; 3];
+
+    fn side_vectors(&self) -> [Vector3<f64>; 2] {
+        let [vex0, vex1, vex2] = self.vertices();
+        let vec1 = Vector3::from(vex0 - vex1);
+        let vec2 = Vector3::from(vex0 - vex2);
+        [vec1, vec2]
+    }
 
     fn vectors(&self) -> [Vector3<f64>; 3] {
         self.vertices()
@@ -179,6 +187,7 @@ impl ops::Add<f64> for Vertex {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::test_helper::tests::{assert_vector_eq, v};
 
     #[test]
     #[should_panic]
@@ -205,5 +214,20 @@ mod tests {
                 z: -0.3
             }
         );
+    }
+
+    #[test]
+    fn side_vector_test() {
+        let t = Triangle {
+            vertices: [
+                Vertex::new(0.1, 0.2, 0.3),
+                Vertex::new(0.4, 0.5, 0.6),
+                Vertex::new(0.7, 0.8, 0.9),
+            ],
+        };
+
+        let sv = t.side_vectors();
+        assert_vector_eq!(sv[0], v!(1., 2., 3.));
+        assert_vector_eq!(sv[1], v!(3., 2., 1.));
     }
 }

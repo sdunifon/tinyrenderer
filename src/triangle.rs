@@ -3,6 +3,8 @@
 use crate::vertex::HasNormal;
 
 use super::*;
+
+use vector::Vector3;
 pub struct Triangle {
     pub vertices: [Vertex; 3],
 }
