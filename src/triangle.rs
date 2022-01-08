@@ -5,6 +5,7 @@ use crate::vertex::HasNormal;
 use super::*;
 
 use vector::Vector3;
+#[derive(Debug)]
 pub struct Triangle {
     pub vertices: [Vertex; 3],
 }
@@ -44,6 +45,7 @@ impl Triangle {
 trait ToLines {
     fn lines(&self) -> [Line; 3];
 }
+
 impl ToLines for Triangle {
     fn lines(&self) -> [Line; 3] {
         [
@@ -53,25 +55,27 @@ impl ToLines for Triangle {
         ]
     }
 }
+
 impl HasNormal for Triangle {
     fn normal(&self) -> Vector3<f64> {
-        let vector_array = self.vectors();
-        let v1 = vector_array[1] - vector_array[0];
-        let v2 = vector_array[2] - vector_array[0];
-        let normal = v1.cross(&v2);
-        normal
+        let [v1, v2] = self.side_vectors();
+        v1.cross(&v2)
     }
 }
 
 impl Brightness for Triangle {
     fn brightness(&self) -> u8 {
-        let normal = self.normal();
-        let camera_direction = Vector3::<f64>::new(0.0, 0.0, 1.0);
-        let offset_angle = math::angle_between_vectors(&normal, &camera_direction).to_degrees();
-        if offset_angle >= 90.0 {
-            ((((offset_angle - 90.0) / 90.0) * 256.0) - 1.0) as u8
-        } else {
-            0
+        let camera_direction = Vector3::<f64>::new(0.0, 0.0, -1.0).unit();
+
+        println!(
+            "brightnewss:{:?}",
+            self.normal().unit().dot(&camera_direction)
+        );
+
+        match self.normal().unit().dot(&camera_direction) {
+            num if num > 0. && num <= 1. => (num * 255.0) as u8,
+            num if num > 1. => 255,
+            _ => 0,
         }
     }
 }
@@ -219,6 +223,8 @@ impl Fillable for Triangle {
 }
 #[cfg(test)]
 mod tests {
+    use crate::test_helper::tests::assert_vector_eq;
+
     use super::*;
     use float_eq::assert_float_eq;
     // use pretty_assertions::{assert_eq, assert_ne};
@@ -260,7 +266,7 @@ mod tests {
                 Vertex::new(0.2, 0.0, 0.1),
             ],
         };
-        assert_eq!(t.normal(), Vector3::new(0.44, 0.00, -0.89)); // correct but not normalized
+        assert_vector_eq(t.normal().unit(), Vector3::new(0.447, 0.00, -0.894)); // correct but not normalized
     }
     #[test]
     fn normal2_test() {
@@ -301,7 +307,8 @@ mod tests {
         let triangles = triangles();
         // Vector3::<f64>::new(6 as f64, 5 as f64, 4 as f64);
         let a = Vector3::new(92.0, -6.0, 130.0);
-        assert_fvector_eq(triangles[300].normal(), a);
+        // panic!("{:?}", triangles[300]);
+        assert_fvector_eq(triangles[300].normal().unit(), a);
     }
     #[test]
     fn brightness_45_test() {

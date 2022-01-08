@@ -23,23 +23,20 @@ where
         ((x * x) + (y * y) + (z * z)).sqrt()
     }
 
+    //Vector with a length of one
     pub fn unit(&self) -> Vector3<T> {
-        // Vector3::new(1., 2., 3.) / 4.
-        // let a = self / 4.; //self.norm()
-        // let b = Vector3::new(1., 2., 3.) / 4.; //self.norm()
-        // *self.clone()
-        // *self.clone() / self.x //self.norm()
         let new_vec = self.clone();
         new_vec / self.norm()
     }
 
-    fn cross(&self, rhs: &Vector3<T>) -> Vector3<T> {
+    pub fn cross(&self, rhs: &Vector3<T>) -> Vector3<T> {
         Vector3 {
             x: (self.y * rhs.z) - (self.z * rhs.y),
             y: (self.z * rhs.x) - (self.x * rhs.z),
             z: (self.x * rhs.y) - (self.y * rhs.x),
         }
     }
+
     ///Intuitve Explanation:
     /// Project the vector given(rhs) onto this vector(self). Then multiply the lenght of this projection by the lenght of this vector
     ///
@@ -52,7 +49,7 @@ where
     /// Notes:
     /// order doesn't matter
     /// info about dot products here https://www.youtube.com/watch?v=LyGKycYT2v0
-    fn dot(&self, rhs: &Vector3<T>) -> T {
+    pub fn dot(&self, rhs: &Vector3<T>) -> T {
         (self.x * rhs.x) + (self.y * rhs.y) + (self.z * rhs.z)
     }
 }
@@ -62,11 +59,11 @@ impl From<Vertex> for Vector3<f64> {
     }
 }
 
-impl<T> From<Vector3<T>> for alg_lib::Vector3<T> {
-    fn from(v: Vector3<T>) -> Self {
-        alg_lib::vector![v.x, v.y, v.z]
-    }
-}
+// impl<T> From<Vector3<T>> for alg_lib::Vector3<T> {
+//     fn from(v: Vector3<T>) -> Self {
+//         alg_lib::vector![v.x, v.y, v.z]
+//     }
+// }
 // impl<T> ops::Div<T> for Vector3<T>
 // where
 //     T: ops::Div<T, Output = T>,

@@ -1,16 +1,21 @@
+use std::ops::{Add, Div, Mul};
+
 use super::*;
-use na::Vector3;
-use nalgebra::*;
 
 pub fn angle_between_vectors<T>(v1: &Vector3<T>, v2: &Vector3<T>) -> f64
 where
-    T: ComplexField<RealField = f64> + Into<f64>,
+    T: Into<f64>,
+    T: Add,
+    T: Div,
+    T: Mul,
+    T: num_traits::Float,
 {
+    todo!();
     //Formula =  a · b = |a| × |b| × cos(θ)
 
-    let dot_product: f64 = v1.dot(v2).into();
-    let cos_of_angle = dot_product / (v1.norm() * v2.norm());
-    cos_of_angle.acos() // in radians
+    // let dot_product: f64 = v1.dot(&v2);
+    // let cos_of_angle: f64 = dot_product / (v1.norm() * v2.norm());
+    // cos_of_angle.acos() // in radians
 }
 
 #[cfg(test)]
