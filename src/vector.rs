@@ -40,6 +40,21 @@ where
             z: (self.x * rhs.y) - (self.y * rhs.x),
         }
     }
+    ///Intuitve Explanation:
+    /// Project the vector given(rhs) onto this vector(self). Then multiply the lenght of this projection by the lenght of this vector
+    ///
+    /// When two vectors are generally pointint in the same direction the dot product is positive
+    /// When they are pointing perpendicular its 0
+    /// When its negative they are poiting generally in the opposite direction
+    ///
+    /// Taking a dot product with a unit vector will result in projecting the vector on the span of the unit vecotor and taking the length
+    /// Taking a dot proeduct with a non unit vector can be interpreted as first projecting on to that vecotr then scaling up the length of that projection by the length of the non-unit vector
+    /// Notes:
+    /// order doesn't matter
+    /// info about dot products here https://www.youtube.com/watch?v=LyGKycYT2v0
+    fn dot(&self, rhs: &Vector3<T>) -> T {
+        (self.x * rhs.x) + (self.y * rhs.y) + (self.z * rhs.z)
+    }
 }
 impl From<Vertex> for Vector3<f64> {
     fn from(vex: Vertex) -> Self {
@@ -47,6 +62,11 @@ impl From<Vertex> for Vector3<f64> {
     }
 }
 
+impl<T> From<Vector3<T>> for alg_lib::Vector3<T> {
+    fn from(v: Vector3<T>) -> Self {
+        alg_lib::vector![v.x, v.y, v.z]
+    }
+}
 // impl<T> ops::Div<T> for Vector3<T>
 // where
 //     T: ops::Div<T, Output = T>,
@@ -60,7 +80,7 @@ impl From<Vertex> for Vector3<f64> {
 //             z: self.z / rhs,
 //         }
 //     }
-// }
+// }k
 
 // impl<T> ops::Div<f64> for Vector3<T>
 // where
@@ -94,7 +114,6 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::vector::Vector3;
     extern crate test;
     use crate::test_helper::tests::assert_vector_eq;
     use crate::test_helper::tests::v;
@@ -157,6 +176,11 @@ mod tests {
             v!(2.4, 1.64, 32.),
         )
     }
+    #[test]
+    fn dot_test() {
+        assert_eq!(v!(3., 4., 7.).dot(&v!(-5., 9., 3.4)), 44.8);
+        assert_eq!(v!(-5., 12., 1.).dot(&v!(1.5, 0.1, 3.44)), -2.86);
+    }
 
     #[bench]
     fn power_bench(b: &mut Bencher) {
@@ -178,15 +202,3 @@ mod tests {
         })
     }
 }
-
-// impl<T> Vector3<T> {
-//     pub fn new(data: [T; 3]) -> Self {
-//         Self { data }
-//     }
-
-//     pub fn unit(&self) {}
-
-//     pub fn norm(&self) -> T {
-
-//     }
-// }
