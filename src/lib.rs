@@ -6,8 +6,6 @@
 #![feature(generic_arg_infer)]
 // #![feature(trace_macros)]
 
-extern crate nalgebra as na;
-
 #[macro_use]
 extern crate lazy_static;
 
@@ -38,12 +36,12 @@ use image::*;
 pub use image::{ImageBuffer, Xy};
 use line::Line;
 pub use model_file::ModelFile;
-use na::Vector3;
 use regex::Regex;
 pub use render::Render;
 use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
+use vector::Vector3;
 
 // pub use vector::Vector3;
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};

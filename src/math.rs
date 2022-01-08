@@ -24,6 +24,7 @@ mod tests {
     use all_asserts::*;
 
     #[test]
+    #[ignore]
     fn angle_between_vectors_test() {
         assert_near!(
             angle_between_vectors(&Vector3::new(0.0, 1.0, 0.0), &Vector3::new(0.0, 1.0, 1.0))
@@ -33,6 +34,7 @@ mod tests {
         )
     }
     #[test]
+    #[ignore]
     fn angle_between_vectors2_test() {
         assert_near!(
             angle_between_vectors(&Vector3::new(-1.0, 1.0, 0.0), &Vector3::new(1.0, 1.0, 0.0))
@@ -42,6 +44,7 @@ mod tests {
         )
     }
     #[test]
+    #[ignore]
     fn angle_between_same_vectors_test() {
         assert_near!(
             angle_between_vectors(&Vector3::new(0.0, 1.0, 0.0), &Vector3::new(0.0, 1.0, 0.0))
@@ -52,6 +55,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn angle_between_opposite_vectors_test() {
         assert_near!(
             angle_between_vectors(&Vector3::new(0.0, 0.0, -1.0), &Vector3::new(0.0, 0.0, 1.0))
@@ -62,6 +66,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn angle_from_camera_to_face_test() {
         let camera_angle = Vector3::new(0.0, 0.0, 1.0);
         let face_normal = Vector3::new(1.0, 0.0, 1.0);

@@ -227,7 +227,7 @@ mod tests {
         };
 
         let sv = t.side_vectors();
-        assert_vector_eq(sv[0], v!(1., 2., 3.));
-        assert_vector_eq(sv[1], v!(3., 2., 1.));
+        assert_vector_eq(sv[0], v!(-0.3, -0.3, -0.3));
+        assert_vector_eq(sv[1], v!(-0.6, -0.6, -0.6));
     }
 }
