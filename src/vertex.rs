@@ -71,6 +71,24 @@ pub trait HasTriangleVertices {
         self.vertices()
             .map(|v| Vector3::<f64>::new(v.x as f64, v.y as f64, v.z as f64))
     }
+
+    fn point_a(&self) -> Vertex {
+        self.vertices()[0]
+    }
+
+    fn point_b(&self) -> Vertex {
+        self.vertices()[1]
+    }
+
+    fn point_c(&self) -> Vertex {
+        self.vertices()[2]
+    }
+
+    fn vec_ab(&self) -> Vector3<f64> {
+        Vector3::vector_to_vertex(self.point_b(), self.point_b())
+    }
+    // fn vecAC
+    // fn vecBC
 }
 
 pub trait HasNormal: HasTriangleVertices {

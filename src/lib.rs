@@ -30,18 +30,18 @@ pub mod test_helper;
 // };
 
 pub use bounds::{Boundable, BoundingBox};
-use fillable::Fillable;
+pub use fillable::Fillable;
 pub use image::color::*;
 use image::*;
 pub use image::{ImageBuffer, Xy};
-use line::Line;
+pub use line::Line;
 pub use model_file::ModelFile;
 use regex::Regex;
 pub use render::Render;
 use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
-use vector::Vector3;
+pub use vector::Vector3;
 
 // pub use vector::Vector3;
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};

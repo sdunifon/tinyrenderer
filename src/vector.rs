@@ -53,6 +53,13 @@ where
         (self.x * rhs.x) + (self.y * rhs.y) + (self.z * rhs.z)
     }
 }
+impl Vector3<f64> {
+    pub fn vector_to_vertex(from: Vertex, to: Vertex) -> Vector3<f64> {
+        let Vertex { x, y, z } = to - from;
+        Self { x, y, z }
+    }
+}
+
 impl From<Vertex> for Vector3<f64> {
     fn from(vex: Vertex) -> Self {
         Vector3::new(vex.x, vex.y, vex.z)
@@ -177,6 +184,14 @@ mod tests {
     fn dot_test() {
         assert_eq!(v!(3., 4., 7.).dot(&v!(-5., 9., 3.4)), 44.8);
         assert_eq!(v!(-5., 12., 1.).dot(&v!(1.5, 0.1, 3.44)), -2.86);
+    }
+
+    #[test]
+    fn to_vertex_test() {
+        assert_vector_eq(
+            Vector3::vector_to_vertex(Vertex::new(0.4, 0.5, 0.9), Vertex::new(0.5, -0.2, 0.6)),
+            Vector3::new(0.1, -0.7, -0.3),
+        );
     }
 
     #[bench]
