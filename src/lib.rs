@@ -36,6 +36,7 @@ use image::*;
 pub use image::{ImageBuffer, Xy};
 pub use line::Line;
 pub use model_file::ModelFile;
+use regex::Regex;
 pub use render::Render;
 use render::RenderError;
 use rendering_traits::*;

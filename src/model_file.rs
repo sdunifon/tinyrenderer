@@ -190,12 +190,11 @@ mod tests {
         test_file("assets/cessna.obj");
     }
     #[test]
-    fn handle_parse_error_test(){
+    fn handle_parse_error_test() {
         todo!()
     }
     #[test]
-    fn handle_file_with_quads_instead_of_trigangles_error_test(){
+    fn handle_file_with_quads_instead_of_trigangles_error_test() {
         todo!()
     }
-    k
 }

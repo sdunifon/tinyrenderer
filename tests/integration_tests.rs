@@ -34,9 +34,9 @@ fn renderer_load_high_poly_torus_test() -> Result<(), Box<dyn error::Error>> {
 
 #[test]
 fn render_triangle_test() {
-    todo!()
-    let renderer = Renderer::default();
+    todo!();
+    // let renderer = Renderer::default();
 
-    let triangle = Triangle::default();
-    rendenderer_add_drawable(triangle)
+    // let triangle = Triangle::default();
+    // rendenderer_add_drawable(triangle)
 }
