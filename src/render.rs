@@ -8,6 +8,7 @@ const RENDER_HEIGHT: u32 = 800;
 
 pub struct Render {
     file: Option<ModelFile>,
+    drawables: Vec<Box<dyn Drawable>>,
     pub image: Image, //TODO privatize me
     options: RenderOptions,
 }
@@ -22,6 +23,7 @@ impl Default for Render {
             file: Default::default(),
             image: Image::new(RENDER_HEIGHT, RENDER_WIDTH),
             options: RenderOptions { wireframe: true },
+            drawables: Vec::new(),
         }
     }
 }
@@ -44,8 +46,14 @@ impl Render {
         self.file = Some(ModelFile::from(str))
     }
 
-    pub fn reload(&mut self) {
-        self.file.as_mut().unwrap().load();
+    pub fn reload(&mut self) -> Result<()> {
+        match self.file {
+            Some(ref mut file) => {
+                file.load();
+                Ok(())
+            }
+            None => Err(RenderError("No file to reload!".to_string())),
+        }
     }
 
     // fn draw(&self, drawer: &mut dyn Drawer<H, W>) {
