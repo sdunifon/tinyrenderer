@@ -1,3 +1,6 @@
+#![allow(dead_code)] //todo turn back on once more code is established
+#![allow(unused_variables)]
+
 use std::ops::{Add, Div, Mul};
 
 use super::*;

@@ -221,6 +221,8 @@ impl Colorful for Triangle {
 // }
 // }
 #[cfg(test)]
+#[allow(dead_code)] //todo turn back on once more code is established
+#[allow(unused_variables)]
 mod tests {
     use crate::test_helper::tests::assert_vector_eq;
 

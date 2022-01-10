@@ -1,6 +1,5 @@
 #![allow(incomplete_features)]
 #![feature(generic_const_exprs)]
-#![feature(destructuring_assignment)]
 #![feature(str_split_as_str)]
 #![feature(test)]
 #![feature(generic_arg_infer)]
@@ -22,12 +21,8 @@ pub mod utils;
 mod vector;
 mod vertex;
 
+mod camera;
 pub mod test_helper;
-
-// use std::{
-//     mem,
-//     thread::{self, Builder},
-// };
 
 pub use bounds::{Boundable, BoundingBox};
 pub use fillable::Fillable;
@@ -43,10 +38,9 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vector::Vector3;
 
-// pub use vector::Vector3;
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
-pub const IMAGE_HEIGHT: u32 = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
-pub const IMAGE_WIDTH: u32 = 1024; //TOFIX: increasing this over 500 seems to overflow the stack
+pub const IMAGE_HEIGHT: u32 = 1024;
+pub const IMAGE_WIDTH: u32 = 1024;
 
 pub fn make_image() -> Image {
     let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
@@ -109,20 +103,6 @@ pub fn render_triangle() -> Image {
     triangle.fill(&mut image);
     image
 }
-
-// fn large_stack_thread<'a>(f: &'a fn() -> ()) {
-//     let handler = thread::Builder::new()
-//         .stack_size(200 * 1024 * 1024)
-//         .spawn(|| {
-//             let y: [u64; 10000000] = [1; 10000000];
-//             println!("the arrays allocated {} bytes", mem::size_of_val(&y));
-//             f();
-//         })
-//         .expect("can't spawn thread");
-
-//     handler.join().expect("something's wrong with the thread");
-// }
-// pub fn render(image: &mut Image, faces: &Faces, verticies: &Vertices) {}
 
 #[cfg(test)]
 mod tests {

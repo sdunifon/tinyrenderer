@@ -1,5 +1,4 @@
 use super::*;
-use num_traits::float::Float;
 use std::ops::{self, Add, Mul};
 
 #[derive(Debug, PartialEq, Clone, Copy)] // try removing copy here and the impl where statement of div.. and try to get it unit working without a copy
@@ -140,13 +139,6 @@ mod tests {
     mod tests {
         use super::*;
 
-        #[cfg(test)]
-        mod tests {
-            use super::*;
-
-            #[test]
-            fn test_name() {}
-        }
         #[test]
         fn unit_test() {
             assert_vector_eq(
@@ -198,7 +190,7 @@ mod tests {
     fn power_bench(b: &mut Bencher) {
         let (x, y, z) = (1f64, 2f64, 3f64);
         b.iter(move || {
-            for i in 1..100000 {
+            for _ in 1..100000 {
                 black_box((x * x) + (y * y) + (z * z));
             }
         });
@@ -208,7 +200,7 @@ mod tests {
     fn power_bench2(b: &mut Bencher) {
         let (x, y, z) = (1f64, 2f64, 3f64);
         b.iter(|| {
-            for i in 1..100000 {
+            for _ in 1..100000 {
                 black_box(x.powf(2.) + y.powf(2.) + z.powf(2.));
             }
         })
