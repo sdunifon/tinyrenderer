@@ -1,7 +1,8 @@
 use super::*;
+use std::error::{self, Error};
 use std::io::BufReader;
 
-use crate::render::RenderOptions;
+use crate::render::{RenderError, RenderOptions};
 use std::fs::File;
 use std::io::BufRead;
 
@@ -32,16 +33,11 @@ impl From<File> for ModelFile {
 }
 
 impl ModelFile {
-    pub fn open_file(filename: &str) -> ModelFile {
-        let file = File::open(filename).expect("file not found!");
-        // let file_data = BufReader::new(file).lines().map(|l| l.unwrap()).collect();
-
-        Self::from(file)
-        // ModelFile {
-        //     file_data,
-        //     vertices: None,
-        //     triangles: Vec::new(),
-        // }
+    pub fn open_file(filename: &str) -> Result<ModelFile, Box<dyn Error>> {
+        match File::open(filename) {
+            Ok(file) => Ok(Self::from(file)),
+            Err(e) => Err(Box::new(e)),
+        }
     }
 
     fn read_iter<F: FnMut(&str)>(&self, mut func: F) {
@@ -122,10 +118,10 @@ pub struct ModelFileDrawer<'a> {
 
 impl<'a> Drawable for ModelFileDrawer<'a> {
     fn draw(&self, canvas: &mut dyn Canvas) {
-        self.model_file.vertices.as_ref().unwrap().draw(canvas);
         if self.options.wireframe {
             self.model_file.triangles.draw(canvas);
         } else {
+            self.model_file.vertices.as_ref().unwrap().draw(canvas);
             self.model_file.triangles.fill(canvas);
         }
     }
@@ -135,7 +131,7 @@ mod tests {
     use super::*;
 
     fn test_file(filename: &str) {
-        let m = ModelFile::open_file(filename);
+        let m = ModelFile::open_file(filename).unwrap();
         let verts = m.vertex_parse();
         assert!(verts.len() > 100);
         let triangles = m.face_parse(&verts);
@@ -144,12 +140,12 @@ mod tests {
 
     #[test]
     fn read_test() {
-        let m = ModelFile::open_file("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj").unwrap();
         m.vertex_parse();
     }
     #[test]
     fn vertex_parse_test() {
-        let m = ModelFile::open_file("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj").unwrap();
         let vecs = m.vertex_parse();
         assert_eq!(
             vecs[0],
@@ -170,7 +166,7 @@ mod tests {
     }
     #[test]
     fn face_parse_test() {
-        let m = ModelFile::open_file("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj").unwrap();
 
         let verts = m.vertex_parse();
         let faces = m.face_parse(&verts);
@@ -193,4 +189,13 @@ mod tests {
     fn parse_cessna_obj() {
         test_file("assets/cessna.obj");
     }
+    #[test]
+    fn handle_parse_error_test(){
+        todo!()
+    }
+    #[test]
+    fn handle_file_with_quads_instead_of_trigangles_error_test(){
+        todo!()
+    }
+    k
 }

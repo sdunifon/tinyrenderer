@@ -37,8 +37,8 @@ impl Render {
     // }
 
     pub fn load_file(&mut self, filepath: &str) -> Result<()> {
-        self.file = Some(ModelFile::open_file(filepath));
-        self.reload();
+        self.file = Some(ModelFile::open_file(filepath)?);
+        self.reload()?;
         Ok(())
     }
 
@@ -91,6 +91,11 @@ impl Render {
 #[derive(Debug, Clone, Default)]
 pub struct RenderError(pub String);
 impl error::Error for RenderError {}
+impl From<Box<dyn std::error::Error>> for RenderError {
+    fn from(std_error: Box<dyn std::error::Error>) -> Self {
+        RenderError(std_error.to_string())
+    }
+}
 impl fmt::Display for RenderError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "Render failed: {:?}", self.0)

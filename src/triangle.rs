@@ -238,7 +238,7 @@ mod tests {
     }
 
     fn triangles() -> Vec<Triangle> {
-        let m = ModelFile::open_file("assets/head.obj");
+        let m = ModelFile::open_file("assets/head.obj").unwrap();
 
         let verts = m.vertex_parse();
         let triangles = m.face_parse(&verts);
