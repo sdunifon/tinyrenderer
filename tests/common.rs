@@ -7,7 +7,7 @@ pub fn setup_renderer() -> Render {
 pub fn renderer_with_file(filename: &str) -> Result<Render, RenderError> {
     let mut render = Render::default();
     render.load_file(filename)?;
-    render.update()?;
+    render.update_file_render()?;
     Ok(render)
 }
 
@@ -17,7 +17,7 @@ pub fn render_with_options(
 ) -> Result<Render, RenderError> {
     let mut render = Render::new(render_options);
     render.load_file(filename)?;
-    render.update()?;
+    render.update_file_render()?;
     Ok(render)
 }
 

@@ -79,7 +79,7 @@ impl Render {
         self.file.as_ref().unwrap().file_data.join("\n")
     }
 
-    pub fn update(&mut self) -> Result<()> {
+    pub fn update_file_render(&mut self) -> Result<()> {
         let model_file_drawer = ModelFileDrawer {
             options: &self.options,
             model_file: self.file.as_ref().unwrap(),

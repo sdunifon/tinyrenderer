@@ -61,7 +61,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
             // log(response_data);
             log(format!("file_data {:?}", model.renderer.file_data()));
             model.renderer.reload();
-            model.renderer.update();
+            model.renderer.update_file_render();
             model.loaded = true;
         }
         Msg::Fetched(Err(response_data)) => {

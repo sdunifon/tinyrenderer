@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     });
 
     render.load_file(&args.filename)?;
-    render.update()?;
+    render.update_file_render()?;
 
     #[cfg(feature = "native_image_render")]
     display_window(&render)?;

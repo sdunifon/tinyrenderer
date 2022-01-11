@@ -81,7 +81,7 @@ fn bench_render_hi_res_with_load(b: &mut Bencher) {
         });
 
         render.load_file("assets/cessna.obj").unwrap();
-        render.update().unwrap();
+        render.update_file_render().unwrap();
     })
 }
 
@@ -95,7 +95,7 @@ fn bench_render_hi_res_just_render(b: &mut Bencher) {
 
     render.load_file("assets/cessna.obj").unwrap();
     b.iter(|| {
-        render.update().unwrap();
+        render.update_file_render().unwrap();
     })
 }
 fn image_creation(b: &mut Bencher) {

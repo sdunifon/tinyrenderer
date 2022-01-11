@@ -2,8 +2,12 @@ use common::render_with_options;
 use common::renderer_with_file;
 use std::error;
 use std::prelude::*;
+use tinyrenderer::render::RenderError;
 use tinyrenderer::render::RenderOptions;
+use tinyrenderer::Drawable;
 use tinyrenderer::Render;
+use tinyrenderer::Triangle;
+use tinyrenderer::Vertex;
 
 mod common;
 type TestResult = Result<(), Box<dyn error::Error>>;
@@ -45,7 +49,7 @@ fn render_wireframe() -> Result<(), Box<dyn error::Error>> {
     });
 
     render.load_file("assets/cessna.obj")?;
-    render.update()?;
+    render.update_file_render()?;
     Ok(())
 }
 
@@ -63,10 +67,15 @@ fn render_high_res_test() -> TestResult {
     Ok(())
 }
 #[test]
-fn render_triangle_test() {
-    todo!();
-    // let renderer = Renderer::default();
+fn render_triangle_test() -> TestResult {
+    let mut renderer = Render::default();
 
-    // let triangle = Triangle::default();
-    // rendenderer_add_drawable(triangle)
+    let triangle = Triangle::new([
+        Vertex::new(0.3, 0.7, 0.2),
+        Vertex::new(0.6, 0.9, 0.2),
+        Vertex::new(0.2, -0.3, 0.4),
+    ]);
+
+    triangle.draw(&mut renderer.image);
+    Ok(())
 }

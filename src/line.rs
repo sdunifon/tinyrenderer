@@ -4,9 +4,9 @@ use super::image::traits::Drawable;
 use std::mem;
 
 pub struct Line {
-    v1: Vertex,
-    v2: Vertex,
-    color: Color,
+    pub v1: Vertex,
+    pub v2: Vertex,
+    pub color: Color,
 }
 impl Line {
     pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line {

@@ -39,7 +39,7 @@ pub use model_file::ModelFile;
 use regex::Regex;
 use render::RenderError;
 pub use render::{Render, RenderOptions};
-use rendering_traits::*;
+pub use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vector::Vector3;
@@ -51,7 +51,7 @@ pub const IMAGE_WIDTH: u32 = 1024;
 pub fn load_file(filename: &str) -> Result<Render, RenderError> {
     let mut render = Render::default();
     render.load_file(filename)?;
-    render.update()?;
+    render.update_file_render()?;
     Ok(render)
 }
 
