@@ -13,7 +13,7 @@ use show_image::{create_window, event};
 
 mod bounds;
 pub mod fillable;
-mod image;
+pub mod image;
 mod line;
 mod math;
 mod model_file;
@@ -32,7 +32,7 @@ use std::error::Error;
 pub use bounds::{Boundable, BoundingBox};
 pub use fillable::Fillable;
 pub use image::color::*;
-use image::*;
+pub use image::*;
 pub use image::{ImageBuffer, Xy};
 pub use line::Line;
 pub use model_file::ModelFile;

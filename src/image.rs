@@ -2,7 +2,7 @@ pub mod color;
 mod image_buffer;
 mod pt;
 mod scalar;
-mod traits;
+pub mod traits;
 mod xy;
 
 use super::*;
