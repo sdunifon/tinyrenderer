@@ -48,7 +48,6 @@ pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
 pub const IMAGE_HEIGHT: u32 = 1024;
 pub const IMAGE_WIDTH: u32 = 1024;
 
-// fn setup_render(filename: &str) {
 pub fn load_file(filename: &str) -> Result<Render, RenderError> {
     let mut render = Render::default();
     render.load_file(filename)?;

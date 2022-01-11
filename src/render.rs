@@ -3,8 +3,15 @@ use super::*;
 use crate::model_file::ModelFileDrawer;
 use std::{error, fmt};
 
-const RENDER_WIDTH: u32 = 800;
-const RENDER_HEIGHT: u32 = 800;
+impl Default for RenderOptions {
+    fn default() -> Self {
+        RenderOptions {
+            wireframe: false,
+            height: 800,
+            width: 800,
+        }
+    }
+}
 
 pub struct Render {
     file: Option<ModelFile>,
@@ -12,29 +19,35 @@ pub struct Render {
     pub image: Image, //TODO privatize me
     options: RenderOptions,
 }
+#[derive(Debug)]
 pub struct RenderOptions {
     pub wireframe: bool,
+    pub height: u16,
+    pub width: u16,
 }
+
 type Result<T> = std::result::Result<T, RenderError>;
 
 impl Default for Render {
     fn default() -> Self {
+        let render_options = RenderOptions::default();
         Self {
             file: Default::default(),
-            image: Image::new(RENDER_HEIGHT, RENDER_WIDTH),
-            options: RenderOptions { wireframe: true },
+            image: Image::new(render_options.height.into(), render_options.width.into()),
+            options: RenderOptions::default(),
             drawables: Vec::new(),
         }
     }
 }
 impl Render {
-    // pub fn new(filepath: &str) -> Self {
-    //     assert!(Path::new(filepath).exists(), "{} doesn't exist!", filepath);
-    //     Render {
-    //         filename: filepath.to_string(),
-    //         image: Image::<RENDER_HEIGHT, RENDER_WIDTH>::new(),
-    //     }
-    // }
+    //TODO add file name
+    pub fn new(render_options: RenderOptions) -> Self {
+        Self {
+            image: Image::new(render_options.height.into(), render_options.width.into()),
+            options: render_options,
+            ..Default::default()
+        }
+    }
 
     pub fn load_file(&mut self, filepath: &str) -> Result<()> {
         self.file = Some(ModelFile::open_file(filepath)?);
@@ -68,7 +81,7 @@ impl Render {
 
     pub fn update(&mut self) -> Result<()> {
         let model_file_drawer = ModelFileDrawer {
-            options: &RenderOptions { wireframe: true },
+            options: &self.options,
             model_file: self.file.as_ref().unwrap(),
         };
         model_file_drawer.draw(&mut self.image);
