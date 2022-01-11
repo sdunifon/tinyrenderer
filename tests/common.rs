@@ -1,4 +1,4 @@
-use tinyrenderer::{render::RenderError, Render};
+use tinyrenderer::{render::RenderError, Render, RenderOptions};
 
 pub fn setup_renderer() -> Render {
     Render::default()
@@ -9,4 +9,18 @@ pub fn renderer_with_file(filename: &str) -> Result<Render, RenderError> {
     render.load_file(filename)?;
     render.update()?;
     Ok(render)
+}
+
+pub fn render_with_options(
+    filename: &str,
+    render_options: RenderOptions,
+) -> Result<Render, RenderError> {
+    let mut render = Render::new(render_options);
+    render.load_file(filename)?;
+    render.update()?;
+    Ok(render)
+}
+
+pub fn multi_render_suite(filename: &str) {
+    todo!()
 }
