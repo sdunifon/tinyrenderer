@@ -122,7 +122,7 @@ impl<'a> Drawable for ModelFileDrawer<'a> {
             self.model_file.triangles.draw(canvas);
         } else {
             self.model_file.vertices.as_ref().unwrap().draw(canvas);
-            self.model_file.triangles.fill(canvas);
+            // self.model_file.triangles.fill(canvas);
         }
     }
 }

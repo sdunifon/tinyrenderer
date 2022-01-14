@@ -47,8 +47,7 @@ impl NormalizedVertices {
 
     #[inline]
     fn normalize(v1: &Vertex, scale: f64) -> Vertex {
-        let vertex = *v1 / scale;
-        vertex
+        *v1 / scale
     }
 }
 

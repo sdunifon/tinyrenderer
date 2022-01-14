@@ -1,7 +1,7 @@
 use crate::{Image, Vertex};
 use std::fmt;
 
-#[derive(PartialEq, Default, Clone, Copy)]
+#[derive(PartialEq, Default, Clone, Copy, PartialOrd)]
 pub struct Xy(pub i32, pub i32);
 
 impl fmt::Display for Xy {
@@ -30,5 +30,22 @@ impl Xy {
                 .try_into()
                 .unwrap(),
         )
+    }
+
+    pub fn distance_to(&self, p: Xy) -> f64 {
+        (((p.0 - self.0).pow(2) + (p.1 - self.1).pow(2)) as f64).sqrt()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use all_asserts::assert_near;
+
+    use super::*;
+
+    #[test]
+    fn distance_to_test() {
+        assert_near!(Xy(2, 5).distance_to(Xy(13, 7)), 11.180, 0.01);
+        assert_near!(Xy(-6, 3).distance_to(Xy(-2, -4)), 8.06, 0.01);
     }
 }

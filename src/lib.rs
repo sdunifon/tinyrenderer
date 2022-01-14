@@ -25,11 +25,12 @@ mod vector;
 mod vertex;
 
 mod camera;
+pub mod circle;
 pub mod test_helper;
 
 use std::error::Error;
 
-pub use bounds::{Boundable, BoundingBox};
+pub use bounds::{Boundable, BoundingBox, DetectInside};
 pub use fillable::Fillable;
 pub use image::color::*;
 pub use image::*;
@@ -95,7 +96,7 @@ pub fn make_image() -> Result<Image, Box<dyn Error>> {
         image.draw(vertex)
     }
     for triangle in &triangles {
-        triangle.fill(&mut image)
+        // triangle.fill(&mut image)
     }
     Ok(image)
 }
@@ -105,7 +106,7 @@ pub fn draw_triangle(triangle: Triangle, fill: bool) -> Result<Image, Box<dyn st
 
     image.draw(&triangle);
     if fill {
-        triangle.fill(&mut image);
+        // triangle.fill(&mut image);
     }
     Ok(image)
 }
@@ -132,7 +133,7 @@ pub fn render_triangle() -> Image {
     let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
 
     image.draw(&triangle);
-    triangle.fill(&mut image);
+    // triangle.fill(&mut image);
     image
 }
 

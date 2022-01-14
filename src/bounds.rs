@@ -3,15 +3,18 @@
 use super::*;
 
 #[derive(Default, Debug, PartialEq)]
-pub struct BoundingBox {
-    pub x_min: f64,
-    pub y_min: f64,
-    pub x_max: f64,
-    pub y_max: f64,
+pub struct BoundingBox<T> {
+    pub x_min: T,
+    pub y_min: T,
+    pub x_max: T,
+    pub y_max: T,
 }
 
-impl BoundingBox {
-    fn new(x_min: f64, y_min: f64, x_max: f64, y_max: f64) -> BoundingBox {
+impl<T> BoundingBox<T>
+where
+    T: PartialEq + PartialOrd,
+{
+    fn new(x_min: T, y_min: T, x_max: T, y_max: T) -> BoundingBox<T> {
         debug_assert!(x_min <= x_max);
         debug_assert!(y_min <= y_max);
         BoundingBox {
@@ -21,54 +24,41 @@ impl BoundingBox {
             y_max,
         }
     }
+    fn iter() -> BoundingIterator<T> {
+        BoundingIterator { index: Xy() }
+    }
 }
 
-struct BoundingIterator {
+struct BoundingIterator<T> {
     index: Xy,
-    bounding_box: BoundingBox,
+    bounding_box: &BoundingBox<T>,
 }
 
-impl Iterator for BoundingIterator {
+impl Iterator for BoundingIterator<i32> {
     type Item = Xy;
 
     fn next(&mut self) -> Option<Self::Item> {
-        unimplemented!();
+        let BoundingBox {
+            x_max,
+            x_min,
+            y_max,
+            y_min,
+        } = self.bounding_box;
+        match self.index {
+            Xy(x, y) if x == x_max && y == y_max => None,
+            Xy(x, y) if x == x_max => Some(Xy(0, y + 1)),
+            Xy(x, y) if x < x_max => Some(Xy(x + 1, y)),
+            _ => unreachable!(),
+        }
     }
 }
 
-pub trait Boundable: HasTriangleVertices {
-    fn bounding_box(&self) -> BoundingBox {
-        let vertex_array = self.vertices();
+pub trait Boundable<T> {
+    fn bounding_box(&self) -> BoundingBox<T>;
+}
 
-        let mut x_min = vertex_array[0].x;
-        let mut x_max = vertex_array[0].x;
-        let mut y_min = vertex_array[0].y;
-        let mut y_max = vertex_array[0].y;
-
-        for vertex in &vertex_array[1..] {
-            if vertex.x < x_min {
-                x_min = vertex.x
-            };
-            if vertex.x > x_max {
-                x_max = vertex.x
-            };
-            if vertex.y < y_min {
-                y_min = vertex.y
-            };
-            if vertex.y > y_max {
-                y_max = vertex.y
-            };
-        }
-        BoundingBox {
-            x_min,
-            x_max,
-            y_min,
-            y_max,
-        }
-    }
-    fn is_inside(pt: Xy) -> bool {
-        unimplemented!()
-    }
+pub trait DetectInside {
+    fn includes(&self, p: Xy) -> bool;
 }
 
 #[cfg(test)]

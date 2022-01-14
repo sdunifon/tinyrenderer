@@ -1,6 +1,5 @@
 use super::Scalar;
 use crate::{Vertex, Xy};
-use std::ops::Deref;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Pt {

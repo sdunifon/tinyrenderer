@@ -20,15 +20,6 @@ impl Drawable for Triangles {
     }
 }
 
-impl Fillable for Triangles {
-    // not sure if we want this
-    fn fill(&self, drawer: &mut dyn Canvas) {
-        for triangle in self {
-            triangle.fill(drawer)
-        }
-    }
-}
-
 impl Colorful for Triangles {}
 impl Triangle {
     pub fn new(vertices: [Vertex; 3]) -> Triangle {
@@ -92,6 +83,37 @@ impl Drawable for Triangle {
     // }
 }
 
+impl Boundable<f64> for Triangle {
+    fn bounding_box(&self) -> BoundingBox<f64> {
+        let vertex_array = self.vertices();
+
+        let mut x_min = vertex_array[0].x;
+        let mut x_max = vertex_array[0].x;
+        let mut y_min = vertex_array[0].y;
+        let mut y_max = vertex_array[0].y;
+
+        for vertex in &vertex_array[1..] {
+            if vertex.x < x_min {
+                x_min = vertex.x
+            };
+            if vertex.x > x_max {
+                x_max = vertex.x
+            };
+            if vertex.y < y_min {
+                y_min = vertex.y
+            };
+            if vertex.y > y_max {
+                y_max = vertex.y
+            };
+        }
+        BoundingBox {
+            x_min,
+            x_max,
+            y_min,
+            y_max,
+        }
+    }
+}
 impl HasTriangleVertices for Triangle {
     fn vertices(&self) -> [Vertex; 3] {
         //TODO make vertex a borrow instead of copy
@@ -99,7 +121,7 @@ impl HasTriangleVertices for Triangle {
     }
 }
 
-impl Boundable for Triangle {}
+// impl<T> Boundable<T> for Triangle {}
 
 impl Colorful for Triangle {
     fn color(&self) -> Color {

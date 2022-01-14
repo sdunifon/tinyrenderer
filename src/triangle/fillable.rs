@@ -1,8 +1,5 @@
+use super::bounds::*;
 use super::*;
-
-impl Fillable for Triangle {
-    fn fill(&self, image: &mut dyn Canvas) {}
-}
 
 // triangle(vec2 points[3]) {
 //     vec2 bbox[2] = find_bounding_box(points);
