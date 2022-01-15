@@ -15,7 +15,7 @@ impl Default for RenderOptions {
 
 pub struct Render {
     file: Option<ModelFile>,
-    drawables: Vec<Box<dyn Drawable>>,
+    pub render_queue: Vec<Box<dyn Drawable>>,
     pub image: Image, //TODO privatize me
     options: RenderOptions,
 }
@@ -35,7 +35,7 @@ impl Default for Render {
             file: Default::default(),
             image: Image::new(render_options.height.into(), render_options.width.into()),
             options: RenderOptions::default(),
-            drawables: Vec::new(),
+            render_queue: Vec::new(),
         }
     }
 }
@@ -99,7 +99,20 @@ impl Render {
     pub fn height(&self) -> u32 {
         self.image.height
     }
+    pub fn draw(&mut self) {
+        for drawable in self.render_queue.iter() {
+            drawable.draw(&mut self.image);
+        }
+    }
 }
+
+// impl Drawable for Render {
+//     fn draw(&self, drawer: &mut dyn Canvas) {
+//         for drawable in self.render_queue.iter() {
+//             drawable.draw(drawer);
+//         }
+//     }
+// }
 
 #[derive(Debug, Clone, Default)]
 pub struct RenderError(pub String);
