@@ -1,5 +1,3 @@
-#![allow(dead_code)] //todo turn back on once more code is established
-#![allow(unused_variables)]
 use super::*;
 
 #[derive(Default, Debug, PartialEq)]
@@ -10,7 +8,7 @@ pub struct BoundingBox<T> {
     pub y_max: T,
 }
 
-impl<T> BoundingBox<T>
+impl<'a, T> BoundingBox<T>
 where
     T: PartialEq + PartialOrd,
 {
@@ -24,32 +22,48 @@ where
             y_max,
         }
     }
-    fn iter() -> BoundingIterator<T> {
-        BoundingIterator { index: Xy() }
+    pub fn iter(&'a self) -> BoundingIterator<'a, T> {
+        BoundingIterator {
+            index: Xy(0, 0),
+            bounding_box: self,
+        }
     }
 }
 
-struct BoundingIterator<T> {
+pub struct BoundingIterator<'a, T> {
     index: Xy,
-    bounding_box: &BoundingBox<T>,
+    bounding_box: &'a BoundingBox<T>,
 }
 
-impl Iterator for BoundingIterator<i32> {
+///Bounding Iterator
+/// maps an internal index starting in the top-left corner at 0,0 and is mapp to a point relative to the bounding box's location
+/// increments in the x direction until the end of bounding box then moves down a y value and repeats
+/// until it hits y_max and x_max on the bottom right corner
+impl<'a> Iterator for BoundingIterator<'a, i32> {
     type Item = Xy;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let BoundingBox {
+        let &BoundingBox {
             x_max,
             x_min,
             y_max,
             y_min,
         } = self.bounding_box;
-        match self.index {
-            Xy(x, y) if x == x_max && y == y_max => None,
-            Xy(x, y) if x == x_max => Some(Xy(0, y + 1)),
-            Xy(x, y) if x < x_max => Some(Xy(x + 1, y)),
+
+        let relative_x_max = x_max - x_min;
+        let relative_y_max = y_max - y_min;
+
+        let incremented_index = match self.index {
+            Xy(x, y) if x == relative_x_max && y == relative_y_max => None,
+            Xy(x, y) if x == relative_x_max => Some(Xy(0, y + 1)),
+            Xy(x, y) if x < relative_x_max => Some(Xy(x + 1, y)),
             _ => unreachable!(),
-        }
+        };
+
+        incremented_index.map(|Xy(x, y)| {
+            self.index = Xy(x, y);
+            Xy(x + x_min, y + y_min)
+        })
     }
 }
 
@@ -95,7 +109,34 @@ mod tests {
         );
     }
     #[test]
-    fn bound_iterator_test() {
-        assert!(true)
+    fn bound_iterator_index_test() {
+        let b = BoundingBox {
+            x_min: -4,
+            x_max: 5,
+            y_min: -4,
+            y_max: 5,
+        };
+        let mut b_iter = b.iter();
+        assert_eq!(b_iter.index, Xy(0, 0));
+        assert_eq!(b_iter.next().unwrap(), Xy(-3, -4));
+        assert_eq!(b_iter.index, Xy(1, 0));
+        for b in 1..10 {
+            dbg!(b);
+            dbg!(b_iter.index);
+            b_iter.next();
+        }
+        assert_eq!(b_iter.index, Xy(0, 1));
+        assert_eq!(b_iter.next().unwrap(), Xy(-3, -3));
+        assert_eq!(b_iter.index, Xy(1, 1));
+        // incremented 12 so far so start there
+        for i in 12..=98 {
+            dbg!(i);
+            dbg!(b_iter.index);
+            dbg!(b_iter.next());
+        }
+        assert_eq!(b_iter.next().unwrap(), Xy(5, 5));
+        assert_eq!(b_iter.index, Xy(9, 9));
+        assert_eq!(b_iter.next(), None);
+        assert_eq!(b_iter.next(), None);
     }
 }

@@ -31,6 +31,7 @@ pub mod test_helper;
 use std::error::Error;
 
 pub use bounds::{Boundable, BoundingBox, DetectInside};
+pub use circle::Circle;
 pub use fillable::Fillable;
 pub use image::color::*;
 pub use image::*;

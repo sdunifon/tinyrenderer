@@ -1,5 +1,4 @@
 pub mod barycentric;
-mod fillable;
 use crate::vertex::HasNormal;
 
 use super::*;
@@ -24,12 +23,6 @@ impl Colorful for Triangles {}
 impl Triangle {
     pub fn new(vertices: [Vertex; 3]) -> Triangle {
         Triangle { vertices }
-    }
-    fn sorted_triangle_vertices(&self) -> (Vertex, Vertex, Vertex) {
-        let mut va = self.vertices();
-        va.sort_by(|a, b| -> std::cmp::Ordering { a.y.partial_cmp(&b.y).unwrap() });
-
-        (va[0], va[1], va[2])
     }
 }
 

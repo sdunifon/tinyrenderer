@@ -1,12 +1,14 @@
+use crate::{Colorful, Drawable, Fillable};
+
 use super::{bounds::DetectInside, Boundable, BoundingBox, Xy};
 
-struct Circle {
+pub struct Circle {
     radius: u32,
     center: Xy,
 }
 
 impl Circle {
-    fn new(center: Xy, radius: u32) -> Self {
+    pub fn new(center: Xy, radius: u32) -> Self {
         Self { center, radius }
     }
 }
@@ -21,7 +23,24 @@ impl Boundable<i32> for Circle {
         }
     }
 }
+impl Colorful for Circle {
+    fn base_color(&self) -> crate::Color {
+        crate::GREEN
+    }
 
+    fn color(&self) -> crate::Color {
+        self.base_color()
+    }
+}
+
+impl Fillable for Circle {}
+impl Drawable for Circle {
+    fn draw(&self, drawer: &mut dyn crate::Canvas) {
+        //todo implement https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
+        //just filling for now
+        self.fill(drawer)
+    }
+}
 impl DetectInside for Circle {
     fn includes(&self, p: Xy) -> bool {
         self.center.distance_to(p) <= self.radius.into()
@@ -30,6 +49,8 @@ impl DetectInside for Circle {
 
 #[cfg(test)]
 mod tests {
+    use crate::{Canvas, Render, WHITE};
+
     use super::*;
 
     #[test]
@@ -47,7 +68,14 @@ mod tests {
     }
     #[test]
     fn inside_test() {
-        assert!(Circle::new(Xy(7, 8), 5).includes(Xy(9, 99)));
+        assert!(Circle::new(Xy(7, 8), 5).includes(Xy(9, 9)));
         assert!(!Circle::new(Xy(-3, 2), 10).includes(Xy(-3, 13)));
+    }
+    #[test]
+    fn fill_test() {
+        let mut renderer = Render::default();
+        let circle = Circle::new(Xy(1, 5), 5);
+        circle.fill(&mut renderer.image);
+        assert_eq!(renderer.image.get(Xy(2, 6)), &WHITE)
     }
 }

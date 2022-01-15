@@ -1,8 +1,8 @@
 use super::*;
-use std::error::{self, Error};
+use std::error::Error;
 use std::io::BufReader;
 
-use crate::render::{RenderError, RenderOptions};
+use crate::render::RenderOptions;
 use std::fs::File;
 use std::io::BufRead;
 
