@@ -13,7 +13,7 @@ impl Line {
         Line {
             v1: v1.clone(),
             v2: v2.clone(),
-            color: WHITE,
+            color: color::WHITE,
         }
     }
 }
@@ -57,41 +57,6 @@ impl Drawable for Line {
             }
         }
     }
-
-    // fn draw2(&self, canvas: &mut Image<H, W>) {
-    //     let (Xy(mut x0, mut y0), Xy(mut x1, mut y1)) = (self.p1, self.p2);
-
-    //     let mut steep = false;
-    //     if (x0 as i32 - x1 as i32).abs() < (y0 as i32 - y1 as i32).abs() {
-    //         // if the line is steep, we transpose the image
-    //         mem::swap(&mut x0, &mut y0);
-    //         mem::swap(&mut x1, &mut y1);
-    //         steep = true;
-    //     }
-    //     if x0 > x1 {
-    //         // make it left-to-right
-    //         mem::swap(&mut x0, &mut x1);
-    //         mem::swap(&mut y0, &mut y1);
-    //     }
-    //     let dx: i64 = x1 as i64 - x0 as i64;
-    //     let dy: i64 = y1 as i64 - y0 as i64;
-    //     let derror2: i64 = (dy).abs() * 2;
-    //     let mut error2: i64 = 0;
-    //     let mut y: i64 = y0 as i64;
-
-    //     for x in x0..=x1 {
-    //         if steep {
-    //             canvas.set(Xy(y as usize, x as usize), self.color);
-    //         } else {
-    //             canvas.set(Xy(x as usize, y as usize), self.color);
-    //         }
-    //         error2 += derror2;
-    //         if error2 > dx {
-    //             y += if y1 > y0 { 1 } else { -1 };
-    //             error2 -= dx * 2;
-    //         }
-    //     }
-    // }
 }
 
 #[cfg(test)]

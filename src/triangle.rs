@@ -121,12 +121,11 @@ impl Colorful for Triangle {
         let brightness: u8 = self.brightness();
         let Color { r, g, b } = self.base_color();
 
-        let color = Color {
+        Color {
             r: ((r as f64) * (brightness as f64 / 255.0)) as u8,
             g: ((g as f64) * (brightness as f64 / 255.0)) as u8,
             b: ((b as f64) * (brightness as f64 / 255.0)) as u8,
-        };
-        color
+        }
     }
 }
 

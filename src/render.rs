@@ -99,20 +99,19 @@ impl Render {
     pub fn height(&self) -> u32 {
         self.image.height
     }
+
+    // pub fn queue_push(&mut self, d: Box<dyn Drawable>) {
+    pub fn queue_push(&mut self, d: Box<dyn Drawable>) {
+        // Vec<Box<dyn Drawable>>
+        self.render_queue.push(d);
+    }
+
     pub fn draw(&mut self) {
         for drawable in self.render_queue.iter() {
             drawable.draw(&mut self.image);
         }
     }
 }
-
-// impl Drawable for Render {
-//     fn draw(&self, drawer: &mut dyn Canvas) {
-//         for drawable in self.render_queue.iter() {
-//             drawable.draw(drawer);
-//         }
-//     }
-// }
 
 #[derive(Debug, Clone, Default)]
 pub struct RenderError(pub String);

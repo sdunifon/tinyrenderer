@@ -6,6 +6,7 @@ pub mod traits;
 mod xy;
 
 use super::*;
+use color::*;
 pub use image_buffer::ImageBuffer;
 use pt::Pt;
 pub use scalar::Scalar;

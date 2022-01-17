@@ -1,7 +1,6 @@
-use std::ops::{Add, Mul};
-
-use super::*;
+use crate::color::Color;
 use rand::random;
+use std::ops::{Add, Mul};
 
 #[macro_export]
 macro_rules! swap_vars {

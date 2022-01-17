@@ -33,5 +33,7 @@ mod test {
                 Vertex::new(0.3, 0.1, 0.0),
             ],
         };
+
+        let xy = Xy(1, 1);
     }
 }

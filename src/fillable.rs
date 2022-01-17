@@ -1,4 +1,4 @@
-use crate::{Boundable, Canvas, Colorful, DetectInside, Xy, WHITE};
+use crate::{color, Boundable, Canvas, Colorful, DetectInside, Xy};
 
 // [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
 pub trait Fillable: Colorful + DetectInside + Boundable<i32> {
@@ -6,7 +6,7 @@ pub trait Fillable: Colorful + DetectInside + Boundable<i32> {
         for Xy(x, y) in self.bounding_box().iter() {
             let p = Xy(x, y);
             if self.includes(Xy(x, y)) {
-                image.set(p, &WHITE);
+                image.set(p, &color::WHITE);
             }
         }
     }
