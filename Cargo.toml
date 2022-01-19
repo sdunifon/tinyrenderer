@@ -27,6 +27,7 @@ all_asserts = "2.3.0"
 cargo-make = "0.35.1"
 assert-panic = "1.0.1"
 float_eq = "0.7.0"
+native-display = { path = "./native-display/"}
 
 [[bench]]
 name = "render_benchmark"

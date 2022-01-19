@@ -3707,6 +3707,7 @@ dependencies = [
  "float_eq",
  "image",
  "lazy_static 1.4.0",
+ "native-display",
  "num-traits",
  "pretty_assertions",
  "rand 0.8.4",

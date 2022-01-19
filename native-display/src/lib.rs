@@ -1,6 +1,7 @@
 use show_image::{create_window, event};
 use tinyrenderer::Render;
 
+//#[show_image::main]  //not working here needs main
 pub fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
     let image_buffer = render.image.render_to_buffer();
 
