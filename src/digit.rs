@@ -228,22 +228,21 @@ impl TryFrom<char> for Digit {
     type Error = &'static str;
 
     fn try_from(c: char) -> Result<Self, Self::Error> {
-        todo!();
-        // match c {
-        //     '1' => Digit::One,
-        //     '2' => Digit::Two,
-        //     '3' => Digit::Three,
-        //     '4' => Digit::Four,
-        //     '5' => Digit::Five,
-        //     '6' => Digit::Six,
-        //     '7' => Digit::Seven,
-        //     '8' => Digit::Eight,
-        //     '9' => Digit::Nine,
-        //     '.' => Digit::Decimal,
-        //     '(' => Digit::RightParen,
-        //     ')' => Digit::LeftParen,
-        //      _ => Err(format!("Digit parse error! Character {c} is not a displayable digit character. Use only characters 0-9.()")),
-        // }
+        match c {
+            '1' => Ok(Digit::One),
+            '2' => Ok(Digit::Two),
+            '3' => Ok(Digit::Three),
+            '4' => Ok(Digit::Four),
+            '5' => Ok(Digit::Five),
+            '6' => Ok(Digit::Six),
+            '7' => Ok(Digit::Seven),
+            '8' => Ok(Digit::Eight),
+            '9' => Ok(Digit::Nine),
+            '.' => Ok(Digit::Decimal),
+            '(' => Ok(Digit::RightParen),
+            ')' => Ok(Digit::LeftParen),
+             _ => Err("Digit parse error! Character {c} is not a displayable digit character. Use only characters 0-9.()"),
+        }
     }
 }
 
@@ -251,8 +250,7 @@ impl<T: Numeric + ToString> Drawable for T {
     fn draw(&self, drawer: &mut dyn crate::Canvas) {
         let string = self.to_string();
 
-        todo!()
-        // string.chars().map(|c| Digit::try_from(c))
+        string.chars().map(|c| Digit::try_from(c));
     }
 }
 
