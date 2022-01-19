@@ -257,29 +257,36 @@ impl<T: Numeric + ToString> Drawable for T {
 }
 
 //display x,y points
-
-// macro_rules! impl_trait_for {
-//     ($type_name:ty) => {
-//         impl Numeric for $type_name {}
-//     },
-//     ($($type_names:ty,)*$type_name:ty) => {
-
-//         impl Number for $type_name {};
-//         impl_trait_for!($type_names);
-//     }
-
-// }
 pub trait Numeric {}
-// impl_trait_for!(u8, u16);
-impl Numeric for f64 {}
-impl Numeric for f32 {}
-impl Numeric for i64 {}
-impl Numeric for i32 {}
-impl Numeric for i16 {}
-impl Numeric for i8 {}
-impl Numeric for isize {}
-impl Numeric for u64 {}
-impl Numeric for u32 {}
-impl Numeric for u16 {}
-impl Numeric for u8 {}
-impl Numeric for usize {}
+
+macro_rules! impl_trait_for {
+    ($type_name:ty) => {
+        //first
+        impl Numeric for $type_name {}
+    };
+    ($type_name1:ty,$($type_name2:ty),* $(,)*) => {
+        impl Numeric for $type_name1 {}
+        $(impl_trait_for!($type_name2);)*
+    };
+}
+impl_trait_for!(f64, f32, i64, i32, i16, i8, isize, u64, u32, u16, u8, usize);
+// impl Numeric for f64 {}
+// impl Numeric for f32 {}
+// impl Numeric for i64 {}
+// impl Numeric for i32 {}
+// impl Numeric for i16 {}
+// impl Numeric for i8 {}
+// impl Numeric for isize {}
+// impl Numeric for u64 {}
+// impl Numeric for u32 {}
+// impl Numeric for u16 {}
+// impl Numeric for u8 {}
+// impl Numeric for usize {}
+
+mod tests {
+    #[test]
+    fn impl_trait_for_test() {
+        impl_trait_for!(u8);
+        impl_trait_for!(u8, u16);
+    }
+}
