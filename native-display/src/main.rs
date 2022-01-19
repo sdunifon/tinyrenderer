@@ -1,7 +1,7 @@
+use show_image::{create_window, event};
 use std::error::Error;
 use structopt::StructOpt;
-
-use tinyrenderer::{display_window, load_file, render::RenderOptions, Render};
+use tinyrenderer::{render::RenderOptions, Render};
 
 #[derive(Debug, StructOpt)]
 struct Cli {
@@ -17,7 +17,7 @@ struct Cli {
     filename: String,
 }
 
-#[cfg_attr(feature = "native_image_render", show_image::main)]
+#[show_image::main]
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Cli::from_args();
 
@@ -31,9 +31,27 @@ fn main() -> Result<(), Box<dyn Error>> {
     render.load_file(&args.filename)?;
     render.update_file_render()?;
 
-    #[cfg(feature = "native_image_render")]
     display_window(&render)?;
 
+    Ok(())
+}
+
+pub fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>> {
+    let image_buffer = render.image.render_to_buffer();
+
+    let window = create_window("image", Default::default())?;
+    window.set_image("image-001", image_buffer)?;
+
+    for event in window.event_channel()? {
+        if let event::WindowEvent::KeyboardInput(event) = event {
+            println!("{:#?}", event);
+            if event.input.key_code == Some(event::VirtualKeyCode::Escape)
+                && event.input.state.is_pressed()
+            {
+                break;
+            }
+        }
+    }
     Ok(())
 }
 
@@ -41,6 +59,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 mod tests {
     use super::*;
     use std::error;
+    use tinyrenderer::load_file;
 
     #[test]
     fn setup_render_test() -> Result<(), Box<dyn error::Error>> {

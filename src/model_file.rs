@@ -57,7 +57,7 @@ impl ModelFile {
 
     pub fn vertex_parse(&self) -> Vertices {
         lazy_static! {
-            static ref VERTEX_RE: Regex = Regex::new("v$").unwrap();
+            static ref VERTEX_RE: Regex = Regex::new("v$").unwrap();// remove me
         };
 
         let mut verticies: Vertices = vec![];

@@ -2216,6 +2216,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "native-display"
+version = "0.1.0"
+dependencies = [
+ "quicli",
+ "show-image",
+ "structopt 0.3.25",
+ "tinyrenderer",
+]
+
+[[package]]
 name = "native-tls"
 version = "0.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3699,11 +3709,9 @@ dependencies = [
  "lazy_static 1.4.0",
  "num-traits",
  "pretty_assertions",
- "quicli",
  "rand 0.8.4",
  "regex 1.5.4",
  "show-image",
- "structopt 0.3.25",
 ]
 
 [[package]]

@@ -1,0 +1,15 @@
+[package]
+name = "native-display"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tinyrenderer = { path = "../" }
+show-image = { version = "0.9.5", features = [
+  "image",
+  "macros",
+]} #not working with one of wgpu web-sys or seed
+quicli = "0.4.0"
+structopt = "0.3.23"

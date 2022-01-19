@@ -18,8 +18,6 @@ show-image = { version = "0.9.5", features = [
   "macros",
 ], optional = true } #not working with one of wgpu web-sys or seed
 rand = "0.8.4"
-quicli = "0.4.0"
-structopt = "0.3.23"
 num-traits = "^0.2.14"
 
 [dev-dependencies]
@@ -35,7 +33,7 @@ name = "render_benchmark"
 harness = false
 
 [workspace]
-members = ["web", "web-server"]
+members = ["web", "web-server", "native-display"]
 
 [profile.release]
 lto = true
