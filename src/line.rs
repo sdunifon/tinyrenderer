@@ -8,6 +8,24 @@ pub struct Line {
     pub v2: Vertex,
     pub color: Color,
 }
+
+pub struct Line2d {
+    pub p1: Xy,
+    pub p2: Xy,
+}
+
+impl Line2d {
+    /// Take a 3d line and a canvas to caluclate the size and return a Line2d
+    fn from_line(line: &Line, canvas: &mut dyn Canvas) -> Self {
+        // let (Xy(mut x1, mut y1), Xy(mut x2, mut y2)) =
+        //     (canvas.scale(&self.v1), canvas.scale(&self.v2));
+        Line2d {
+            p1: canvas.scale(&line.v1),
+            p2: canvas.scale(&line.v2),
+        }
+    }
+}
+
 impl Line {
     pub fn from_vertices(v1: &Vertex, v2: &Vertex) -> Line {
         Line {
@@ -17,11 +35,42 @@ impl Line {
         }
     }
 }
+// From<(&line::Line, &mut dyn traits::Canvas)>`
+// impl From<(&Line, &mut dyn Canvas)> for Line2d {
+//     fn from(input: (&Line, &mut dyn Canvas)) -> Self {
+//         let (line, canvas) = input;
+//         // let (Xy(mut x1, mut y1), Xy(mut x2, mut y2)) =
+//         //     (canvas.scale(&self.v1), canvas.scale(&self.v2));
+//         Line2d {
+//             p1: canvas.scale(&line.v1),
+//             p2: canvas.scale(&line.v2),
+//         }
+//     }
+// }
+impl Colorful for Line2d {
+    fn base_color(&self) -> Color {
+        color::GREEN
+    }
+}
 
+impl Colorful for Line {
+    fn color(&self) -> Color {
+        self.color()
+    }
+}
 impl Drawable for Line {
     fn draw(&self, canvas: &mut dyn Canvas) {
-        let (Xy(mut x1, mut y1), Xy(mut x2, mut y2)) =
-            (canvas.scale(&self.v1), canvas.scale(&self.v2));
+        let line_2d: Line2d = Line2d::from_line(self, canvas);
+        line_2d.draw(canvas);
+    }
+}
+
+impl Drawable for Line2d {
+    fn draw(&self, canvas: &mut dyn Canvas) {
+        let Line2d {
+            p1: Xy(mut x1, mut y1),
+            p2: Xy(mut x2, mut y2),
+        } = self;
 
         let mut steep = false;
         if (x1 as i32 - x2 as i32).abs() < (y1 as i32 - y2 as i32).abs() {
@@ -45,9 +94,9 @@ impl Drawable for Line {
 
         for x in x1..=x2 {
             if steep {
-                canvas.set(Xy(y, x), &self.color);
+                canvas.set(Xy(y, x), &self.color());
             } else {
-                canvas.set(Xy(x, y), &self.color);
+                canvas.set(Xy(x, y), &self.color());
             }
 
             error += derror;

@@ -26,17 +26,20 @@ mod vertex;
 
 mod camera;
 pub mod circle;
+mod digit;
+pub mod point;
 pub mod test_helper;
 
 use std::error::Error;
 
 pub use bounds::{Boundable, BoundingBox, DetectInside};
 pub use circle::Circle;
+pub use digit::Digit;
 pub use fillable::Fillable;
 pub use image::color::{self, Color, Colorful};
 pub use image::*;
 pub use image::{ImageBuffer, Xy};
-pub use line::Line;
+pub use line::{Line, Line2d};
 pub use model_file::ModelFile;
 pub use point::Point;
 use regex::Regex;

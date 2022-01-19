@@ -119,6 +119,7 @@ impl Canvas for Image {
         &self.translator
     }
 
+    ///Scale a normalized vertex to fit into the height and widht of the image
     fn scale(&self, vertex: &Vertex) -> Xy {
         self.scalar.scale_v(vertex)
     }

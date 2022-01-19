@@ -1,9 +1,12 @@
 pub mod barycentric;
 use crate::vertex::HasNormal;
 
+use barycentric::BaryCoord;
+
 use super::*;
 
 use vector::Vector3;
+
 #[derive(Debug)]
 pub struct Triangle {
     pub vertices: [Vertex; 3],
@@ -23,6 +26,10 @@ impl Colorful for Triangles {}
 impl Triangle {
     pub fn new(vertices: [Vertex; 3]) -> Triangle {
         Triangle { vertices }
+    }
+
+    pub fn barycentric_to_xy<T>(bary_coord: BaryCoord<T>) -> Xy {
+        todo!()
     }
 }
 

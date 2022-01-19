@@ -1,6 +1,8 @@
+use num_traits::Float;
+
 use super::*;
 
-#[derive(Default, Debug, PartialEq)]
+#[derive(Default, Debug, PartialEq, Clone, Copy)]
 pub struct BoundingBox<T> {
     pub x_min: T,
     pub y_min: T,
@@ -10,7 +12,7 @@ pub struct BoundingBox<T> {
 
 impl<'a, T> BoundingBox<T>
 where
-    T: PartialEq + PartialOrd,
+    T: PartialEq + PartialOrd + Copy,
 {
     fn new(x_min: T, y_min: T, x_max: T, y_max: T) -> BoundingBox<T> {
         debug_assert!(x_min <= x_max);
@@ -64,6 +66,107 @@ impl<'a> Iterator for BoundingIterator<'a, i32> {
             self.index = Xy(x, y);
             Xy(x + x_min, y + y_min)
         })
+    }
+}
+
+impl<T> Drawable for BoundingBox<T>
+where
+    T: Into<i32> + Copy,
+{
+    //todo get this to work for the generic case
+    fn draw(&self, drawer: &mut dyn Canvas) {
+        let Self {
+            x_min,
+            x_max,
+            y_min,
+            y_max,
+        } = *self;
+
+        let lines = [
+            Line2d {
+                p1: Xy(x_min.into(), y_min.into()),
+                p2: Xy(x_max.into(), y_min.into()),
+            },
+            Line2d {
+                p1: Xy(x_min.into(), y_max.into()),
+                p2: Xy(x_max.into(), y_max.into()),
+            },
+            Line2d {
+                p1: Xy(x_min.into(), y_min.into()),
+                p2: Xy(x_min.into(), y_max.into()),
+            },
+            Line2d {
+                p1: Xy(x_max.into(), y_min.into()),
+                p2: Xy(x_max.into(), y_max.into()),
+            },
+        ];
+        for line in lines {
+            line.draw(drawer);
+        }
+        // self.fill() //TODO;  need to convert to i32 try to get the below From<BoundingBox<T>> for BoundingBox<i32> trait
+    }
+}
+
+//TODO uncomment this needed for fill
+// impl<f64> From<BoundingBox<f64>> for BoundingBox<i32> {
+//     fn from(bb: BoundingBox<f64>) -> Self {
+//         BoundingBox::<i32> {
+//             x_min: bb.x_min.into(),
+//             y_min: bb.y_min.into(),
+//             x_max: bb.x_max.into(),
+//             y_max: bb.y_max.into(),
+//         }
+//     }
+// }
+impl<T> Colorful for BoundingBox<T> {
+    fn base_color(&self) -> Color {
+        color::BLUE
+    }
+
+    fn color(&self) -> Color {
+        self.base_color()
+    }
+}
+
+impl<T> DetectInside for BoundingBox<T>
+where
+    T: Into<i32> + Copy,
+{
+    fn includes(&self, p: Xy) -> bool {
+        let Self {
+            x_min,
+            x_max,
+            y_min,
+            y_max,
+        } = *self;
+        let Xy(x, y) = p;
+
+        x <= x_max.into() && y <= y_max.into() && x >= x_min.into() && y >= y_min.into()
+    }
+}
+
+impl<T> Boundable<T> for BoundingBox<T>
+where
+    T: Copy,
+{
+    fn bounding_box(&self) -> BoundingBox<T> {
+        self.to_owned()
+    }
+}
+
+impl<T> Fillable for BoundingBox<T>
+where
+    i32: From<T>,
+    T: Copy,
+    bounds::BoundingBox<T>: bounds::Boundable<i32>,
+{
+    fn fill(&self, image: &mut dyn Canvas) {
+        for Xy(x, y) in self.bounding_box().iter() {
+            let p = Xy(x, y);
+            if self.includes(Xy(x, y)) {
+                image.set(p, &color::WHITE);
+            }
+        }
     }
 }
 

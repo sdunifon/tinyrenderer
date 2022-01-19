@@ -1,6 +1,6 @@
 use std::error::Error;
 use tinyrenderer::image::traits::Drawable;
-use tinyrenderer::{display_window, Color, WHITE};
+use tinyrenderer::{color::WHITE, display_window, Color};
 use tinyrenderer::{Line, Render, Vertex};
 
 #[cfg_attr(feature = "native_image_render", show_image::main)]

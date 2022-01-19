@@ -61,6 +61,7 @@ trait IterateByDrawnPixels: DrawBuffer {
         DrawnPixelsIter(self.draw_iter())
     }
 }
+
 pub trait Drawable {
     fn draw(&self, drawer: &mut dyn Canvas);
 }

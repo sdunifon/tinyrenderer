@@ -1,5 +1,4 @@
-use super::*;
-
+use crate::{Canvas, Drawable, Point, Triangle, Xy};
 ///P = A + w1(B - A) + w2(C - A)
 ///Px = Ax + w1(Bx - Ax) + w2(Cx - Ax)
 ///Py = Ay + w1(By - Ay) + w2(Cy -Ay)
@@ -8,21 +7,35 @@ use super::*;
 
 ///Px = Ax + w1(Bx-Ax) + (Py-Ay-w1(By-Ay)/(Cy-Ay))(Cx-Ax)
 
-struct BaryCoord<T>(T, T, T);
+pub struct BaryCoord<T>(T, T, T);
+pub struct BaryCoordOfTri<T>(BaryCoord<T>, Triangle);
 
 impl<T> BaryCoord<T> {
     const A_Coord: BaryCoord<f64> = BaryCoord(1., 0., 0.);
     const B_Coord: BaryCoord<f64> = BaryCoord(0., 1., 0.);
     const C_Coord: BaryCoord<f64> = BaryCoord(0., 0., 1.);
+}
+impl<T> BaryCoordOfTri<T> {
+    fn from_xy(xy: Xy, triangle: Triangle) {}
 
-    fn new(point: &Xy, triangle: &Triangle) -> BaryCoord<T> {
-        todo!("todo dont have code")
-        // BaryCoord(0.5, 0.5, 0.5)
+    fn to_xy(&self) -> Xy {
+        todo!()
+    }
+
+    fn is_inside_triangle() -> bool {
+        true
     }
 }
 
+impl<T> Drawable for BaryCoordOfTri<T> {
+    fn draw(&self, drawer: &mut dyn Canvas) {
+        Point(self.to_xy()).draw(drawer);
+    }
+}
 #[cfg(test)]
 mod test {
+    use crate::Vertex;
+
     use super::*;
     #[test]
     fn bary_new_test() {
