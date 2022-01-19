@@ -286,7 +286,25 @@ impl_trait_for!(f64, f32, i64, i32, i16, i8, isize, u64, u32, u16, u8, usize);
 mod tests {
     #[test]
     fn impl_trait_for_test() {
+        pub trait Numeric {}
         impl_trait_for!(u8);
+    }
+
+    #[test]
+    fn impl_trait_for_test2() {
+        pub trait Numeric {}
         impl_trait_for!(u8, u16);
+    }
+
+    #[test]
+    fn impl_trait_for_test3() {
+        pub trait Numeric {}
+        impl_trait_for!(u8, u16,);
+    }
+
+    #[test]
+    fn impl_trait_for_test4() {
+        pub trait Numeric {}
+        impl_trait_for!(u8, u16, u32, i32);
     }
 }

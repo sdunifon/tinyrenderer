@@ -87,29 +87,6 @@ mod tests {
         ])
     }
 
-    #[test]
-    #[ignore]
-    fn render_triangle_test() {
-        render_triangle();
-    }
-    #[test]
-    #[ignore]
-    fn make_image_test() {
-        let filename = "lib_test_render.tga";
-        if Path::new(filename).exists() {
-            fs::remove_file(filename).unwrap();
-        }
-        make_image().unwrap().render(filename);
-        assert!(Path::new(filename).exists(), "rendered image not found");
-        fs::remove_file(filename).unwrap();
-    }
-
-    #[test]
-    #[ignore]
-    fn draw_triangle_test() {
-        assert!(draw_triangle(triangle(), false).is_ok());
-        assert!(draw_triangle(triangle(), true).is_ok());
-    }
     // #[bench]
     // fn bench_make_image(b: &mut Bencher) {
     //     assert_file_creation("test_render.tga", |filename: &str| {

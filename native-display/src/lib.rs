@@ -51,3 +51,20 @@ pub fn make_image() -> Result<Image, Box<dyn Error>> {
     }
     Ok(image)
 }
+
+mod tests {
+    use std::{fs, path::Path};
+
+    use crate::make_image;
+
+    #[test]
+    fn make_image_test() {
+        let filename = "lib_test_render.tga";
+        if Path::new(filename).exists() {
+            fs::remove_file(filename).unwrap();
+        }
+        make_image().unwrap().render(filename);
+        assert!(Path::new(filename).exists(), "rendered image not found");
+        fs::remove_file(filename).unwrap();
+    }
+}
