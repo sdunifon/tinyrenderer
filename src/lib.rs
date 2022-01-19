@@ -51,76 +51,12 @@ pub use utils::*;
 pub use vector::Vector3;
 
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
-pub const IMAGE_HEIGHT: u32 = 1024;
-pub const IMAGE_WIDTH: u32 = 1024;
 
 pub fn load_file(filename: &str) -> Result<Render, RenderError> {
     let mut render = Render::default();
     render.load_file(filename)?;
     render.update_file_render()?;
     Ok(render)
-}
-
-pub fn make_image() -> Result<Image, Box<dyn Error>> {
-    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
-
-    image.draw(&Vertex {
-        x: 50.,
-        y: 40.,
-        z: 40.,
-    });
-
-    let file = ModelFile::open_file("assets/head.obj")?;
-
-    let verticies = file.vertex_parse();
-
-    let triangles = file.face_parse(&verticies);
-    for triangle in &triangles {
-        image.draw(triangle)
-    }
-    for vertex in &verticies {
-        image.draw(vertex)
-    }
-    for triangle in &triangles {
-        // triangle.fill(&mut image)
-    }
-    Ok(image)
-}
-
-pub fn draw_triangle(triangle: Triangle, fill: bool) -> Result<Image, Box<dyn std::error::Error>> {
-    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
-
-    image.draw(&triangle);
-    if fill {
-        // triangle.fill(&mut image);
-    }
-    Ok(image)
-}
-
-pub fn render_triangle() -> Image {
-    let triangle = Triangle::new([
-        Vertex {
-            x: 50.,
-            y: 50.,
-            z: 0.,
-        },
-        Vertex {
-            x: 75.,
-            y: 100.,
-            z: 0.,
-        },
-        Vertex {
-            x: 100.,
-            y: 50.,
-            z: 0.,
-        },
-    ]);
-
-    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
-
-    image.draw(&triangle);
-    // triangle.fill(&mut image);
-    image
 }
 
 #[cfg(test)]
