@@ -132,7 +132,7 @@ mod tests {
             };
             let mut i = Image::new(500, 500);
             i.draw(&l);
-            i.render(filename);
+            i.render_to_file(filename);
         })
     }
 
@@ -158,7 +158,7 @@ mod tests {
             i.draw(&l0);
             i.draw(&l1);
             i.draw(&l2);
-            i.render(filename);
+            i.render_to_file(filename);
         })
     }
 }

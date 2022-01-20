@@ -53,7 +53,7 @@ impl Image {
         image_buffer
     }
 
-    pub fn render(&self, filename: &str) {
+    pub fn render_to_file(&self, filename: &str) {
         let image_buffer = self.render_to_buffer();
         image_buffer.save(filename).unwrap();
     }
@@ -135,7 +135,7 @@ mod tests {
     fn render_test() {
         assert_file_creation("test_render.tga", |filename: &str| {
             let img = Image::new(500, 500);
-            img.render(filename);
+            img.render_to_file(filename);
         });
     }
 

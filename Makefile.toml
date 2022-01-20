@@ -78,6 +78,12 @@ args = ["fmt"]
 
 # ---- TEST ----
 
+[tasks.integration_tests]
+description = "Run integration test suite."
+command = "cargo"
+args = ["test", "--test", "integration"]
+workspace = false
+
 [tasks.test_h]
 description = "Run headless tests. Ex: 'cargo make test_h firefox'. Test envs: [chrome, firefox, safari]"
 extend = "test"

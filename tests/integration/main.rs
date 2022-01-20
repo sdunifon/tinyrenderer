@@ -82,12 +82,17 @@ fn render_triangle_test() -> TestResult {
 }
 
 #[test]
+fn image_magick_installed_test() {
+    check_for_image_magick();
+}
+
+#[test]
 fn make_image_test() {
     let filename = "lib_test_render.tga";
     if Path::new(filename).exists() {
-        // fs::remove_file(filename).unwrap();
+        fs::remove_file(filename).unwrap();
     }
-    test_image_1().unwrap().render(filename);
+    test_image_1().unwrap().render_to_file(filename);
     assert!(Path::new(filename).exists(), "rendered image not found");
     fs::remove_file(filename).unwrap();
 }

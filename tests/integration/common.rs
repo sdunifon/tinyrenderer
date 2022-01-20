@@ -1,7 +1,5 @@
-use std::error::Error;
-
+use std::{error::Error, path::PathBuf, process::Command};
 use tinyrenderer::{render::RenderError, Canvas, Image, ModelFile, Render, RenderOptions, Vertex};
-
 pub fn setup_renderer() -> Render {
     Render::default()
 }
@@ -44,13 +42,27 @@ pub fn test_image_1() -> Result<Image, Box<dyn Error>> {
     for vertex in &verticies {
         image.draw(vertex)
     }
-    for triangle in &triangles {
-        todo!()
-        // triangle.fill(&mut image)
-    }
+    // for triangle in &triangles {
+    // todo!()
+    // triangle.fill(&mut image)
+    // }
     Ok(image)
 }
 
 pub fn multi_render_suite(filename: &str) {
+    todo!()
+}
+
+pub fn check_for_image_magick() {
+    let output = Command::new("compare")
+        .output()
+        .expect("Image Magick not installed. Please install Image Magick to run the integration tests. It is only needed for integration tests.");
+
+    if !String::from_utf8_lossy(&output.stdout).contains("Magick") {
+        panic!("'compare' script is not imagemagick")
+    }
+}
+
+fn check_image_difference(filename1: PathBuf, filename2: PathBuf) -> Option<PathBuf> {
     todo!()
 }
