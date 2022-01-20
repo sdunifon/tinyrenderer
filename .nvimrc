@@ -1,8 +1,20 @@
 
 autocmd VimEnter * echo 'local .nvim file loaded'
+" autocmd BufEnter * echo  @%
 
-autocmd BufEnter * echo  @%
 
-map :blah<CR> :!echo blah
+command Compile :!cargo build
+command Test :!cargo test
+noremap <F5> :Compile<CR> 
+noremap <F6> :Test<CR>,
 
-colorscheme morning
+unmap <leader>;
+
+noremap <leader>; mnA;<esc>`n
+noremap <leader>, mnA,<esc>`n
+
+noremap <leader>d; mnf;x`n
+noremap <leader>d, mnf,x`n
+
+noremap <leader>hh :echo hello<CR>
+noremap <leader>de :e .nvimrc<CR> 
