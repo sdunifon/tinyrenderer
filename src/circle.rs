@@ -37,7 +37,7 @@ impl Colorful for Circle {
 
 impl Fillable for Circle {}
 impl Drawable for Circle {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         //todo implement https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
         //just filling for now
         self.fill(canvas);

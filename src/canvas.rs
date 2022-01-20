@@ -1,14 +1,14 @@
-use crate::{Color, Drawable, Scalar, Vertex, Xy};
 use crate::image::scalar::{Resizer, Translator};
+use crate::{Color, Drawable, Scalar, Vertex, Xy};
 
 pub trait Canvas {
     fn set(&mut self, point: Xy, color: &Color);
     fn get(&self, point: Xy) -> &Color;
-    fn draw(&mut self, d: &dyn Drawable);
+    fn draw(&mut self, drawable: &dyn Drawable); // possibly re naem to rasterize
     fn height(&self) -> u32;
     fn width(&self) -> u32;
-    fn scalar(&self) -> &Scalar;
-    fn scale(&self, vertex: &Vertex) -> Xy;
-    fn resizer(&self) -> &Resizer;
-    fn translator(&self) -> &Translator;
+    fn scalar(&self) -> &Scalar; // should these be here
+    fn scale(&self, vertex: &Vertex) -> Xy; //should these be in canvas or another trait?
 }
+//TODO a canvas could be liks some sort of fx layer also.. a middle step in between the drawables and canvas that applies effects like blur
+//resizer and translater could also be "layers"

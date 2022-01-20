@@ -6,16 +6,16 @@ pub mod traits;
 mod xy;
 
 use super::*;
+pub use crate::canvas::Canvas;
 use color::*;
 pub use image_buffer::ImageBuffer;
 use pt::Pt;
 pub use scalar::Scalar;
-pub use crate::canvas::Canvas;
 pub use xy::Xy;
 
+pub use crate::drawable::Drawable;
 use crate::image::scalar::Translator;
 use scalar::Resizer;
-pub use crate::drawable::Drawable;
 
 pub struct Image {
     pub height: u32,
@@ -58,6 +58,14 @@ impl Image {
         let image_buffer = self.render_to_buffer();
         image_buffer.save(filename).unwrap();
     }
+
+    fn resizer(&self) -> &Resizer {
+        &self.resizer
+    }
+
+    fn translator(&self) -> &Translator {
+        &self.translator
+    }
 }
 
 impl Canvas for Image {
@@ -97,8 +105,8 @@ impl Canvas for Image {
         self.buffer[&pt] = color.clone();
     }
 
-    fn draw(&mut self, d: &dyn Drawable) {
-        d.draw(self as &mut dyn Canvas);
+    fn draw(&mut self, drawable: &dyn Drawable) {
+        drawable.draw_on(self as &mut dyn Canvas);
     }
 
     fn height(&self) -> u32 {
@@ -110,14 +118,6 @@ impl Canvas for Image {
     }
     fn scalar(&self) -> &Scalar {
         &self.scalar
-    }
-
-    fn resizer(&self) -> &Resizer {
-        &self.resizer
-    }
-
-    fn translator(&self) -> &Translator {
-        &self.translator
     }
 
     ///Scale a normalized vertex to fit into the height and widht of the image

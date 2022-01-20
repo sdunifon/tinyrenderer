@@ -1,5 +1,5 @@
-use crate::drawable::Drawable;
 use super::*;
+use crate::drawable::Drawable;
 use crate::model_file::ModelFileDrawer;
 use std::{error, fmt};
 
@@ -84,7 +84,7 @@ impl Render {
             options: &self.options,
             model_file: self.file.as_ref().unwrap(),
         };
-        model_file_drawer.draw(&mut self.image);
+        model_file_drawer.draw_on(&mut self.image);
         Ok(())
     }
 
@@ -108,7 +108,7 @@ impl Render {
 
     pub fn draw(&mut self) {
         for drawable in self.render_queue.iter() {
-            drawable.draw(&mut self.image);
+            drawable.draw_on(&mut self.image);
         }
     }
 }

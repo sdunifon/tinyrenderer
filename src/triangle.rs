@@ -15,9 +15,9 @@ pub struct Triangle {
 pub type Triangles = Vec<Triangle>;
 
 impl Drawable for Triangles {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         for triangle in self {
-            triangle.draw(canvas);
+            triangle.draw_on(canvas);
         }
         Ok(())
     }
@@ -73,7 +73,7 @@ impl Brightness for Triangle {
 }
 
 impl Drawable for Triangle {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         for line in self.lines() {
             canvas.draw(&line)
         }

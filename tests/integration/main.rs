@@ -77,7 +77,7 @@ fn render_triangle_test() -> TestResult {
         Vertex::new(0.2, -0.3, 0.4),
     ]);
 
-    triangle.draw(&mut renderer.image);
+    triangle.draw_on(&mut renderer.image);
     Ok(())
 }
 

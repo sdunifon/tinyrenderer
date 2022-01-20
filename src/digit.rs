@@ -209,7 +209,7 @@ impl Colorful for Digit {
     }
 }
 impl Drawable for Digit {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let (x, y) = (25i32, 25i32);
         // self.px_data().iter().enumerate().map(|(row_vec, row_num)| {
         for (row_num, row_vec) in self.px_data().iter().rev().enumerate() {
@@ -248,7 +248,7 @@ impl TryFrom<char> for Digit {
 }
 
 impl<T: Numeric + ToString> Drawable for T {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let string = self.to_string();
 
         let digits = string

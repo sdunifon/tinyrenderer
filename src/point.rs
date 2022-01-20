@@ -13,7 +13,7 @@ impl std::ops::Deref for Point {
 }
 
 impl Drawable for Point {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         canvas.set(self.0, &color::WHITE);
         Ok(())
     }

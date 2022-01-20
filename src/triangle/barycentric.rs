@@ -31,8 +31,8 @@ impl<T> BaryCoordOfTri<T> {
 }
 
 impl<T> Drawable for BaryCoordOfTri<T> {
-    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
-        Point(self.to_xy()).draw(canvas);
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+        Point(self.to_xy()).draw_on(canvas);
         Ok(())
     }
 }
