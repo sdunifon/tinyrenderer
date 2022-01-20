@@ -1,4 +1,5 @@
-use crate::{color, Drawable, Xy};
+use crate::{color, Xy};
+use crate::drawable::Drawable;
 
 pub struct Point(pub Xy);
 

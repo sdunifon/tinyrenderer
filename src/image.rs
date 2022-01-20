@@ -10,11 +10,12 @@ use color::*;
 pub use image_buffer::ImageBuffer;
 use pt::Pt;
 pub use scalar::Scalar;
-pub use traits::{Canvas, Drawable};
+pub use traits::Canvas;
 pub use xy::Xy;
 
 use crate::image::scalar::Translator;
 use scalar::Resizer;
+pub use crate::drawable::Drawable;
 
 pub struct Image {
     pub height: u32,

@@ -1,6 +1,6 @@
 use super::*;
 
-use super::image::traits::Drawable;
+use crate::drawable::Drawable;
 use std::mem;
 
 pub struct Line {

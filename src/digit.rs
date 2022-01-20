@@ -1,4 +1,5 @@
-use crate::{Colorful, Drawable, Xy};
+use crate::{Colorful, Xy};
+use crate::drawable::Drawable;
 
 pub enum Digit {
     Zero,

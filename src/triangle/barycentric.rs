@@ -1,4 +1,6 @@
-use crate::{Canvas, Drawable, Point, Triangle, Xy};
+use crate::{Canvas, Point, Triangle, Xy};
+use crate::drawable::Drawable;
+
 ///P = A + w1(B - A) + w2(C - A)
 ///Px = Ax + w1(Bx - Ax) + w2(Cx - Ax)
 ///Py = Ay + w1(By - Ay) + w2(Cy -Ay)

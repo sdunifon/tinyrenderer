@@ -1,7 +1,8 @@
 #![feature(box_syntax)]
 use native_display::display_window;
 use std::error::Error;
-use tinyrenderer::{Boundable, Circle, Color, Digit, Drawable, Line, Point, Triangle, Xy};
+use tinyrenderer::Drawable;
+use tinyrenderer::{Boundable, Circle, Color, Digit, Line, Point, Triangle, Xy};
 use tinyrenderer::{Render, Vertex};
 
 #[cfg_attr(feature = "native_image_render", show_image::main)]

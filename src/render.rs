@@ -1,4 +1,4 @@
-use super::image::Drawable;
+use crate::drawable::Drawable;
 use super::*;
 use crate::model_file::ModelFileDrawer;
 use std::{error, fmt};

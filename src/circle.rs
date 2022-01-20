@@ -1,6 +1,7 @@
-use super::{bounds::DetectInside, Boundable, BoundingBox, Xy};
+use super::{Boundable, BoundingBox, bounds::DetectInside, Xy};
 use crate::color::{self, Color, Colorful};
-use crate::{Drawable, Fillable};
+use crate::Fillable;
+use crate::drawable::Drawable;
 
 pub struct Circle {
     radius: u32,
@@ -49,7 +50,7 @@ impl DetectInside for Circle {
 
 #[cfg(test)]
 mod tests {
-    use crate::{color::WHITE, Canvas, Render};
+    use crate::{Canvas, color::WHITE, Render};
 
     use super::*;
 

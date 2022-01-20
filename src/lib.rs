@@ -26,6 +26,7 @@ pub mod circle;
 mod digit;
 pub mod point;
 pub mod test_helper;
+mod drawable;
 
 pub use bounds::{Boundable, BoundingBox, DetectInside};
 pub use circle::Circle;
@@ -37,13 +38,14 @@ pub use image::{ImageBuffer, Xy};
 pub use line::{Line, Line2d};
 pub use model_file::ModelFile;
 pub use point::Point;
-use regex::Regex;
-use render::RenderError;
+pub use regex::Regex;
+pub use render::RenderError;
 pub use render::{Render, RenderOptions};
 pub use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vector::Vector3;
+pub use drawable::Drawable;
 
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
 

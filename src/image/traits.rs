@@ -1,3 +1,4 @@
+use crate::drawable::Drawable;
 use super::scalar::{Resizer, Translator};
 use super::ImageBuffer;
 use super::Scalar;
@@ -60,10 +61,6 @@ trait IterateByDrawnPixels: DrawBuffer {
     fn iter_drawn_pixels(&self) -> DrawnPixelsIter {
         DrawnPixelsIter(self.draw_iter())
     }
-}
-
-pub trait Drawable {
-    fn draw(&self, drawer: &mut dyn Canvas);
 }
 
 pub trait DrawBuffer: Canvas {
