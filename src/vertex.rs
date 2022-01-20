@@ -1,6 +1,6 @@
 mod normalized_vertices;
 
-use super::image::Canvas;
+use crate::canvas::Canvas;
 use super::*;
 pub use normalized_vertices::NormalizedVertices;
 use std::cmp::Ordering;

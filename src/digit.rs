@@ -1,5 +1,6 @@
 use crate::drawable::Drawable;
-use crate::{Canvas, Colorful, RenderError, Xy};
+use crate::{Colorful, RenderError, Xy};
+use crate::canvas::Canvas;
 
 pub enum Digit {
     Zero,
@@ -257,9 +258,6 @@ impl<T: Numeric + ToString> Drawable for T {
         Ok(())
     }
 }
-
-// #[derive(Debug)]
-// struct DrawAt(Xy, Drawable);
 
 //display x,y points
 pub trait Numeric {}

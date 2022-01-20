@@ -1,5 +1,6 @@
 use crate::drawable::Drawable;
-use crate::{color, Canvas, RenderError, Xy};
+use crate::{color, RenderError, Xy};
+use crate::canvas::Canvas;
 
 pub struct Point(pub Xy);
 

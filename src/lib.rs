@@ -22,15 +22,20 @@ mod vector;
 mod vertex;
 
 mod camera;
+mod canvas;
 pub mod circle;
 mod digit;
+mod draw_at;
+mod drawable;
 pub mod point;
 pub mod test_helper;
-mod drawable;
 
 pub use bounds::{Boundable, BoundingBox, DetectInside};
+pub use canvas::Canvas;
 pub use circle::Circle;
 pub use digit::Digit;
+pub use draw_at::DrawAt;
+pub use drawable::Drawable;
 pub use fillable::Fillable;
 pub use image::color::{self, Color, Colorful};
 pub use image::*;
@@ -45,7 +50,6 @@ pub use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vector::Vector3;
-pub use drawable::Drawable;
 
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
 

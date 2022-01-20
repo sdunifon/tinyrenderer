@@ -1,5 +1,7 @@
 use std::{error::Error, path::PathBuf, process::Command};
-use tinyrenderer::{render::RenderError, Canvas, Image, ModelFile, Render, RenderOptions, Vertex};
+use tinyrenderer::Canvas;
+use tinyrenderer::{render::RenderError, Image, ModelFile, Render, RenderOptions, Vertex};
+
 pub fn setup_renderer() -> Render {
     Render::default()
 }
