@@ -1,6 +1,7 @@
-use common::render_with_options;
-use common::renderer_with_file;
+use crate::common::*;
 use std::error;
+use std::fs;
+use std::path::Path;
 use std::prelude::*;
 use tinyrenderer::render::RenderError;
 use tinyrenderer::render::RenderOptions;
@@ -52,7 +53,7 @@ fn render_wireframe() -> Result<(), Box<dyn error::Error>> {
     render.update_file_render()?;
     Ok(())
 }
-
+//TODO idea take a snapshot of a render png and compare it to future tests.
 #[test]
 fn render_high_res_test() -> TestResult {
     render_with_options(
@@ -78,4 +79,15 @@ fn render_triangle_test() -> TestResult {
 
     triangle.draw(&mut renderer.image);
     Ok(())
+}
+
+#[test]
+fn make_image_test() {
+    let filename = "lib_test_render.tga";
+    if Path::new(filename).exists() {
+        // fs::remove_file(filename).unwrap();
+    }
+    test_image_1().unwrap().render(filename);
+    assert!(Path::new(filename).exists(), "rendered image not found");
+    fs::remove_file(filename).unwrap();
 }

@@ -43,8 +43,14 @@ mod tests {
     use tinyrenderer::load_file;
 
     #[test]
-    fn setup_render_test() -> Result<(), Box<dyn error::Error>> {
-        load_file("assets/head.obj")?;
+    fn load_file_test() -> Result<(), Box<dyn error::Error>> {
+        load_file("./assets/head.obj")?;
         Ok(())
+    }
+    #[test]
+    #[should_panic]
+    #[allow(unused_must_use)]
+    fn load_invalid_file_test() {
+        load_file("./assets/hea.obj");
     }
 }

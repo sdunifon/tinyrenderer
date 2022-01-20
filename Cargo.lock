@@ -2746,6 +2746,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9926767b8b8244d7b6b64546585121d193c3d0b4856ccd656b7bfa9deb91ab6a"
 
 [[package]]
+name = "project-root"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8bccbff07d5ed689c4087d20d7307a52ab6141edeedf487c3876a55b86cf63df"
+
+[[package]]
 name = "pulldown-cmark"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3710,6 +3716,7 @@ dependencies = [
  "native-display",
  "num-traits",
  "pretty_assertions",
+ "project-root",
  "rand 0.8.4",
  "regex 1.5.4",
  "show-image",

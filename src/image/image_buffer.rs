@@ -1,4 +1,3 @@
-use super::Canvas;
 use super::Color;
 use super::Xy;
 use std::ops::{Index, IndexMut};
@@ -103,7 +102,7 @@ mod tests {
         let mut image_buffer: image_lib::ImageBuffer<image_lib::Rgb<u8>, Vec<u8>> =
             image_lib::ImageBuffer::new(width, height);
 
-        for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
+        for (x, y, _pixel) in image_buffer.enumerate_pixels_mut() {
             assert!(y < height);
             assert!(x < width);
         }

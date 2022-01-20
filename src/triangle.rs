@@ -326,7 +326,6 @@ mod tests {
     }
     #[test]
     fn normal_from_file_test() {
-        todo!();
         let triangles = triangles();
         // Vector3::<f64>::new(6 as f64, 5 as f64, 4 as f64);
         let a = Vector3::new(92.0, -6.0, 130.0);
@@ -335,7 +334,6 @@ mod tests {
     }
     #[test]
     fn brightness_45_test() {
-        todo!();
         let t = Triangle {
             vertices: [
                 Vertex::new(0.0, 0.0, 0.0),
@@ -348,7 +346,6 @@ mod tests {
 
     #[test]
     fn brightness_45_in_test() {
-        todo!();
         let t = Triangle {
             vertices: [
                 Vertex::new(0., 0., 0.),

@@ -1,7 +1,5 @@
-use std::error::Error;
-
 use show_image::{create_window, event};
-use tinyrenderer::{Canvas, Image, ModelFile, Render, Vertex};
+use tinyrenderer::Render;
 
 pub const IMAGE_HEIGHT: u32 = 1024;
 pub const IMAGE_WIDTH: u32 = 1024;
@@ -24,47 +22,4 @@ pub fn display_window(render: &Render) -> Result<(), Box<dyn std::error::Error>>
         }
     }
     Ok(())
-}
-
-pub fn make_image() -> Result<Image, Box<dyn Error>> {
-    let mut image = Image::new(IMAGE_HEIGHT, IMAGE_WIDTH);
-
-    image.draw(&Vertex {
-        x: 50.,
-        y: 40.,
-        z: 40.,
-    });
-
-    let file = ModelFile::open_file("assets/head.obj")?;
-
-    let verticies = file.vertex_parse();
-
-    let triangles = file.face_parse(&verticies);
-    for triangle in &triangles {
-        image.draw(triangle)
-    }
-    for vertex in &verticies {
-        image.draw(vertex)
-    }
-    for triangle in &triangles {
-        // triangle.fill(&mut image)
-    }
-    Ok(image)
-}
-
-mod tests {
-    use std::{fs, path::Path};
-
-    use crate::make_image;
-
-    #[test]
-    fn make_image_test() {
-        let filename = "lib_test_render.tga";
-        if Path::new(filename).exists() {
-            fs::remove_file(filename).unwrap();
-        }
-        make_image().unwrap().render(filename);
-        assert!(Path::new(filename).exists(), "rendered image not found");
-        fs::remove_file(filename).unwrap();
-    }
 }

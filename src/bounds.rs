@@ -1,5 +1,3 @@
-use num_traits::Float;
-
 use super::*;
 
 #[derive(Default, Debug, PartialEq, Clone, Copy)]

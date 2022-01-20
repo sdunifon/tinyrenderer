@@ -55,7 +55,7 @@ impl Colorful for Line2d {
 
 impl Colorful for Line {
     fn color(&self) -> Color {
-        self.color()
+        self.color
     }
 }
 impl Drawable for Line {

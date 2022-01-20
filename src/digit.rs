@@ -1,5 +1,3 @@
-use num_traits::Num;
-
 use crate::{Colorful, Drawable, Xy};
 
 pub enum Digit {
