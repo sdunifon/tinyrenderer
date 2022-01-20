@@ -1,5 +1,5 @@
-use crate::Canvas;
+use crate::{Canvas, RenderError};
 
 pub trait Drawable {
-    fn draw(&self, drawer: &mut dyn Canvas);
+    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError>;
 }

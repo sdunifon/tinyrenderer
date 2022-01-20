@@ -59,14 +59,15 @@ impl Colorful for Line {
     }
 }
 impl Drawable for Line {
-    fn draw(&self, canvas: &mut dyn Canvas) {
+    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let line_2d: Line2d = Line2d::from_line(self, canvas);
         line_2d.draw(canvas);
+        Ok(())
     }
 }
 
 impl Drawable for Line2d {
-    fn draw(&self, canvas: &mut dyn Canvas) {
+    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let Line2d {
             p1: Xy(mut x1, mut y1),
             p2: Xy(mut x2, mut y2),
@@ -105,6 +106,7 @@ impl Drawable for Line2d {
                 error -= 1.;
             }
         }
+        Ok(())
     }
 }
 

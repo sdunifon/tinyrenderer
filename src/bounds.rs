@@ -72,7 +72,7 @@ where
     T: Into<i32> + Copy,
 {
     //todo get this to work for the generic case
-    fn draw(&self, drawer: &mut dyn Canvas) {
+    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let Self {
             x_min,
             x_max,
@@ -99,9 +99,10 @@ where
             },
         ];
         for line in lines {
-            line.draw(drawer);
+            line.draw(canvas);
         }
         // self.fill() //TODO;  need to convert to i32 try to get the below From<BoundingBox<T>> for BoundingBox<i32> trait
+        Ok(())
     }
 }
 

@@ -1,5 +1,5 @@
-use crate::{Colorful, Xy};
 use crate::drawable::Drawable;
+use crate::{Canvas, Colorful, RenderError, Xy};
 
 pub enum Digit {
     Zero,
@@ -208,7 +208,7 @@ impl Colorful for Digit {
     }
 }
 impl Drawable for Digit {
-    fn draw(&self, drawer: &mut dyn crate::Canvas) {
+    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let (x, y) = (25i32, 25i32);
         // self.px_data().iter().enumerate().map(|(row_vec, row_num)| {
         for (row_num, row_vec) in self.px_data().iter().rev().enumerate() {
@@ -216,15 +216,16 @@ impl Drawable for Digit {
             for (col_num, px) in row_vec.chars().enumerate() {
                 if px == '1' {
                     let p = Xy(x + col_num as i32, y + row_num as i32);
-                    drawer.set(p, &self.color())
+                    canvas.set(p, &self.color());
                 }
             }
         }
+        Ok(())
     }
 }
 
 impl TryFrom<char> for Digit {
-    type Error = &'static str;
+    type Error = RenderError;
 
     fn try_from(c: char) -> Result<Self, Self::Error> {
         match c {
@@ -240,18 +241,25 @@ impl TryFrom<char> for Digit {
             '.' => Ok(Digit::Decimal),
             '(' => Ok(Digit::RightParen),
             ')' => Ok(Digit::LeftParen),
-             _ => Err("Digit parse error! Character {c} is not a displayable digit character. Use only characters 0-9.()"),
+             _ => Err(RenderError("Digit parse error! Character {c} is not a displayable digit character. Use only characters 0-9.()".to_string())),
         }
     }
 }
 
 impl<T: Numeric + ToString> Drawable for T {
-    fn draw(&self, drawer: &mut dyn crate::Canvas) {
+    fn draw(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         let string = self.to_string();
 
-        string.chars().map(|c| Digit::try_from(c));
+        let digits = string
+            .chars()
+            .map(|c| Digit::try_from(c))
+            .collect::<Result<Vec<Digit>, RenderError>>()?;
+        Ok(())
     }
 }
+
+// #[derive(Debug)]
+// struct DrawAt(Xy, Drawable);
 
 //display x,y points
 pub trait Numeric {}
