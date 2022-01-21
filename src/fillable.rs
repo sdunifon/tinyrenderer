@@ -1,4 +1,5 @@
-use crate::{color, Boundable, Canvas, Colorful, DetectInside, Xy};
+use crate::{Boundable, color, Colorful, DetectInside, Xy};
+use crate::canvas::Canvas;
 
 // [u8; (H + 1) * (W + 1)]: Sized + Drawable<H, W>,
 pub trait Fillable: Colorful + DetectInside + Boundable<i32> {

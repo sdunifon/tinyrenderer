@@ -1,4 +1,7 @@
-use crate::{Canvas, Drawable, Point, Triangle, Xy};
+use crate::drawable::Drawable;
+use crate::{Point, RenderError, Triangle, Xy};
+use crate::canvas::Canvas;
+
 ///P = A + w1(B - A) + w2(C - A)
 ///Px = Ax + w1(Bx - Ax) + w2(Cx - Ax)
 ///Py = Ay + w1(By - Ay) + w2(Cy -Ay)
@@ -28,8 +31,9 @@ impl<T> BaryCoordOfTri<T> {
 }
 
 impl<T> Drawable for BaryCoordOfTri<T> {
-    fn draw(&self, drawer: &mut dyn Canvas) {
-        Point(self.to_xy()).draw(drawer);
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+        Point(self.to_xy()).draw_on(canvas);
+        Ok(())
     }
 }
 #[cfg(test)]

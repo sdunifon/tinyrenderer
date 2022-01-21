@@ -3,8 +3,8 @@ use std::error;
 use std::fs;
 use std::path::Path;
 use std::prelude::*;
-use tinyrenderer::render::RenderError;
-use tinyrenderer::render::RenderOptions;
+use tinyrenderer::RenderError;
+use tinyrenderer::RenderOptions;
 use tinyrenderer::Drawable;
 use tinyrenderer::Render;
 use tinyrenderer::Triangle;
@@ -77,7 +77,7 @@ fn render_triangle_test() -> TestResult {
         Vertex::new(0.2, -0.3, 0.4),
     ]);
 
-    triangle.draw(&mut renderer.image);
+    triangle.draw_on(&mut renderer.image);
     Ok(())
 }
 

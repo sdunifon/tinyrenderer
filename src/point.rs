@@ -1,4 +1,6 @@
-use crate::{color, Drawable, Xy};
+use crate::drawable::Drawable;
+use crate::{color, RenderError, Xy};
+use crate::canvas::Canvas;
 
 pub struct Point(pub Xy);
 
@@ -11,7 +13,8 @@ impl std::ops::Deref for Point {
 }
 
 impl Drawable for Point {
-    fn draw(&self, drawer: &mut dyn crate::Canvas) {
-        drawer.set(self.0, &color::WHITE);
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+        canvas.set(self.0, &color::WHITE);
+        Ok(())
     }
 }

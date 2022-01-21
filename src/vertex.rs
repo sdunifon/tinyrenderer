@@ -1,7 +1,7 @@
 mod normalized_vertices;
 
-use super::image::Canvas;
 use super::*;
+use crate::canvas::Canvas;
 pub use normalized_vertices::NormalizedVertices;
 use std::cmp::Ordering;
 use std::ops;
@@ -124,13 +124,13 @@ pub trait ToPoint {
 // }
 
 impl Drawable for Vertices {
-    fn draw(&self, image: &mut dyn Canvas) {
-        self.iter().for_each(|v| v.draw(image));
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
+        self.iter().map(|v| v.draw_on(canvas)).collect()
     }
 }
 
 impl Drawable for Vertex {
-    fn draw(&self, canvas: &mut dyn Canvas) {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         canvas.set(
             //todo this should accept a pt to ensure the scaling instead of an xy
             canvas.scalar().scale_v(self).into(),
@@ -139,7 +139,8 @@ impl Drawable for Vertex {
                 g: 255,
                 b: 255,
             },
-        )
+        );
+        Ok(())
         // canvas.set(self.into(), Color { r: 0, g: 0, b: 255 })
     }
 }

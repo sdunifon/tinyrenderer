@@ -117,13 +117,14 @@ pub struct ModelFileDrawer<'a> {
 }
 
 impl<'a> Drawable for ModelFileDrawer<'a> {
-    fn draw(&self, canvas: &mut dyn Canvas) {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         if self.options.wireframe {
-            self.model_file.triangles.draw(canvas);
+            self.model_file.triangles.draw_on(canvas);
         } else {
-            self.model_file.vertices.as_ref().unwrap().draw(canvas);
+            self.model_file.vertices.as_ref().unwrap().draw_on(canvas);
             // self.model_file.triangles.fill(canvas);
         }
+        Ok(())
     }
 }
 #[cfg(test)]

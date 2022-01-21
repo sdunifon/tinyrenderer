@@ -1,6 +1,8 @@
-use super::{bounds::DetectInside, Boundable, BoundingBox, Xy};
+use super::{Boundable, BoundingBox, bounds::DetectInside, Xy};
 use crate::color::{self, Color, Colorful};
-use crate::{Drawable, Fillable};
+use crate::drawable::Drawable;
+use crate::{Fillable, RenderError};
+use crate::canvas::Canvas;
 
 pub struct Circle {
     radius: u32,
@@ -35,10 +37,11 @@ impl Colorful for Circle {
 
 impl Fillable for Circle {}
 impl Drawable for Circle {
-    fn draw(&self, drawer: &mut dyn crate::Canvas) {
+    fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError> {
         //todo implement https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
         //just filling for now
-        self.fill(drawer)
+        self.fill(canvas);
+        Ok(())
     }
 }
 impl DetectInside for Circle {
@@ -49,7 +52,8 @@ impl DetectInside for Circle {
 
 #[cfg(test)]
 mod tests {
-    use crate::{color::WHITE, Canvas, Render};
+    use crate::{color::WHITE, Render};
+    use crate::canvas::Canvas;
 
     use super::*;
 
