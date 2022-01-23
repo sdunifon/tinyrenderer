@@ -1,5 +1,8 @@
 use crate::{Image, Vertex};
-use std::fmt;
+use std::{
+    fmt,
+    ops::{Add, Div, Sub},
+};
 
 #[derive(PartialEq, Default, Clone, Copy, PartialOrd)]
 pub struct Xy(pub i32, pub i32);
@@ -35,8 +38,48 @@ impl Xy {
     pub fn distance_to(&self, p: Xy) -> f64 {
         (((p.0 - self.0).pow(2) + (p.1 - self.1).pow(2)) as f64).sqrt()
     }
+
+    pub fn x(&self) -> i32 {
+        self.0
+    }
+    pub fn y(&self) -> i32 {
+        self.1
+    }
 }
 
+impl Add for Xy {
+    type Output = Xy;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Xy(self.0 + rhs.0, self.1 + rhs.0)
+    }
+}
+impl Sub for Xy {
+    type Output = Xy;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Xy(self.0 - rhs.0, self.1 - rhs.0)
+    }
+}
+
+impl Div<Xy> for Xy {
+    type Output = Xy;
+
+    fn div(self, rhs: Self) -> Self::Output {
+        Xy(self.0 / rhs.0, self.1 / rhs.0)
+    }
+}
+impl<T> Div<T> for Xy
+where
+    T: Into<i32>,
+{
+    type Output = Xy;
+
+    fn div(self, rhs: T) -> Self::Output {
+        let rhs_i32: i32 = rhs.into();
+        Xy(self.0 / rhs_i32, self.1 / rhs_i32)
+    }
+}
 #[cfg(test)]
 mod tests {
     use all_asserts::assert_near;

@@ -100,16 +100,22 @@ impl Render {
         self.image.height
     }
 
-    // pub fn queue_push(&mut self, d: Box<dyn Drawable>) {
-    pub fn queue_push(&mut self, d: Box<dyn Drawable>) {
-        // Vec<Box<dyn Drawable>>
-        self.render_queue.push(d);
-    }
-
     pub fn draw(&mut self) {
         for drawable in self.render_queue.iter() {
             drawable.draw_on(&mut self.image);
         }
+    }
+}
+
+pub trait HasRenderQueue {
+    fn queue_push(&mut self, d: Box<dyn Drawable>);
+}
+
+impl HasRenderQueue for Render {
+    // pub fn queue_push(&mut self, d: Box<dyn Drawable>) {
+    fn queue_push(&mut self, d: Box<dyn Drawable>) {
+        // Vec<Box<dyn Drawable>>
+        self.render_queue.push(d);
     }
 }
 

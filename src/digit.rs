@@ -1,6 +1,6 @@
+use crate::canvas::Canvas;
 use crate::drawable::Drawable;
 use crate::{Colorful, RenderError, Xy};
-use crate::canvas::Canvas;
 
 pub enum Digit {
     Zero,
@@ -286,6 +286,7 @@ impl_trait_for!(f64, f32, i64, i32, i16, i8, isize, u64, u32, u16, u8, usize);
 // impl Numeric for u8 {}
 // impl Numeric for usize {}
 
+#[cfg(test)]
 mod tests {
     #[test]
     fn impl_trait_for_test() {

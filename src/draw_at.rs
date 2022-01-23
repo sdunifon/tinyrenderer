@@ -1,12 +1,23 @@
-use crate::{Canvas, Drawable, Xy};
+use crate::{Boundable, Canvas, Drawable, Xy};
 
-pub struct DrawAt(Xy, dyn Drawable);
+pub struct DrawAt(Xy, dyn DrawBoundable<i32>);
 
+trait DrawBoundable<T>: Drawable + Boundable<T> {}
 impl DrawAt {
     fn translate_to(&self, point: Xy) -> Xy {
         self.0 + point
     }
+    fn drawable(&self) -> &dyn DrawBoundable<i32> {
+        &self.1
+    }
 }
+
+impl Boundable<i32> for DrawAt {
+    fn bounding_box(&self) -> crate::BoundingBox<i32> {
+        self.drawable().bounding_box()
+    }
+}
+
 // should this keep a reference to the image canvas.. that would allow us to stack multiple
 
 impl Canvas for DrawAt {

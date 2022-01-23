@@ -1,3 +1,5 @@
+use std::ops::Add;
+
 use super::*;
 
 #[derive(Default, Debug, PartialEq, Clone, Copy)]
@@ -8,9 +10,22 @@ pub struct BoundingBox<T> {
     pub y_max: T,
 }
 
+impl<'a> BoundingBox<i32> {
+    fn from_two_points(upper_left: Xy, lower_right: Xy) -> BoundingBox<i32> {
+        debug_assert!(upper_left.x() <= lower_right.y());
+        debug_assert!(upper_left.y() <= lower_right.y());
+
+        BoundingBox {
+            x_min: upper_left.x(),
+            y_min: upper_left.y(),
+            x_max: lower_right.x(),
+            y_max: lower_right.y(),
+        }
+    }
+}
 impl<'a, T> BoundingBox<T>
 where
-    T: PartialEq + PartialOrd + Copy,
+    T: PartialEq + PartialOrd + Copy + Into<i32>,
 {
     fn new(x_min: T, y_min: T, x_max: T, y_max: T) -> BoundingBox<T> {
         debug_assert!(x_min <= x_max);
@@ -22,11 +37,41 @@ where
             y_max,
         }
     }
+
     pub fn iter(&'a self) -> BoundingIterator<'a, T> {
         BoundingIterator {
             index: Xy(0, 0),
             bounding_box: self,
         }
+    }
+
+    pub fn upper_left(&self) -> Xy {
+        Xy(self.x_min.into(), self.y_min.into())
+    }
+
+    pub fn lower_right(&self) -> Xy {
+        Xy(self.x_max.into(), self.y_max.into())
+    }
+
+    pub fn center(&self) -> Xy {
+        (self.upper_left() - self.lower_right()) / 2
+    }
+}
+impl<T> Add<Xy> for BoundingBox<T>
+where
+    T: Copy + PartialOrd + Add<Output = T> + From<i32>,
+    i32: From<T>,
+{
+    type Output = BoundingBox<T>;
+
+    fn add(self, rhs_xy: Xy) -> Self::Output {
+        // BoundingBox::from_two_points(self.upper_left() + rhs, self.lower_right() + rhs)
+        BoundingBox::new(
+            self.x_min + rhs_xy.x().into(),
+            self.y_min + rhs_xy.y().into(),
+            self.x_max + rhs_xy.x().into(),
+            self.y_max + rhs_xy.y().into(),
+        )
     }
 }
 
@@ -241,4 +286,53 @@ mod tests {
         assert_eq!(b_iter.next(), None);
         assert_eq!(b_iter.next(), None);
     }
+
+    #[test]
+    fn test_from_two_points() {
+        let b = BoundingBox::from_two_points(Xy(1, 2), Xy(3, 4));
+        assert_eq!(b.x_min, 1);
+        assert_eq!(b.x_max, 2);
+        assert_eq!(b.y_min, 2);
+        assert_eq!(b.y_max, 4);
+    }
+
+    #[test]
+    fn test_upper_left_lower_right() {
+        let b = BoundingBox::new(2, 2, 4, 4);
+        assert_eq!(b.upper_left(), Xy(1, 2));
+        assert_eq!(b.lower_right(), Xy(1, 2));
+    }
+    #[test]
+    fn test_add() {
+        let b = BoundingBox {
+            x_min: 2,
+            x_max: 4,
+            y_min: 2,
+            y_max: 4,
+        };
+
+        assert_eq!(
+            b + Xy(1, 2),
+            BoundingBox {
+                x_min: 3,
+                x_max: 5,
+                y_min: 4,
+                y_max: 6
+            }
+        );
+    }
+
+    // --float tests TODO bounding won't work with floats until we make something to convert f64->i32
+    // #[test]
+    // #[ignore]
+    // fn test_add_with_float() {
+    //     BoundingBox::new(2.5, 2.5, 4.5, 4.5); //get rid of this if we decide no to support floats in BoundingBox
+    // }
+    // #[test]
+    // #[ignore]
+    // fn test_add_with_float() {
+    //     let bf = BoundingBox::new(2.5, 2.5, 4.5, 4.5); //get rid of this if we decide no to support floats in BoundingBox
+    //     assert_eq!(bf + Xy(1, 2), BoundingBox::new(3.5, 3.5, 6.5, 6.5));
+    // }
+    // -- end float tests
 }
