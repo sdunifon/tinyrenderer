@@ -2,8 +2,8 @@
 use native_display::display_window;
 use std::error::Error;
 use std::ops::Add;
-use tinyrenderer::Drawable;
-use tinyrenderer::{Boundable, Circle, Color, Digit, Line, Point, Triangle, Xy};
+use tinyrenderer::{Boundable, Circle, Color, Digit, DrawBoundable, Line, Point, Triangle, Xy};
+use tinyrenderer::{DrawAt, Drawable};
 use tinyrenderer::{Render, Vertex};
 
 #[cfg_attr(feature = "native_image_render", show_image::main)]
@@ -41,6 +41,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     // triangle.draw(&mut renderer.image);
     // circle.draw(&mut renderer.image);
 
+    // let one_draw_at = DrawAt(Xy(200, 50), box one);
+
     renderer.render_queue.push(box circle);
     renderer.render_queue.push(box bounding_box);
     renderer.render_queue.push(box bounding_box2);
@@ -49,6 +51,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     renderer.render_queue.push(box one);
     renderer.render_queue.push(box line);
     renderer.render_queue.push(box line2);
+    // renderer.render_queue.push(box one_draw_at);
 
     for i in 1..15 {
         renderer.render_queue.push(Box::new(Circle::new(

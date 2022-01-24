@@ -35,6 +35,7 @@ pub use canvas::Canvas;
 pub use circle::Circle;
 pub use digit::Digit;
 pub use draw_at::DrawAt;
+pub use draw_at::DrawBoundable;
 pub use drawable::Drawable;
 pub use fillable::Fillable;
 pub use image::color::{self, Color, Colorful};
@@ -50,7 +51,6 @@ pub use rendering_traits::*;
 pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vector::Vector3;
-
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
 
 pub fn load_file(filename: &str) -> Result<Render, RenderError> {

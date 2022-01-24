@@ -1,6 +1,6 @@
 use crate::canvas::Canvas;
 use crate::drawable::Drawable;
-use crate::{Colorful, RenderError, Xy};
+use crate::{Boundable, BoundingBox, Colorful, DrawBoundable, RenderError, Xy};
 
 pub enum Digit {
     Zero,
@@ -17,6 +17,7 @@ pub enum Digit {
     RightParen,
     LeftParen,
     Negative,
+    Comma,
 }
 
 impl Digit {
@@ -36,6 +37,7 @@ impl Digit {
             Digit::RightParen => todo!(),
             Digit::LeftParen => todo!(),
             Digit::Negative => todo!(),
+            Digit::Comma => todo!(),
         }
     }
 
@@ -156,7 +158,7 @@ impl Digit {
             "00001000",
             "00010000",
             "00010000",
-            "00010000",
+            "00000000",
         ]
     }
     #[rustfmt::skip]
@@ -181,8 +183,8 @@ impl Digit {
             "01111111",
             "00000001",
             "00000011",
-            "00000100",
-            "00011100",
+            "00111100",
+            "00000000",
         ]
     }
     #[rustfmt::skip]
@@ -193,9 +195,49 @@ impl Digit {
             "00000000",
             "00000000",
             "00000000",
+            "00111000",
+            "00111000",
+            "000l1000",
+        ]
+    }
+    #[rustfmt::skip]
+    const fn left_paren(&self) -> [&'static str; 8] {
+        [
+            "00000111",
+            "00111000",
+            "00100000",
+            "01000000",
+            "01000000",
+            "00100000",
+            "00111000",
+            "00000111",
+        ]
+    }
+
+    #[rustfmt::skip]
+    const fn right_paren_px(&self) -> [&'static str; 8] {
+        [
+            "11100000",
+            "00011100",
+            "00000100",
+            "00000010",
+            "00000010",
+            "00000100",
+            "00011100",
+            "11100000",
+        ]
+    }
+    #[rustfmt::skip]
+    const fn comma_px(&self) -> [&'static str; 8] {
+        [
             "00000000",
-            "00111000",
-            "00111000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00000000",
+            "00110000",
+            "00010000",
         ]
     }
 }
@@ -224,6 +266,21 @@ impl Drawable for Digit {
         Ok(())
     }
 }
+impl<T> Boundable<T> for Digit
+where
+    T: From<i32>,
+{
+    fn bounding_box(&self) -> crate::BoundingBox<T> {
+        BoundingBox {
+            x_min: 0.into(),
+            y_min: 0.into(),
+            x_max: 8.into(),
+            y_max: 8.into(),
+        }
+    }
+}
+
+impl<T: From<i32>> DrawBoundable<T> for Digit {}
 
 impl TryFrom<char> for Digit {
     type Error = RenderError;
