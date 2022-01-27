@@ -7,3 +7,7 @@ pub trait Drawable {
         unimplemented!();
     }
 }
+
+pub trait DrawInstructions {
+    fn draw_code(&self) -> Box<dyn Fn(&mut dyn Canvas) -> Result<(), RenderError>>;
+}

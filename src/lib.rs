@@ -26,6 +26,7 @@ mod canvas;
 pub mod circle;
 mod digit;
 mod draw_at;
+mod draw_commands;
 mod drawable;
 pub mod point;
 pub mod test_helper;

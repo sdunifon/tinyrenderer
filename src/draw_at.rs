@@ -1,4 +1,5 @@
-use crate::{Boundable, Canvas, Drawable, Xy};
+use crate::drawable::DrawInstructions;
+use crate::{Boundable, Canvas, Drawable, RenderError, Xy};
 
 pub struct DrawAt(pub Xy, pub Box<dyn DrawBoundable<i32>>);
 
@@ -21,6 +22,22 @@ impl<'a> Drawable for DrawAt {
     fn draw_on(self: &DrawAt, canvas: &mut dyn Canvas) -> Result<(), crate::RenderError> {
         self.drawable().draw_on_passthrough(self)?;
         Ok(())
+    }
+}
+// impl<'a> DrawInstructions for DrawAt {
+impl<'a> DrawAt {
+    // fn draw_code(&'a self) -> Box<dyn Fn(&'a mut dyn Canvas) -> Result<(), RenderError>> {
+    //     let drawable = self.drawable();
+    //     Box::new(move |canvas: &mut dyn Canvas| -> Result<(), RenderError> {
+    //         drawable.draw_on(canvas)
+    //     })
+    // }
+
+    fn draw_code(&'a self) -> impl Fn(&'a mut dyn Canvas) {
+        let drawable = self.drawable();
+        move |canvas: &mut dyn Canvas| {
+            drawable.draw_on(canvas);
+        }
     }
 }
 // should this keep a reference to the image canvas.. that would allow us to stack multiple
