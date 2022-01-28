@@ -4,6 +4,7 @@ TRUNK_CONFIG = "./web/Trunk.toml"
 
 [tasks.clean]
 command = "cargo"
+dependencies = ["clean_timings"]
 args = ["clean"]
 
 [tasks.rebuild]
@@ -32,6 +33,15 @@ command = "curl"
 args = ["https://localhost:8080"]
 
 # ---- BUILD ----
+
+[tasks.build_timings]
+command = "cargo"
+dependencies =[  "clean" ]
+args = ["build","-Ztimings"]
+
+[tasks.clean_timings]
+command = "fd"
+args = ["cargo-timing-?\\w*.html", "--no-ignore", "--exec", "rm"]
 
 [tasks.watch]
 description = "Watch files and recompile the project on change"
