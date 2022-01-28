@@ -14,7 +14,7 @@ struct Cli {
     width: u16,
     #[structopt(long = "wireframe")]
     wireframe: bool,
-    #[structopt(default_value = "./assets/cessna.obj")]
+    #[structopt(default_value = "./assets/ant.obj")]
     filename: String,
 }
 
