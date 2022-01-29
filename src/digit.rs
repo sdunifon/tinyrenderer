@@ -266,6 +266,11 @@ impl Drawable for Digit {
         Ok(())
     }
 }
+
+impl ToImageBuffer {
+
+}
+
 impl<T> Boundable<T> for Digit
 where
     T: From<i32>,

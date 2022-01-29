@@ -2,6 +2,7 @@ use super::Color;
 use super::Xy;
 use std::ops::{Index, IndexMut};
 
+//TODO maybe use bounding box here to also  specify the location.. then height and width can become methods
 #[derive(Debug, Clone)]
 pub struct ImageBuffer {
     height: u32,
@@ -69,6 +70,9 @@ impl<'a> IndexMut<&'a Xy> for ImageBuffer {
     }
 }
 
+pub trait ToImageBuffer {
+    fn to_image_buffer(self) -> ImageBuffer;
+}
 // impl DrawTool for ImageBuffer {}
 
 #[cfg(test)]
