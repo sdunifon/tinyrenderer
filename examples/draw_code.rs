@@ -14,10 +14,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     renderer.render_queue.push(box circle);
 
-    circle.draw_at(|setter|
-
-        setter.set()
-    )
+    // circle.draw_at(|setter| setter.set())
     display_window(&renderer)
 }
 
@@ -44,12 +41,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 // }
 
-
-
 // let xys = [Xy(1,2),Xy(2,2),Xy(3,3)]
 // let f1 = (xy)-> xy {
 
 //     xy + Xy(50,50)
 // }
-
-

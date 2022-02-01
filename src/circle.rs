@@ -1,8 +1,9 @@
-use super::{Boundable, BoundingBox, bounds::DetectInside, Xy};
-use crate::color::{self, Color, Colorful};
-use crate::drawable::Drawable;
-use crate::{Fillable, RenderError};
+use super::{bounds::DetectInside, Boundable, BoundingBox, Xy};
 use crate::canvas::Canvas;
+use crate::color::{self, Color, Colorful};
+use crate::draw_cmd::ToDrawCommands;
+use crate::drawable::Drawable;
+use crate::{DrawCmd, Fillable, RenderError};
 
 pub struct Circle {
     radius: u32,
@@ -49,11 +50,23 @@ impl DetectInside for Circle {
         self.center.distance_to(p) <= self.radius.into()
     }
 }
-
+impl ToDrawCommands for Circle {
+    fn to_draw_commands(&self) -> Vec<DrawCmd> {
+        // todo refactor so fill and this method use the same code
+        let mut commands: Vec<DrawCmd> = Vec::new();
+        for Xy(x, y) in self.bounding_box().iter() {
+            let p = Xy(x, y);
+            if self.includes(Xy(x, y)) {
+                commands.push(DrawCmd::Set(p))
+            }
+        }
+        return commands;
+    }
+}
 #[cfg(test)]
 mod tests {
-    use crate::{color::WHITE, Render};
     use crate::canvas::Canvas;
+    use crate::{color::WHITE, Render};
 
     use super::*;
 

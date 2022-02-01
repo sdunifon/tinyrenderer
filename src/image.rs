@@ -8,7 +8,7 @@ mod xy;
 use super::*;
 pub use crate::canvas::Canvas;
 use color::*;
-pub use image_buffer::ImageBuffer;
+pub use image_buffer::{ImageBuffer, ToImageBuffer};
 use pt::Pt;
 pub use scalar::Scalar;
 pub use xy::Xy;

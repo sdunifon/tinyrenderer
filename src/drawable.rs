@@ -38,9 +38,12 @@ impl DrawInstructions for DrawAt {
 //sketch
 pub trait PxSet {
     fn px_set(&self, px: Xy) {}
-    fn color_px_setter(&self, color: Color) -> impl dyn Fn(Xy) -> Result<(), RenderError> {
-        |xy| self.px_set_color(xy, color)
-    }
+    // fn color_px_setter<'a>(&'a self, color: Color) -> Box<dyn Fn(Xy) -> Result<(), RenderError>> {
+    //     Box::new(|xy| {
+    //         self.px_set_color(xy, color);
+    //         Ok(())
+    //     })
+    // }
     fn px_set_color(&self, px: Xy, color: Color);
 
     fn set(&self, xy: Xy) -> Xy {
@@ -49,6 +52,7 @@ pub trait PxSet {
 
     fn draw_commands(&self) -> Vec<DrawCmd> {
         let commands: Vec<DrawCmd> = Vec::new();
+        commands
     }
 }
 
@@ -70,6 +74,7 @@ where
 
     fn draw_commands(&self) -> Vec<DrawCmd> {
         let commands: Vec<DrawCmd> = Vec::new();
+        commands
     }
 
     fn px_set_color(&self, px: Xy, color: Color) {

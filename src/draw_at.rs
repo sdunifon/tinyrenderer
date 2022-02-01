@@ -72,19 +72,19 @@ impl Canvas for DrawAt {
     }
 }
 
-trait RenderTo {
-    fn draw_at(&self, draw_position: Xy) -> Box<dyn Fn(dyn Fn(Xy)) -> Xy>;
-    fn set(&self, xy: Xy);
-}
-impl<T> RenderTo for T
-where
-    T: Drawable,
-{
-    //start here
-    fn draw_at(&self, draw_position: Xy) -> Box<dyn Fn(dyn Fn(Xy)) -> Xy> {
-        todo!()
-        // Ok(self.draw_on(|xy| xy + draw_position))
-    }
+// pub trait RenderTo {
+//     fn draw_at(&self, draw_position: Xy) -> Box<dyn Fn(dyn Fn(Xy)) -> Xy>;
+//     fn set(&self, xy: Xy);
+// }
+// impl<T> RenderTo for T
+// where
+//     T: Drawable,
+// {
+//     //start here
+//     fn draw_at(&self, draw_position: Xy) -> Box<dyn Fn(dyn Fn(Xy)) -> Xy> {
+//         todo!()
+//         // Ok(self.draw_on(|xy| xy + draw_position))
+//     }
 
-    fn set(&self, xy: Xy) {}
-}
+//     fn set(&self, xy: Xy) {}
+// }

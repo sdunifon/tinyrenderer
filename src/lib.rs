@@ -42,7 +42,7 @@ pub use drawable::Drawable;
 pub use fillable::Fillable;
 pub use image::color::{self, Color, Colorful};
 pub use image::*;
-pub use image::{ImageBuffer, Xy};
+pub use image::{ImageBuffer, ToImageBuffer, Xy};
 pub use line::{Line, Line2d};
 pub use model_file::ModelFile;
 pub use point::Point;
