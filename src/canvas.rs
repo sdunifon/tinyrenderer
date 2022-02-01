@@ -2,7 +2,7 @@ use crate::image::scalar::{Resizer, Translator};
 use crate::{Color, Drawable, Scalar, Vertex, Xy};
 
 pub trait Canvas {
-    fn set(&mut self, point: Xy, color: &Color);
+    fn set(&mut self, point: Xy, color: &Color); // TODO color shouldn't be a reverence
     fn get(&self, point: Xy) -> &Color;
     fn draw(&mut self, drawable: &dyn Drawable); // possibly re naem to rasterize
     fn height(&self) -> u32;

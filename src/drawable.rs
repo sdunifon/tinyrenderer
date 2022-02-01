@@ -3,9 +3,6 @@ use crate::{Color, DrawAt, DrawCmd, RenderError, Xy};
 
 pub trait Drawable {
     fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError>;
-    fn draw_on_passthrough(&self, canvas: &dyn Canvas) -> Result<(), RenderError> {
-        unimplemented!();
-    }
 }
 
 pub trait DrawInstructions {

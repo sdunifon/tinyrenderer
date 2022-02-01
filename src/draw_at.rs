@@ -20,7 +20,8 @@ impl<'a> Boundable<i32> for DrawAt {
 }
 impl<'a> Drawable for DrawAt {
     fn draw_on(self: &DrawAt, canvas: &mut dyn Canvas) -> Result<(), crate::RenderError> {
-        self.drawable().draw_on_passthrough(self)?;
+        // self.drawable().draw_on_passthrough(self)?;
+        todo!();
         Ok(())
     }
 }

@@ -37,6 +37,7 @@ mod xy;
 pub use bounds::{Boundable, BoundingBox, DetectInside};
 pub use canvas::Canvas;
 pub use circle::Circle;
+pub use draw_cmd::ToDrawCommands;
 pub use color::{Color, Colorful};
 pub use digit::Digit;
 pub use draw_at::DrawAt;

@@ -1,7 +1,8 @@
 use std::ops::{Index, IndexMut};
 
-use crate::Color;
+use crate::drawable::PxSet;
 use crate::Xy;
+use crate::{Canvas, Color, Drawable, Scalar, Vertex};
 
 //TODO maybe use bounding box here to also  specify the location.. then height and width can become methods
 #[derive(Debug, Clone)]
@@ -73,6 +74,36 @@ impl<'a> IndexMut<&'a Xy> for ImageBuffer {
 
 pub trait ToImageBuffer {
     fn to_image_buffer(self) -> ImageBuffer;
+}
+
+impl Canvas for ImageBuffer {
+    fn set(&mut self, point: Xy, color: &Color) {
+        self[&point] = *color;
+    }
+
+    fn get(&self, point: Xy) -> &Color {
+        todo!()
+    }
+
+    fn draw(&mut self, drawable: &dyn Drawable) {
+        todo!()
+    }
+
+    fn height(&self) -> u32 {
+        todo!()
+    }
+
+    fn width(&self) -> u32 {
+        todo!()
+    }
+
+    fn scalar(&self) -> &Scalar {
+        todo!()
+    }
+
+    fn scale(&self, vertex: &Vertex) -> Xy {
+        todo!()
+    } //TODO make this into a simpler trait that just sets and gets
 }
 // impl DrawTool for ImageBuffer {}
 

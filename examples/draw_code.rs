@@ -3,7 +3,7 @@ use native_display::display_window;
 use std::error::Error;
 use std::ops::Add;
 use tinyrenderer::{Boundable, Circle, Color, Digit, DrawBoundable, Line, Point, Triangle, Xy};
-use tinyrenderer::{DrawAt, Drawable};
+use tinyrenderer::{DrawAt, Drawable, ToDrawCommands};
 use tinyrenderer::{Render, Vertex};
 
 #[cfg_attr(feature = "native_image_render", show_image::main)]
@@ -12,8 +12,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let circle = Circle::new(Xy(150, 165), 55);
 
-    renderer.render_queue.push(box circle);
+    let commands = circle.to_draw_commands();
 
+    renderer.render_queue.push(box commands);
+
+
+
+    renderer.draw();
     // circle.draw_at(|setter| setter.set())
     display_window(&renderer)
 }
