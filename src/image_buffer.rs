@@ -1,13 +1,14 @@
-use super::Color;
-use super::Xy;
 use std::ops::{Index, IndexMut};
+
+use crate::Color;
+use crate::Xy;
 
 //TODO maybe use bounding box here to also  specify the location.. then height and width can become methods
 #[derive(Debug, Clone)]
 pub struct ImageBuffer {
     height: u32,
     width: u32,
-    pub(super) data: Vec<Color>,
+    pub(crate) data: Vec<Color>,
 }
 
 impl Default for ImageBuffer {

@@ -24,25 +24,28 @@ mod vertex;
 mod camera;
 mod canvas;
 pub mod circle;
+pub mod color;
 mod digit;
 mod draw_at;
 mod draw_cmd;
 mod drawable;
+mod image_buffer;
 pub mod point;
 pub mod test_helper;
+mod xy;
 
 pub use bounds::{Boundable, BoundingBox, DetectInside};
 pub use canvas::Canvas;
 pub use circle::Circle;
+pub use color::{Color, Colorful};
 pub use digit::Digit;
 pub use draw_at::DrawAt;
 pub use draw_at::DrawBoundable;
 pub use draw_cmd::DrawCmd;
 pub use drawable::Drawable;
 pub use fillable::Fillable;
-pub use image::color::{self, Color, Colorful};
 pub use image::*;
-pub use image::{ImageBuffer, ToImageBuffer, Xy};
+pub use image_buffer::{ImageBuffer, ToImageBuffer};
 pub use line::{Line, Line2d};
 pub use model_file::ModelFile;
 pub use point::Point;
@@ -54,6 +57,7 @@ pub use triangle::{Triangle, Triangles};
 pub use utils::*;
 pub use vector::Vector3;
 pub use vertex::{HasTriangleVertices, NormalizedVertices, Vertex, Vertices};
+pub use xy::Xy;
 
 pub fn load_file(filename: &str) -> Result<Render, RenderError> {
     let mut render = Render::default();

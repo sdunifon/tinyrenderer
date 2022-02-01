@@ -1,17 +1,14 @@
-pub mod color;
-mod image_buffer;
 mod pt;
 pub(crate) mod scalar;
 pub mod traits;
-mod xy;
 
 use super::*;
 pub use crate::canvas::Canvas;
 use color::*;
-pub use image_buffer::{ImageBuffer, ToImageBuffer};
+pub use crate::{ImageBuffer, ToImageBuffer};
 use pt::Pt;
 pub use scalar::Scalar;
-pub use xy::Xy;
+pub use crate::xy::Xy;
 
 pub use crate::drawable::Drawable;
 use crate::image::scalar::Translator;
