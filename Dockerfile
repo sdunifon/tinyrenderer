@@ -1,6 +1,9 @@
 FROM redhat/ubi8
 
-RUN yum install --assumeyes gcc make openssl openssl-devel pkgconf-pkg-config
+RUN yum install --assumeyes gcc make openssl openssl-devel pkgconf-pkg-config openssl-libs perl-core #compat-openssl10
+
+RUN yum clean all -y
+
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 
 # RUN source /usr/local/cargo/env
@@ -15,6 +18,5 @@ WORKDIR /root/tinyrenderer
 RUN cargo install cargo-make
 
 RUN cargo make
-RUN yum clean all -y
 CMD cargo make serve
 # CMD /bin/bash
