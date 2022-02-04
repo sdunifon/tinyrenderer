@@ -73,15 +73,7 @@ impl Canvas for DrawAt {
     }
 }
 
-fn change_at_test() {
-    let vc: Vec<DrawCmd> = vec![
-        DrawCmd::Set(Xy(1, 2)),
-        DrawCmd::Set(Xy(2, 2)),
-        DrawCmd::Set(Xy(3, 2)),
-    ];
-    let pts = draw_set_points!([(3,2),(4,5),(2,2)]);
-    // change_at(vc)
-}
+
 
 fn change_at(xy: Xy, cmds: Vec<DrawCmd>) -> impl Fn(&dyn Canvas) {
     cmds.iter().map(|cmd| match cmd {
@@ -91,8 +83,8 @@ fn change_at(xy: Xy, cmds: Vec<DrawCmd>) -> impl Fn(&dyn Canvas) {
         DrawCmd::Circle(_, _, _) => {}
         DrawCmd::List(_) => {}
         DrawCmd::Clear(_) => {}
-        DrawCmd::Fill(_) => {}
-        DrawCmd::Trace(_) => {}
+        // DrawCmd::Fill(_) => {}
+        // DrawCmd::Trace(_) => {}
         DrawCmd::CopyBuffer(_) => {}
     });
     |canvas| println!(" in closure ")
@@ -107,95 +99,36 @@ fn change_at(xy: Xy, cmds: Vec<DrawCmd>) -> impl Fn(&dyn Canvas) {
 //         // Ok(self.draw_on(|xy| xy + draw_position))
 //     }
 
-macro_rules! draw_set_points{
-        ([$($a:expr),+])  => {
-           {
-               let v: Vec<DrawCmd>;
-               $(draw_set_points!($a));+;
-               v
-           }
-        }
-        (($a:literal,$b:literal)) => {
-            v.push(DrawCmd::Set(Xy($b,$a)));
-        }
-    }
 
 
 #[cfg(test)]
-#[feature(trace_macros)]
 mod test {
     use crate::{DrawCmd, Xy};
 
-    macro_rules! new_func {
-       ($name:ident) => {
-
-           fn $name(var: i32) -> i32{
-               println!(" function {} -> {}",stringify!($name), var);
-              var
-           }
-       }
-
-    }
-
-    macro_rules! print_result{
-
-        ($e:expr) =>{
-            println!("{} = {}",stringify!($e),$e)
+    macro_rules! draw_set_cmd {
+        ($(($a:literal, $b:literal)),+) => {
+            {
+                let mut v: Vec<DrawCmd> = Vec::new();
+                $(
+                    v.push(DrawCmd::Set(Xy($a,$b)));
+                )+
+                v
+            }
         }
     }
-
-    macro_rules! draw_set_points{
-        ([$($a:expr),+])  => {
-           {
-               let v: Vec<DrawCmd>;
-               $(draw_set_points!($a));+;
-               v
-           }
-        }
-        (($a:literal,$b:literal)) => {
-            v.push(DrawCmd::Set(Xy($b,$a)));
-        }
-    }
-    fn change_at_test() {
-        let vc: Vec<DrawCmd> = vec![
-            DrawCmd::Set(Xy(1, 2)),
-            DrawCmd::Set(Xy(2, 2)),
-            DrawCmd::Set(Xy(3, 2)),
-        ];
-        // let pts = draw_set_points!([(3,2),(4,5),(2,2)]);
-        let pts = draw_set_points!([(2,2)]);
-        // change_at(vc)
-    }
-
 
     #[test]
-    fn new_func_test(){
-
-        new_func!(my_func);
-
-        new_func!(other_func);
-        my_func(3);
-        other_func(2);
-        print_result!(45 * 7 + 3);
-        print_result!({
-            let z = 4;
-            let g = 3;
-            z + g - 5
-        } * {
-            let z = 4;
-            let q = 4;
-            z * q
-        })
-    }
-
-
-    #[test]
-    fn nested_draw_cmds() {
-        let vc: Vec<DrawCmd> = vec![
+    fn draw_set_cmd_macro_test() {
+        let cmds: Vec<DrawCmd> = vec![
             DrawCmd::Set(Xy(1, 2)),
-            DrawCmd::Set(Xy(2, 2)),
-            DrawCmd::Set(Xy(3, 2)),
+            DrawCmd::Set(Xy(3, 4)),
+            DrawCmd::Set(Xy(5, 6)),
         ];
+        let macro_cmds = draw_set_cmd!((1,2),(3,4),(5,6));
+        assert_eq!(cmds[0],macro_cmds[0]);
+        assert_eq!(cmds[1],macro_cmds[1]);
+        assert_eq!(cmds[2],macro_cmds[2]);
     }
+
 }
 

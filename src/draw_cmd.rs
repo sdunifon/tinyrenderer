@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use crate::{color, BoundingBox, Circle, Color, Drawable, ImageBuffer, ToImageBuffer, Xy};
-
+#[derive(Debug,PartialEq)]
 pub enum DrawCmd {
     Set(Xy),
     SetColor(Xy, Color),
@@ -9,8 +9,8 @@ pub enum DrawCmd {
     Circle(Xy, u32, Color),
     List(Vec<DrawCmd>),
     Clear(BoundingBox<i32>),
-    Fill(Box<dyn Drawable>),
-    Trace(Box<dyn Drawable>),
+    // Fill(Box<dyn Drawable>),
+    // Trace(Box<dyn Drawable>),
     CopyBuffer(Box<ImageBuffer>),
     // Outline(&'a ImageBuffer),
     // Function(&'a dyn Fn(i32) -> DrawCmd<'a>, Range<i32>),
@@ -53,8 +53,8 @@ impl<'a> Drawable for DrawCmd {
             DrawCmd::Circle(_, _, _) => todo!(),
             DrawCmd::List(_) => todo!(),
             DrawCmd::Clear(_) => todo!(),
-            DrawCmd::Fill(_) => todo!(),
-            DrawCmd::Trace(_) => todo!(),
+            // DrawCmd::Fill(_) => todo!(),
+            // DrawCmd::Trace(_) => todo!(),
             DrawCmd::CopyBuffer(_) => todo!(),
             DrawCmd::SetColor(_, _) => todo!(),
             // DrawCmd::Outline(_) => todo!(),

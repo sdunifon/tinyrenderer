@@ -5,7 +5,7 @@ use crate::Xy;
 use crate::{Canvas, Color, Drawable, Scalar, Vertex};
 
 //TODO maybe use bounding box here to also  specify the location.. then height and width can become methods
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ImageBuffer {
     height: u32,
     width: u32,

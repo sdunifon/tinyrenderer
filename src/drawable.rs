@@ -1,6 +1,5 @@
 use crate::canvas::Canvas;
 use crate::{Color, DrawAt, DrawCmd, RenderError, Xy};
-
 pub trait Drawable {
     fn draw_on(&self, canvas: &mut dyn Canvas) -> Result<(), RenderError>;
 }
