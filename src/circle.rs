@@ -66,8 +66,8 @@ impl ToDrawCommands for Circle {
 #[cfg(test)]
 mod tests {
     use crate::canvas::Canvas;
-    use crate::{Render};
     use crate::color::WHITE;
+    use crate::Render;
 
     use super::*;
 

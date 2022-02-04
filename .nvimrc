@@ -5,6 +5,7 @@ autocmd VimEnter * echo 'local .nvim file loaded'
 
 command Compile :!cargo build
 command Test :!cargo test
+command Play :!cargo play %
 noremap <F5> :Compile<CR> 
 noremap <F6> :Test<CR>,
 

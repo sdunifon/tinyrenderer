@@ -32,6 +32,9 @@ dependencies = ["serve"]
 command = "curl"
 args = ["https://localhost:8080"]
 
+[tasks.trace-macros]
+command = "cargo"
+args = ["rustc", "--", "-Z", "trace-macros"] #// not working at the moment
 # ---- BUILD ----
 
 [tasks.build_timings]
