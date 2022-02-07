@@ -202,7 +202,7 @@ impl<T> Fillable for BoundingBox<T>
 where
     i32: From<T>,
     T: Copy,
-    bounds::BoundingBox<T>: bounds::Boundable<i32>,
+    bounding_box::BoundingBox<T>: bounding_box::Boundable<i32>,
 {
     fn fill(&self, image: &mut dyn Canvas) {
         for Xy(x, y) in self.bounding_box().iter() {

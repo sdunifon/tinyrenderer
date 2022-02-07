@@ -1,9 +1,9 @@
-use super::{bounds::DetectInside, Boundable, BoundingBox, Xy};
+use super::{bounding_box::DetectInside, Boundable, BoundingBox, Xy};
 use crate::canvas::Canvas;
 use crate::color::{self, Color, Colorful};
 use crate::draw_cmd::ToDrawCommands;
 use crate::drawable::Drawable;
-use crate::{DrawCmd, Fillable, RenderError};
+use crate::{DrawCmd, Fillable, RenderError, ToImageBuffer};
 
 pub struct Circle {
     radius: u32,
