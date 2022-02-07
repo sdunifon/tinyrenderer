@@ -102,7 +102,7 @@ fn change_at(xy: Xy, cmds: Vec<DrawCmd>) -> impl Fn(&dyn Canvas) {
 
 
 #[cfg(test)]
-mod test {
+mod tests {
     use crate::{DrawCmd, Xy};
 
     macro_rules! draw_set_cmd {

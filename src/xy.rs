@@ -51,7 +51,7 @@ impl Add for Xy {
     type Output = Xy;
 
     fn add(self, rhs: Self) -> Self::Output {
-        Xy(self.0 + rhs.0, self.1 + rhs.0)
+        Xy(self.0 + rhs.0, self.1 + rhs.1)
     }
 }
 impl Sub for Xy {
@@ -85,6 +85,14 @@ mod tests {
     use all_asserts::assert_near;
 
     use super::*;
+
+    #[test]
+    fn test_add() {
+        let xy1 = Xy(5, 7);
+        let xy2 = Xy(3, 4);
+        let xy3 = xy1 + xy2;
+        assert_eq!(xy3, Xy(8, 11));
+    }
 
     #[test]
     fn distance_to_test() {

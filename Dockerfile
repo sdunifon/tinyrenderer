@@ -10,7 +10,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
 # RUN echo "source $HOME/.cargo/env" >> ~/.cshrc #doesn't work
 # RUN echo "source $HOME/.cargo/env" >> ~/.tcshrc  #doesn't work
 ENV PATH "$PATH:/root/.cargo/bin"
-RUN cargo install fd-find
+
 COPY . /root/tinyrenderer/
 
 WORKDIR /root/tinyrenderer
@@ -18,5 +18,7 @@ WORKDIR /root/tinyrenderer
 RUN cargo install cargo-make
 
 RUN cargo make
+
+RUN cargo install fd-find
 CMD cargo make serve
 # CMD /bin/bash
