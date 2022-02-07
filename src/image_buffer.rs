@@ -73,7 +73,7 @@ impl<'a> IndexMut<&'a Xy> for ImageBuffer {
 }
 
 pub trait ToImageBuffer {
-    fn to_image_buffer(self) -> ImageBuffer;
+    fn to_image_buffer(&self) -> ImageBuffer;
 }
 
 impl Canvas for ImageBuffer {

@@ -25,7 +25,8 @@ impl<'a> BoundingBox<i32> {
 }
 impl<'a, T> BoundingBox<T>
 where
-    T: PartialEq + PartialOrd + Copy + Into<i32>,
+    T: PartialEq + PartialOrd + Copy + Into<i32> + std::ops::Sub<Output = T> + std::fmt::Debug,
+    u32: TryFrom<T>,
 {
     fn new(x_min: T, y_min: T, x_max: T, y_max: T) -> BoundingBox<T> {
         debug_assert!(x_min <= x_max);
@@ -56,11 +57,32 @@ where
     pub fn center(&self) -> Xy {
         (self.upper_left() - self.lower_right()) / 2
     }
+
+    pub fn width(&self) -> u32 {
+       match  (self.x_max - self.x_min).try_into() {
+            Ok(width) => width,
+            Err(_) => panic!("BoundingBox::width: x_max - x_min is negative and can't fit in a u32")
+        }
+    }
+
+    pub fn height(&self) -> u32 {
+       match  (self.y_max - self.y_min).try_into() {
+            Ok(height) => height,
+            Err(_) => panic!("BoundingBox::height: y_max - y_min is negative and can't fit in a u32")
+        }
+    }
+
+    pub fn create_image_buffer(&self) -> ImageBuffer {
+        ImageBuffer::new(self.height(), self.width())
+    }
+
 }
+
 impl<T> Add<Xy> for BoundingBox<T>
 where
-    T: Copy + PartialOrd + Add<Output = T> + From<i32>,
+    T: Copy + PartialOrd + Add<Output = T> + From<i32> + std::ops::Sub<Output = T> + std::fmt::Debug,
     i32: From<T>,
+    u32: TryFrom<T>,
 {
     type Output = BoundingBox<T>;
 
@@ -320,6 +342,18 @@ mod tests {
                 y_max: 6
             }
         );
+    }
+
+    #[test]
+    fn test_image_buffer_height(){
+        let b = BoundingBox::new(0, 25, 100, 100);
+        assert_eq!(b.height(), 75);
+    }
+
+    #[test]
+    fn test_image_buffer_width() {
+        let b = BoundingBox::new(10, 25, 100, 100);
+        assert_eq!(b.width(), 90);
     }
 
     // --float tests TODO bounding won't work with floats until we make something to convert f64->i32

@@ -1,6 +1,6 @@
 use crate::canvas::Canvas;
 use crate::drawable::Drawable;
-use crate::{Boundable, BoundingBox, Colorful, DrawBoundable, RenderError, ToImageBuffer, Xy};
+use crate::{Boundable, BoundingBox, Colorful, DrawBoundable, DrawCmd, RenderError, ToImageBuffer, Xy};
 
 pub enum Digit {
     Zero,
@@ -268,7 +268,7 @@ impl Drawable for Digit {
 }
 
 impl ToImageBuffer for Digit {
-    fn to_image_buffer(self) -> crate::ImageBuffer {
+    fn to_image_buffer(&self) -> crate::ImageBuffer {
         todo!()
     }
 }

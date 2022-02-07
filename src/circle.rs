@@ -3,7 +3,7 @@ use crate::canvas::Canvas;
 use crate::color::{self, Color, Colorful};
 use crate::draw_cmd::ToDrawCommands;
 use crate::drawable::Drawable;
-use crate::{DrawCmd, Fillable, RenderError, ToImageBuffer};
+use crate::{DrawCmd, Fillable, ImageBuffer, RenderError, ToImageBuffer};
 
 pub struct Circle {
     radius: u32,
@@ -51,16 +51,25 @@ impl DetectInside for Circle {
     }
 }
 impl ToDrawCommands for Circle {
+
     fn to_draw_commands(&self) -> Vec<DrawCmd> {
         // todo refactor so fill and this method use the same code
         let mut commands: Vec<DrawCmd> = Vec::new();
         for Xy(x, y) in self.bounding_box().iter() {
-            let p = Xy(x, y);
+            let p = Xy(x, y) - self.bounding_box().upper_left();
             if self.includes(Xy(x, y)) {
                 commands.push(DrawCmd::Set(p))
             }
         }
         return commands;
+    }
+}
+
+impl ToImageBuffer for Circle {
+    fn to_image_buffer(&self) ->  ImageBuffer {
+
+        todo!()
+        // self.to_draw_commands()
     }
 }
 #[cfg(test)]

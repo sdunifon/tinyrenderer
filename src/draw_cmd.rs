@@ -1,3 +1,4 @@
+use std::iter::Map;
 use std::ops::{Add, Range};
 
 use crate::{color, BoundingBox, Circle, Color, Drawable, ImageBuffer, ToImageBuffer, Xy};
@@ -26,10 +27,13 @@ impl Drawable for Vec<&dyn Drawable> {
     // }
 }
 pub trait ToDrawCommands {
+    // fn absolute_drawing_commands(&self) -> Map<Vec<DrawCmd>, fn(_) -> _> {
+        // self.to_draw_commands().map(|cmd| cmd + self.bounding_box().top_left())
+    // }
     fn to_draw_commands(&self) -> Vec<DrawCmd>;
 }
 
-impl Add<Xy> for &DrawCmd {
+impl Add<Xy> for &DrawCmd { //TODO shouldn't be for a bowrrow
     type Output = DrawCmd;
     fn add(self, other: Xy) -> Self::Output {
         match self {
@@ -38,7 +42,7 @@ impl Add<Xy> for &DrawCmd {
             DrawCmd::Line(xy, xy2, color) => DrawCmd::Line(*xy + other, *xy2 + other,  *color),
             DrawCmd::Circle(xy, radius, color) => DrawCmd::Circle(*xy + other, *radius, *color),
             DrawCmd::List(list) => DrawCmd::List(list.into_iter().map(|cmd| cmd + other).collect()),
-            DrawCmd::Clear(bbox) => DrawCmd::Clear(*bbox + other),
+            DrawCmd::Clear(bbox) =>{todo!()}// DrawCmd::Clear(*bbox + other),
             DrawCmd::CopyBuffer(buffer) => todo!( "need to copy the buffer")
         }
     }
@@ -56,7 +60,7 @@ impl<'a> Drawable for Vec<DrawCmd> {
 }
 
 impl<'a> ToImageBuffer for Vec<DrawCmd> {
-    fn to_image_buffer(self) -> ImageBuffer {
+    fn to_image_buffer(&self) -> ImageBuffer {
         todo!()
     }
 }
