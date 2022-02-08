@@ -38,7 +38,7 @@ impl Default for Model {
             zoom: 1.,
             canvas: ElRef::<HtmlCanvasElement>::default(),
             renderer: Render::default(),
-            filename: "cessna.obj".to_string(),
+            filename: "ant.obj".to_string(),
             loaded: false,
         }
     }
@@ -72,7 +72,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
 
             orders
                 .skip()
-                .perform_cmd(async { Msg::Fetched(download_file("assets/cessna.obj").await) });
+                .perform_cmd(async { Msg::Fetched(download_file("assets/ant.obj").await) });
             // .perform_cmd(async { Msg::Fetched(download_file(model.filenameo).await) });
         }
         Msg::Test => {
