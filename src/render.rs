@@ -6,7 +6,7 @@ use std::{error, fmt};
 impl Default for RenderOptions {
     fn default() -> Self {
         RenderOptions {
-            wireframe: false,
+            wireframe: true,
             height: 800,
             width: 800,
         }
