@@ -313,7 +313,7 @@ mod tests {
     fn test_from_two_points() {
         let b = BoundingBox::from_two_points(Xy(1, 2), Xy(3, 4));
         assert_eq!(b.x_min, 1);
-        assert_eq!(b.x_max, 2);
+        assert_eq!(b.x_max, 3);
         assert_eq!(b.y_min, 2);
         assert_eq!(b.y_max, 4);
     }
@@ -321,8 +321,8 @@ mod tests {
     #[test]
     fn test_upper_left_lower_right() {
         let b = BoundingBox::new(2, 2, 4, 4);
-        assert_eq!(b.upper_left(), Xy(1, 2));
-        assert_eq!(b.lower_right(), Xy(1, 2));
+        assert_eq!(b.upper_left(), Xy(2, 2));
+        assert_eq!(b.lower_right(), Xy(4, 4));
     }
     #[test]
     fn test_add() {

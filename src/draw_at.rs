@@ -1,5 +1,10 @@
+use std::iter::Map;
+use std::slice::Iter;
 use crate::drawable::DrawInstructions;
-use crate::{Boundable, Canvas, DrawCmd, Drawable, RenderError, Xy};
+use crate::{Boundable, Canvas, DrawCmd, Drawable, RenderError, Xy, ToDrawCommands};
+use crate::DrawCmd::Circle;
+use crate::draw_set_cmd;
+use std::ops::Add;
 
 pub struct DrawAt(pub Xy, pub Box<dyn DrawBoundable<i32>>);
 
