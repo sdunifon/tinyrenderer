@@ -186,13 +186,15 @@ fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
 
 fn draw_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
     let image_buffer = model.renderer.image_buffer();
-    for x in 0..model.renderer.width() as u32 {
-        for y in 0..model.renderer.height() as u32 {
+    let width = model.renderer.width();
+    let height = model.renderer.height();
+    for x in 0..width as u32 {
+        for y in 0..height as u32 {
             let color: Color;
             let color = image_buffer[&Xy(x as i32, y as i32)];
             // model.renderer.image.data[(y as usize) * model.renderer.width() + (x as usize)];
 
-            set_pixel(&mut ctx, x, y, color);
+            set_pixel(&mut ctx, width - x,height -  y, color);
         }
     }
 }
