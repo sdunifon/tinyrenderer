@@ -1,0 +1,3 @@
+#!/bin/sh
+heroku apps:info  tinyrenderer-wasm | rg Web\ URL | rg --only-matching "http.*"
+
