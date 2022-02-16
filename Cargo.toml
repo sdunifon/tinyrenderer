@@ -44,3 +44,7 @@ codegen-units = 1
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ['-Os']
+
+[[example]]
+name  = "shapes"
+required-features = ["native_image_render"]
