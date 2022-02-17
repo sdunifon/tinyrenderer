@@ -4,6 +4,11 @@
 
 use seed::{prelude::*, *};
 mod canvas;
+mod web_canvas;
+
+use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
+use tinyrenderer::{Color, Render, ImageBuffer,Xy};
+
 // ------ ------
 //     Start
 // ------ ------
@@ -11,5 +16,5 @@ mod canvas;
 //#[wasm_bindgen(start)]
 pub fn start() {
     canvas::start();
-    // App::start("app", init, update, view);
+    // App::start("app", init, update, view;
 }

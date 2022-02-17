@@ -12,10 +12,10 @@ impl Default for RenderOptions {
         }
     }
 }
-
+type RenderQueue = Vec<Box<dyn Drawable>>;
 pub struct Render {
     file: Option<ModelFile>,
-    pub render_queue: Vec<Box<dyn Drawable>>,
+    pub render_queue: RenderQueue,
     pub image: Image, //TODO privatize me
     options: RenderOptions,
 }

@@ -50,7 +50,7 @@ fn update(msg: Msg, model: &mut Model, orders: &mut impl Orders<Msg>) {
             if model.loaded {
                 draw(&model.canvas, &model)
             } else {
-                draw_test(&model.canvas, &model);
+                draw_loading(&model.canvas, &model);
             }
             orders.after_next_render(|_| Msg::TestRender).skip();
         }
@@ -114,7 +114,7 @@ async fn download_file(filename: &str) -> fetch::Result<String> {
         .await
 }
 
-fn draw_test(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
+fn draw_loading(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
     let canvas = canvas.get().expect("get canvas element");
     let mut ctx = seed::canvas_context_2d(&canvas);
 
@@ -139,22 +139,22 @@ fn draw_test(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
             g: 0,
         },
     );
-    draw_test_buffer(ctx, model);
+    // draw_test_buffer(ctx, model);
 }
 
-fn draw_test_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
-    for x in 0..=model.renderer.width() as u32 {
-        for y in 0..=model.renderer.height() as u32 {
-            let color: Color;
-            if y < 80 {
-                color = Color { r: 240, g: 0, b: 0 };
-            } else {
-                color = Color { r: 0, g: 200, b: 0 };
-            }
-            set_pixel(&mut ctx, x, y, color);
-        }
-    }
-}
+// fn draw_test_buffer(mut ctx: CanvasRenderingContext2d, model: &Model) {
+//     for x in 0..=model.renderer.width() as u32 {
+//         for y in 0..=model.renderer.height() as u32 {
+//             let color: Color;
+//             if y < 80 {
+//                 color = Color { r: 240, g: 0, b: 0 };
+//             } else {
+//                 color = Color { r: 0, g: 200, b: 0 };
+//             }
+//             set_pixel(&mut ctx, x, y, color);
+//         }
+//     }
+// }
 
 fn draw(canvas: &ElRef<HtmlCanvasElement>, model: &Model) {
     let canvas = canvas.get().expect("get canvas element");
@@ -215,9 +215,6 @@ fn view(model: &Model) -> impl IntoNodes<Msg> {
         button!["Render", ev(Ev::Click, |_| Msg::Render)]
     ]
 }
-trait DrawBuffer {
-    fn draw_buffer(ctx: CanvasRenderingContext2d);
-}
 
 // trait SetPixel{
 fn set_pixel(ctx: &mut CanvasRenderingContext2d, x: u32, y: u32, color: Color) {
@@ -225,6 +222,7 @@ fn set_pixel(ctx: &mut CanvasRenderingContext2d, x: u32, y: u32, color: Color) {
     ctx.set_fill_style(&JsValue::from_str(color_str.as_str()));
     ctx.fill_rect(x as f64, y as f64, 1., 1.)
 }
+
 // }
 // impl SetPixel for CanvasRenderingContext2d{};
 
